@@ -289,7 +289,7 @@ ode = @ODEmodel(
     C4'(t) = kp*C3(t) - (koff + kp)*C4(t),
     C5'(t) = kp*C4(t) - (koff)*C5(t),
     kon'(t) = 0,
-    y1(t) = C5(t),
+    y1(t) = C3(t),
     y2(t) = kon(t)
 )
 
