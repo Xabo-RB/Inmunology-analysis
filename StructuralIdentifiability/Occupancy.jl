@@ -3,6 +3,10 @@
 
 using SIAN, Logging
 
+# ============================================
+#               y = C0(t) = R(t) 
+# ============================================
+
 ode = @ODEmodel(
     C0'(t) = - kon * P * T - koff*C0(t),
     y1(t) = C0(t)
@@ -39,3 +43,17 @@ ode = @ODEmodel(
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+# ===================================================================
+#               y = koff/kon + 0.5*T(t)*C(t) = EC50 
+# ===================================================================
+
+ode = @ODEmodel(
+    C0'(t) = - kon * P * T - koff*C0(t),
+    y1(t) = koff/kon + (T*C0(t))/2
+)
+
+
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
