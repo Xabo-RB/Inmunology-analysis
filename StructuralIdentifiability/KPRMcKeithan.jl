@@ -381,7 +381,7 @@ ode = @ODEmodel(
     T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff)*C1(t),
-    y1(t) = C1(t)
+    y1(t) = koff/kon + 0.5*T(t)*(C0(t)+C1(t))
 )
 
 # -------------------  N = 2 -------------------
