@@ -80,3 +80,14 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 
+# ============================================
+#               y = T(t) 
+# ============================================
+
+ode = @ODEmodel(
+    C0'(t) = - kon * P * T(T) - koff*C0(t),
+    T'(t) = 0,
+    y1(t) = T(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
