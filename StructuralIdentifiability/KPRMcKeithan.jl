@@ -827,3 +827,86 @@ ode = @ODEmodel(
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
+# __________ CONOCIENDO TODOS ________________________________________________________
+# -------------------  N = 1 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff)*C1(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t)
+)
+
+# -------------------  N = 2 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff)*C2(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t)
+)
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+# -------------------  N = 3 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t),
+    C3'(t) = kp(t)*C2(t) - (koff)*C3(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t)
+)
+
+# -------------------  N = 4 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t),
+    C3'(t) = kp(t)*C2(t) - (koff + kp(t))*C3(t),
+    C4'(t) = kp(t)*C3(t) - (koff)*C4(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t)
+)
+
+# -------------------  N = 5 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t) + koff*C5(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t) + koff*C5(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t),
+    C3'(t) = kp(t)*C2(t) - (koff + kp(t))*C3(t),
+    C4'(t) = kp(t)*C3(t) - (koff + kp(t))*C4(t),
+    C5'(t) = kp(t)*C4(t) - (koff)*C5(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
