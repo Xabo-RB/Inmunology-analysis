@@ -4,14 +4,49 @@
 using SIAN, Logging
 
 # __________ SIN CONOCER NINGÚN PARÁMETRO ________________________________________________________
-# -------------------  N = 1 -------------------
+# -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
-    T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
-    C1'(t) = kp*C0(t) - (koff)*C1(t),
-    y1(t) = C1(t)
+    C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
+    C2'(t) = kp*C1(t) - (koff)*C2(t) + rho2*C2a(t),
+    C1a'(t) = koff*C1(t) - (rho1 + lambdaR + kp)*C1a(t),
+    C2a'(t) = kp*C1a(t) + koff*C2(t) - (rho2 + lambdaR)*C2a(t),  
+    y1(t) = C2a(t) + C2(t)
+)
+
+# -------------------  N = 3 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
+    C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
+    C3'(t) = kp*C2(t) - (koff)*C3(t) + rho3*C3a(t),
+    C1a'(t) = koff*C1(t) - (rho1 + lambdaR + kp)*C1a(t),
+    C2a'(t) = kp*C1a(t) + koff*C2(t) - (rho2 + lambdaR + kp)*C2a(t),    
+    C3a'(t) = kp*C2a(t) + koff*C3(t) - (rho3 + lambdaR)*C3a(t),
+    y1(t) = C3a(t) + C3(t)
+)
+
+# -------------------  N = 4 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C0a(t) + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
+    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
+    C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
+    C3'(t) = kp*C2(t) - (koff + kp)*C3(t) + rho3*C3a(t),
+    C4'(t) = kp*C3(t) - (koff)*C4(t) + rho4*C4a(t),
+    C1a'(t) = koff*C1(t) - (rho1 + lambdaR + kp)*C1a(t),
+    C2a'(t) = kp*C1a(t) + koff*C2(t) - (rho2 + lambdaR + kp)*C2a(t),    
+    C3a'(t) = kp*C2a(t) + koff*C3(t) - (rho3 + lambdaR + kp)*C3a(t), 
+    C4a'(t) = kp*C3a(t) + koff*C4(t) - (rho4 + lambdaR)*C4a(t),
+    y1(t) = C4a(t) + C4(t)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
