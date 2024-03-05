@@ -11,13 +11,7 @@ using SIAN, Logging
 #           c) Conociendo T(t)
 #           d) Conociendo kon
 #           e) Conociendo kp
-#       2. y = EC50
-#           a) Sin conocer params.
-#           b) Conociendo kon, koff, T(t)
-#           c) Conociendo T(t)
-#           d) Conociendo kon
-#           e) Conociendo kp
-#       3. y = T(t)
+#       2. y = T(t)
 #           a) Sin conocer params.
 #           b) Conociendo kon, koff, T(t)
 #           c) Conociendo T(t)
