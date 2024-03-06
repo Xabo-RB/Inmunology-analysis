@@ -391,7 +391,7 @@ ode = @ODEmodel(
 
 
 # ===================================================================
-#               y = koff/kon + 0.5*T(t)*sum(Ci(t)) = EC50 
+#               y = koff/kon + 0.5*(T(t)+sum(Ci(t)) = EC50 
 # ===================================================================
 
 # __________ SIN CONOCER NINGÚN PARÁMETRO ________________________________________________________
@@ -402,7 +402,7 @@ ode = @ODEmodel(
     T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff)*C1(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t))/2)
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t))/2)
 )
 
 # -------------------  N = 2 -------------------
@@ -413,7 +413,7 @@ ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
     C2'(t) = kp*C1(t) - (koff)*C2(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t))/2)
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t))/2)
 )
 
 # -------------------  N = 3 -------------------
@@ -425,7 +425,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t),
     C3'(t) = kp*C2(t) - (koff)*C3(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t))/2)
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t))/2)
 )
 
 # -------------------  N = 4 -------------------
@@ -438,7 +438,7 @@ ode = @ODEmodel(
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t),
     C3'(t) = kp*C2(t) - (koff + kp)*C3(t),
     C4'(t) = kp*C3(t) - (koff)*C4(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2)
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2)
 )
 
 # -------------------  N = 5 -------------------
@@ -452,7 +452,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - (koff + kp)*C3(t),
     C4'(t) = kp*C3(t) - (koff + kp)*C4(t),
     C5'(t) = kp*C4(t) - (koff)*C5(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2)
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
@@ -467,7 +467,7 @@ ode = @ODEmodel(
     C1'(t) = kp(t)*C0(t) - (koff)*C1(t),
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t))/2),
     y2(t) = T(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
@@ -483,7 +483,7 @@ ode = @ODEmodel(
     C2'(t) = kp(t)*C1(t) - (koff)*C2(t),
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t))/2),
     y2(t) = T(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
@@ -501,7 +501,7 @@ ode = @ODEmodel(
     C3'(t) = kp(t)*C2(t) - (koff)*C3(t),
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t))/2),
     y2(t) = T(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
@@ -519,7 +519,7 @@ ode = @ODEmodel(
     C4'(t) = kp(t)*C3(t) - (koff)*C4(t),
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
     y2(t) = T(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
@@ -538,7 +538,7 @@ ode = @ODEmodel(
     C5'(t) = kp(t)*C4(t) - (koff)*C5(t),
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
     y2(t) = T(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
@@ -554,7 +554,7 @@ ode = @ODEmodel(
     T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff)*C1(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t))/2),
     y2(t) = T(t)
 )
 
@@ -566,7 +566,7 @@ ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
     C2'(t) = kp*C1(t) - (koff)*C2(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t))/2),
     y2(t) = T(t)
 )
 
@@ -579,7 +579,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t),
     C3'(t) = kp*C2(t) - (koff)*C3(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t))/2),
     y2(t) = T(t)
 )
 
@@ -593,7 +593,7 @@ ode = @ODEmodel(
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t),
     C3'(t) = kp*C2(t) - (koff + kp)*C3(t),
     C4'(t) = kp*C3(t) - (koff)*C4(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
     y2(t) = T(t)
 )
 
@@ -608,7 +608,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - (koff + kp)*C3(t),
     C4'(t) = kp*C3(t) - (koff + kp)*C4(t),
     C5'(t) = kp*C4(t) - (koff)*C5(t),
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
     y2(t) = T(t)
 )
 
@@ -623,7 +623,7 @@ ode = @ODEmodel(
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff)*C1(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t))/2),
     y2(t) = kon(t)
 )
 
@@ -636,7 +636,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
     C2'(t) = kp*C1(t) - (koff)*C2(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t))/2),
     y2(t) = kon(t)
 )
 
@@ -650,7 +650,7 @@ ode = @ODEmodel(
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t),
     C3'(t) = kp*C2(t) - (koff)*C3(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t))/2),
     y2(t) = kon(t)
 )
 
@@ -665,7 +665,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - (koff + kp)*C3(t),
     C4'(t) = kp*C3(t) - (koff)*C4(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
     y2(t) = kon(t)
 )
 
@@ -681,7 +681,7 @@ ode = @ODEmodel(
     C4'(t) = kp*C3(t) - (koff + kp)*C4(t),
     C5'(t) = kp*C4(t) - (koff)*C5(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)*C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
     y2(t) = kon(t)
 )
 
@@ -696,7 +696,7 @@ ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff)*C1(t),
     kp'(t) = 0,
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t))/2),
     y2(t) = kp(t)
 )
 
@@ -709,7 +709,7 @@ ode = @ODEmodel(
     C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
     C2'(t) = kp(t)*C1(t) - (koff)*C2(t),
     kp'(t) = 0,
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t))/2),
     y2(t) = kp(t)
 )
 
@@ -723,7 +723,7 @@ ode = @ODEmodel(
     C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t),
     C3'(t) = kp(t)*C2(t) - (koff)*C3(t),
     kp'(t) = 0,
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t))/2),
     y2(t) = kp(t)
 )
 
@@ -738,7 +738,7 @@ ode = @ODEmodel(
     C3'(t) = kp(t)*C2(t) - (koff + kp(t))*C3(t),
     C4'(t) = kp(t)*C3(t) - (koff)*C4(t),
     kp'(t) = 0,
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t))/2),
     y2(t) = kp(t)
 )
 
@@ -754,7 +754,7 @@ ode = @ODEmodel(
     C4'(t) = kp(t)*C3(t) - (koff + kp(t))*C4(t),
     C5'(t) = kp(t)*C4(t) - (koff)*C5(t),
     kp'(t) = 0,
-    y1(t) = koff/kon + (T(t)*(C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
+    y1(t) = koff/kon + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
     y2(t) = kp(t)
 )
 
