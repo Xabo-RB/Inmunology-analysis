@@ -19,32 +19,6 @@ syms P T C0 C1
 x = [P T C0 C1].';
 N = 1;
 h = [(kp/(kp+koff)) * ((T+C0+C1)^N)];
-
-% % N = 2
-% syms P T C0 C1 C2
-% x = [P T C0 C1 C2].';
-% N = 2;
-% h = [(kp/(kp+koff)) * ((T+C0+C1+C2)^N)];
-% 
-% % N = 3
-% syms P T C0 C1 C2 C3
-% x = [P T C0 C1 C2 C3].';
-% N = 3;
-% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3)^N)];
-% 
-% % N = 4
-% syms P T C0 C1 C2 C3 C4
-% x = [P T C0 C1 C2 C3 C4].';
-% N = 4;
-% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3+C4)^N)];
-% 
-% % N = 5
-% syms P T C0 C1 C2 C3 C4 C5
-% x = [P T C0 C1 C2 C3 C4 C5].';
-% N = 5;
-% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3+C4+C5)^N)];
-
-%% dynamic equations:
 f = [ 
 	-kon * P * T + koff * C0 + koff * C1;
     -kon * P * T + koff * C0 + koff * C1;
@@ -52,7 +26,65 @@ f = [
     kp * C0 - koff * C1
 ];
 
-% initial conditions:
+% % N = 2
+% syms P T C0 C1 C2
+% x = [P T C0 C1 C2].';
+% N = 2;
+% h = [(kp/(kp+koff)) * ((T+C0+C1+C2)^N)];
+f = [ 
+	-kon * P * T + koff * C0 + koff * C1 + koff * C2;
+    -kon * P * T + koff * C0 + koff * C1 + koff * C2;
+    kon * P * T - (koff + kp) * C0;
+    kp*C0 - (koff + kp)*C1;
+    kp*C1 - koff*C2
+];
+% 
+% % N = 3
+% syms P T C0 C1 C2 C3
+% x = [P T C0 C1 C2 C3].';
+% N = 3;
+% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3)^N)];
+f = [ 
+	-kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3;
+    -kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3;
+    kon * P * T - (koff + kp) * C0;
+    kp*C0 - (koff + kp)*C1;
+    kp*C1 - (koff + kp)*C2;
+    kp*C2 - (koff)*C3
+];
+% 
+% % N = 4
+% syms P T C0 C1 C2 C3 C4
+% x = [P T C0 C1 C2 C3 C4].';
+% N = 4;
+% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3+C4)^N)];
+f = [ 
+	-kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4;
+    -kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4;
+    kon * P * T - (koff + kp) * C0;
+    kp*C0 - (koff + kp)*C1;
+    kp*C1 - (koff + kp)*C2;
+    kp*C2 - (koff + kp)*C3;
+    kp*C3- (koff)*C4
+];
+% 
+% % N = 5
+% syms P T C0 C1 C2 C3 C4 C5
+% x = [P T C0 C1 C2 C3 C4 C5].';
+% N = 5;
+% h = [(kp/(kp+koff)) * ((T+C0+C1+C2+C3+C4+C5)^N)];
+f = [ 
+	-kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4 + koff * C5;
+    -kon * P * T + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4 + koff * C5;
+    kon * P * T - (koff + kp) * C0;
+    kp*C0 - (koff + kp)*C1;
+    kp*C1 - (koff + kp)*C2;
+    kp*C2 - (koff + kp)*C3;
+    kp*C3 - (koff + kp)*C4;
+    kp*C4 - (koff)*C5
+];
+
+%% initial conditions:
 ics  = [];   
 
 % which initial conditions are known:
