@@ -681,7 +681,7 @@ ode = @ODEmodel(
     C4'(t) = kp*C3(t) - (koff + kp)*C4(t),
     C5'(t) = kp*C4(t) - (koff)*C5(t),
     kon'(t) = 0,
-    y1(t) = koff/kon(t) + ((T(t)*C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
+    y1(t) = koff/kon(t) + ((T(t)+C0(t)+C1(t)+C2(t)+C3(t)+C4(t)+C5(t))/2),
     y2(t) = kon(t)
 )
 
@@ -690,6 +690,7 @@ ode = @ODEmodel(
 # __________ CONOCIENDO kp ________________________________________________________
 # -------------------  N = 1 -------------------
 ode = @ODEmodel(
+
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     P'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
     T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t),
