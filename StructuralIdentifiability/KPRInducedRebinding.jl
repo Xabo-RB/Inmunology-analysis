@@ -385,6 +385,7 @@ ode = @ODEmodel(
 # ===================================================================
 # __________ SIN CONOCER NINGÚN PARÁMETRO ________________________________________________________
 # -------------------  N = 2 -------------------
+using SIAN, Logging
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C1a(t) + koff*C2a(t),
