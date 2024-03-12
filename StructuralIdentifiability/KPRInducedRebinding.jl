@@ -464,8 +464,8 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = T(t),
-    y3(t) = kon(t),
-    y4(t) = kp(t)
+    y2(t) = kon(t),
+    y3(t) = kp(t)
 )
 
 # -------------------  N = 3 -------------------
@@ -483,8 +483,8 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = T(t),
-    y3(t) = kon(t),
-    y4(t) = kp(t)
+    y2(t) = kon(t),
+    y3(t) = kp(t)
 )
 
 # -------------------  N = 4 -------------------
@@ -504,8 +504,8 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = T(t),
-    y3(t) = kon(t),
-    y4(t) = kp(t)
+    y2(t) = kon(t),
+    y3(t) = kp(t)
 )
 
 # -------------------  N = 5 -------------------
@@ -527,8 +527,8 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = T(t),
-    y3(t) = kon(t),
-    y4(t) = kp(t)
+    y2(t) = kon(t),
+    y3(t) = kp(t)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
