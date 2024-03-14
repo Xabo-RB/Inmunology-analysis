@@ -15,29 +15,29 @@ p = [kp koff kon].';
 %% Different steps on KPR
 
 % N = 1
-syms P T C0 C1
-x = [P T C0 C1].';
-N = 1;
-h = [(kp/(kp+koff)) * ((T+C0+C1)^N)];
-f = [ 
-	-kon * P * T + koff * C0 + koff * C1;
-    -kon * P * T + koff * C0 + koff * C1;
-    kon * P * T - (koff + kp) * C0;
-    kp * C0 - koff * C1
-];
+% syms P T C0 C1
+% x = [P T C0 C1].';
+% N = 1;
+% h = [(kp/(kp+koff)) * ((T+C0+C1)^N)];
+% f = [ 
+% 	-kon * P * T + koff * C0 + koff * C1;
+%     -kon * P * T + koff * C0 + koff * C1;
+%     kon * P * T - (koff + kp) * C0;
+%     kp * C0 - koff * C1
+% ];
 
 % % N = 2
-% syms P T C0 C1 C2
-% x = [P T C0 C1 C2].';
-% N = 2;
-% h = [(kp/(kp+koff)) * ((T+C0+C1+C2)^N)];
-% f = [ 
-% 	-kon * P * T + koff * C0 + koff * C1 + koff * C2;
-%     -kon * P * T + koff * C0 + koff * C1 + koff * C2;
-%     kon * P * T - (koff + kp) * C0;
-%     kp*C0 - (koff + kp)*C1;
-%     kp*C1 - koff*C2
-% ];
+syms P T C0 C1 C2
+x = [P T C0 C1 C2].';
+N = 2;
+h = [(kp/(kp+koff)) * ((T+C0+C1+C2)^N)];
+f = [ 
+	-kon * P * T + koff * C0 + koff * C1 + koff * C2;
+    -kon * P * T + koff * C0 + koff * C1 + koff * C2;
+    kon * P * T - (koff + kp) * C0;
+    kp*C0 - (koff + kp)*C1;
+    kp*C1 - koff*C2
+];
 % 
 % % N = 3
 % syms P T C0 C1 C2 C3
