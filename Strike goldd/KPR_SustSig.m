@@ -1,44 +1,37 @@
 %--------------------------------------------------------------------------
-% KPR Limited signaling model.
+% KPR Sustained signaling model.
 % The model is taken from:
 %--------------------------------------------------------------------------
-% Lever, M., Maini, P. K., Van Der Merwe, P. A., & Dushek, O. (2014). 
-% Phenotypic models of T cell activation. Nature Reviews Immunology, _14_(9), 619-629.
+% Coombs, D., Kalergis, A. M., Nathenson, S. G., Wofsy, C., & Goldstein, B. (2002).
+% Activated TCRs remain marked for internalization after dissociation from pMHC.
+% Nature Immunology, 3(10), 926-931.
+
+% González, P. A., Carreño, L. J., Coombs, D., Mora, J. E., Palmieri, E., Goldstein, B., ... & Kalergis, A. M. (2005).
+% T cell receptor binding kinetics required for T cell activation depend on the density of cognate ligand on the antigen-presenting cell.
+% Proceedings of the National Academy of Sciences, 102(13), 4824-4829.
 %--------------------------------------------------------------------------
 clear all;
 
 
 % 4 parameters:
-syms kp koff kon phi
-p = [kp koff kon phi].';
+syms kp koff kon lambda
+p = [kp koff kon lambda].';
 
 %% Different steps on KPR
 
-syms P T C0 C1 C2
-x = [P T C0 C1 C2].';
-N = 1;
-h = [(koff/(phi+koff))*((kp/(kp+koff))^N) * (T+C0+C1+C2)];
+syms P T C0 C1 C2 Tast
+x = [P T C0 C1 C2 Tast].';
+N = 2;
+h = [ (((kp/(kp + koff))^N) * (C0+C1+C2) * (koff + lambda - kon*(C0+C1+C2) + kon*0.5*(T+C0+C1+C2+Tast)) - (lambda * (T+C0+C1+C2+Tast) *0.5)) / ( ((kp/(kp + koff))^N) * kon * ((T+C0+C1+C2+Tast) * 0.5 - (C0+C1+C2)) ) ];
 f = [ 
-	-kon * P * T + koff * C0 + koff * C1 + koff * C2;
-    -kon * P * T + koff * C0 + koff * C1 + koff * C2;
+	- kon * P * T + koff * C0 + koff * C1 + koff * C2 - kon * P * Tast;
+    - kon * P * T + koff * C0 + koff * C1 + lambda * Tast;
     kon * P * T - (koff + kp) * C0;
-    kp * C0 - (koff + phi) * C1;
-    phi * C1 - koff * C2 
+    kp * C0 - (koff + kp) * C1;
+    kp * C1 - koff * C2 + kon * P * Tast;
+    koff * C2 - kon * P * Tast - lambda * Tast
 ];
 
-% % N = 2
-% syms P T C0 C1 C2 C3
-% x = [P T C0 C1 C2 C3].';
-% N = 2;
-% h = [(koff/(phi+koff))*((kp/(kp+koff))^N) * ((T+C0+C1+C2+C3))];
-% f = [ 
-%     - kon * P * T + koff*C0 + koff*C1 + koff*C2 + koff*C3;
-%     - kon * P * T + koff*C0 + koff*C1 + koff*C2 + koff*C3;
-%     kon * P * T - (koff + kp)*C0;
-%     kp*C0 - (koff + kp)*C1;
-%     kp*C1 - (koff + phi)*C2;
-%     phi*C2 - (koff)*C3
-% ];
 % 
 % % N = 3
 % syms P T C0 C1 C2 C3 C4
@@ -91,8 +84,8 @@ f = [
 ics  = [];   
 
 % which initial conditions are known:
-known_ics = [0,0,0,0]; 
+known_ics = [0,0,0,0,0,0]; 
 
 u = [];
 w = [];
-save('KPRLimSig','x','p','u','w','h','f','ics','known_ics');
+save('KPRSustSig','x','p','u','w','h','f','ics','known_ics');
