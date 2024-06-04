@@ -250,7 +250,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - koff*C3(t) + kon(t)*P(t)*Tast(t),
     Tast'(t) = koff*C3(t) - kon(t)*P(t)*Tast(t) - lambda*Tast(t), 
     kon'(t) = 0, 
-    y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t) + Tast(t),  ,
+    y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t) + Tast(t),
     y2(t) = kon(t)
 )
 
