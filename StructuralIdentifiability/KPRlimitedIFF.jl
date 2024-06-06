@@ -45,7 +45,7 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = P(t),
-    y2(t) = T(t),
+    y2(t) = R(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
 )
@@ -61,7 +61,7 @@ ode = @ODEmodel(
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
     P'(t) = gamma * (PT - P(t)) - gamma*P(t) + delta*Y(t)*(PT - P(t)) - mu*C1(t)*P(t), 
     y1(t) = P(t),
-    y2(t) = T(t)
+    y2(t) = R(t)
 )
 
 # __________ kon  ________________________________________________________
@@ -110,7 +110,7 @@ ode = @ODEmodel(
     C2'(t) = phi*kp*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
     P'(t) = gamma * (PT - P(t)) - gamma*P(t) + delta*Y(t)*(PT - P(t)) - mu*C1(t)*P(t), 
-    y1(t) = T(t)
+    y1(t) = R(t)
 )
 
 # __________ Conociendo todos  ________________________________________________________
@@ -125,7 +125,7 @@ ode = @ODEmodel(
     P'(t) = gamma * (PT - P(t)) - gamma*P(t) + delta*Y(t)*(PT - P(t)) - mu*C1(t)*P(t), 
     kon'(t) = 0,
     kp'(t) = 0,
-    y1(t) = T(t),
+    y1(t) = R(t),
     y2(t) = kon(t),
     y3(t) = kp(t)
 )
@@ -141,7 +141,7 @@ ode = @ODEmodel(
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
     P'(t) = gamma * (PT - P(t)) - gamma*P(t) + delta*Y(t)*(PT - P(t)) - mu*C1(t)*P(t), 
     kon'(t) = 0,
-    y1(t) = T(t),
+    y1(t) = R(t),
     y2(t) = kon(t)
 )
 
@@ -156,7 +156,7 @@ ode = @ODEmodel(
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
     P'(t) = gamma * (PT - P(t)) - gamma*P(t) + delta*Y(t)*(PT - P(t)) - mu*C1(t)*P(t), 
     kp'(t) = 0,
-    y1(t) = T(t),
+    y1(t) = R(t),
     y2(t) = kp(t)
 )
 
