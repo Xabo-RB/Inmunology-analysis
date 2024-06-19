@@ -18,3 +18,17 @@ function ODEKPRmcK(dx, x, p, t) # McKeithan
     #   x0 = complex([100, 2e4, 0, 0]);
     #   P = 100 // T = 20.000 // C0 = 0 // C1 = 0
 end
+
+function ODEKPRmcK(dx, x, p, t) # McKeithan
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # P
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # T
+    dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3] # C0
+    dx[4] = p[3]*x[3] - (p[2] + p[3])*x[4] # C1
+    dx[5] = p[3]*x[4] - (p[2] + p[3])*x[5]
+    dx[6] = p[3]*x[5] - (p[2] + p[3])*x[6]
+    dx[7] = p[3]*x[6] - (p[2] + p[3])*x[7]
+    dx[8] = p[3]*x[7] - (p[2] + p[3])*x[8]
+    dx[9] = p[3]*x[8] - (p[2] + p[3])*x[9]
+    dx[10] = p[3]*x[9] - p[2]*x[4]
+
+end
