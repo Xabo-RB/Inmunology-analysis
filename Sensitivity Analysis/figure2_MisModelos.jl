@@ -10,6 +10,8 @@ using AnalyticSensitivity
 ASPkg = AnalyticSensitivity
 versioninfo()
 
+include("Modelos.jl")
+
 function sensitivity(x0, p, d, tspan)
     problem = ODEProblem{true}(ODEKPRmcK, x0, tspan, p)
     sol = solve(problem, saveat = 1.0) # solve ODE
