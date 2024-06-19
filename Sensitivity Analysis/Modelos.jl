@@ -19,6 +19,7 @@ function ODEKPRmcK(dx, x, p, t) # McKeithan
     #   P = 100 // T = 20.000 // C0 = 0 // C1 = 0
 end
 
+# con esta sí que obtengo el resultado del Paper
 function ODEKPRmcK10(dx, x, p, t) # McKeithan
     dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # P
     dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # T
@@ -32,6 +33,7 @@ function ODEKPRmcK10(dx, x, p, t) # McKeithan
     dx[10] = p[3]*x[9] - (p[2] + p[3])*x[10] # C7
     dx[11] = p[3]*x[10] - (p[2] + p[3])*x[11] # C8
     dx[12] = p[3]*x[11] - (p[2] + p[3])*x[12] # C9
-    dx[13] = p[3]*x[12] - p[2]*x[13] # C10
+    #dx[13] = p[3]*x[12] - p[2]*x[13] # C10
+    dx[13] = p[3]*x[12] # C10
 
 end
