@@ -5,6 +5,7 @@ end
 
 function ODEOccupancy(dx, x, p, t) # Occuppancy model
     dx[1] = p[1]*p[2]*p[3] - p[4]*x[1]
+
 end
 
 function ODEKPRmcK(dx, x, p, t) # McKeithan
@@ -21,8 +22,8 @@ end
 
 # con esta sí que obtengo el resultado del Paper
 function ODEKPRmcK10(dx, x, p, t) # McKeithan
-    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # P
-    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] # T
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8] + p[2]*x[9] + p[2]*x[10] # P
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8] + p[2]*x[9] + p[2]*x[10] # T
     dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3] # C0
     dx[4] = p[3]*x[3] - (p[2] + p[3])*x[4] # C1
     dx[5] = p[3]*x[4] - (p[2] + p[3])*x[5] # C2
