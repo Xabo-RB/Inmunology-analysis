@@ -40,5 +40,5 @@ p = complex([5e-5, 0.01, 1]); # parameters
 x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); # initial values
 (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
 solution = sensitivity(x0, p, d, tspan); # find solution and partials
-Plots.plot(solution[13][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+Plots.plot(solution[13][:, 5], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
 
