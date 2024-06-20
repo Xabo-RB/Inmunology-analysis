@@ -4,7 +4,9 @@ function ODE(dx, x, p, t) # CARRGO model
 end
 
 function ODEOccupancy(dx, x, p, t) # Occuppancy model
-    dx[1] = p[1]*p[2]*p[3] - p[4]*x[1]
+    dx[1] = p[1]*x[2]*x[3] - p[2]*x[1]                      #C0
+    dx[2] = - p[1] * x[2] * x[3] + p[2]*x[1]                # P
+    dx[3] = - p[1] * x[3] * x[3] + p[2]*x[1]                # T
 
 end
 
