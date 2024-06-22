@@ -1,11 +1,8 @@
-using Statistics, Random, DelimitedFiles, LinearAlgebra, BenchmarkTools
-using Plots
-using Revise, QuadGK, Polyester, Enzyme, PyPlot
-# El paquete BioSimulator hay que instalarlo a mano desde el repositorio de github
-using BioSimulator
-using ForwardDiff, DifferentialEquations, DataFrames, DiffEqSensitivity, Sundials, LaTeXStrings, NumericIO
-# El paquete AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
-using AnalyticSensitivity
+using Statistics, Random, LinearAlgebra, Plots, QuadGK, Polyester, Enzyme, DifferentialEquations
+using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, NumericIO
+#, DelimitedFiles, #, BenchmarkTools, Revise, PyPlot
+# El paquete BioSimulator, AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
+using BioSimulator, AnalyticSensitivity
 
 ASPkg = AnalyticSensitivity
 versioninfo()
@@ -44,7 +41,17 @@ if case == 1
     x0 = complex([0, 100, 2e4]); # initial values
     (d, tspan) = (1.0e-16, (0.0,1000)); # step size and time interval in days
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
-    Plots.plot(solution[1][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+
+    p1 = complex([5e-5, 1]); # kon koff 
+    solution1 = sensitivity(x0, p1, d, tspan); # find solution and partials
+
+    p2 = complex([5e-5, 0.001]); # kon koff 
+    solution2 = sensitivity(x0, p1, d, tspan); # find solution and partials   
+
+    plot(solution[1][:, 3], label = "x1 (p1)", xlabel= "t", ylabel = "R(t)")
+    plot!(solution1[1][:, 3], label = "x1 (p2)")
+    plot!(solution2[1][:, 3], label = "x1 (p3)")
+    #Plots.plot(solution[1][:, 3], label = "x1", xlabel= "t", ylabel = "R(t)") #xlims = (tspan[1],tspan[2]))
 
 
 elseif case == 2 # ==============================================================================================================
