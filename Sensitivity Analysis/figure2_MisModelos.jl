@@ -1,4 +1,5 @@
-using Statistics, Random, LinearAlgebra, Plots, QuadGK, Polyester, Enzyme, DifferentialEquations
+using Statistics, Random, LinearAlgebra, Plots, QuadGK, Polyester, Enzyme
+using DifferentialEquations
 using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, NumericIO
 #, DelimitedFiles, #, BenchmarkTools, Revise, PyPlot
 # El paquete BioSimulator, AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
