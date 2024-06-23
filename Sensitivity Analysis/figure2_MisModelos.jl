@@ -41,7 +41,7 @@ if case == 1
 
     p = complex([5e-5, 0.01]); # kon koff  (afinidad = 0.005)
     x0 = complex([0, 100, 2e4]); # initial values
-    (d, tspan) = (1.0e-16, (0.0,5000)); # step size and time interval in days
+    (d, tspan) = (1.0e-16, (0.0,1000)); # step size and time interval in days
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
 
     (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
@@ -51,6 +51,14 @@ if case == 1
     (d, tspan) = (1.0e-16, (0.0,10000)); # step size and time interval in days
     p2 = complex([5e-6, 0.001]); # kon koff (afinidad = 0.005)
     solution2 = sensitivity(x0, p2, d, tspan); # find solution and partials   
+
+    ss1 = log10.(abs.(solution[1][:, 3]))
+    ss2 = log10.(abs.(solution1[1][:, 3]))
+    ss3 = log10.(abs.(solution2[1][:, 3]))
+    pTlog = plot(ss1, label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
+    plot!(ss2, label = "koff = 0.1")
+    plot!(ss3, label = "koff = 0.001")
+    display(pTlog)
 
     pT = plot(solution[1][:, 3], label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
     plot!(solution1[1][:, 3], label = "koff = 0.1")
