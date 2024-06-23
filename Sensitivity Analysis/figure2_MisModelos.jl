@@ -4,7 +4,8 @@ using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, Numeri
 #, DelimitedFiles, #, BenchmarkTools, Revise, PyPlot
 # El paquete BioSimulator, AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
 # Pkg.add(url="https://github.com/alanderos91/BioSimulator.jl.git")
-using BioSimulator#, AnalyticSensitivity
+using BioSimulator
+using AnalyticSensitivity
 
 #ASPkg = AnalyticSensitivity
 #versioninfo()
