@@ -9,15 +9,15 @@ kp =        0.01;
 x0 = [100, 2e4, 0, 0];
 keithan = @(t,y)KPRMcK1(t,y,kon, koff, kp);
 options = odeset('RelTol',1e-3,'AbsTol',1e-3);
-[t,x] = ode45(keithan, [0 200], x0, options);
+[t,x] = ode45(keithan, [0 500], x0, options);
 
 %% Graficar Resultados
-figure;
-plot(t, x);
-xlabel('Tiempo');
-ylabel('Concentraciones');
-legend('P(t)', 'T(t)', 'C0(t)', 'C1(t)');
-title('Solución del sistema de ODEs');
+% figure;
+% plot(t, x);
+% xlabel('Tiempo');
+% ylabel('Concentraciones');
+% legend('P(t)', 'T(t)', 'C0(t)', 'C1(t)');
+% title('Solución del sistema de ODEs');
 
 figure
 plot(t, x(:, 4));
