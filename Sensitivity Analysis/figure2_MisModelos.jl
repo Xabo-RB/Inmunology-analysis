@@ -7,15 +7,15 @@ using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, Numeri
 using BioSimulator
 using AnalyticSensitivity
 
-#ASPkg = AnalyticSensitivity
-#versioninfo()
+ASPkg = AnalyticSensitivity
+versioninfo()
 
 include("Modelos.jl")
 
 #   OCCUPANCY       (1)
 #   McKeithan       (2)
 #   McKeithan10     (3)
-case = 1
+case = 3
 
 if case == 1
 
@@ -102,7 +102,7 @@ elseif case == 2 # =============================================================
     x0 = complex([100, 2e4, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
-    Plots.plot(solution[4][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    Plots.plot(solution[4][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
 
 elseif case == 3 # ==============================================================================================================
 
@@ -133,7 +133,7 @@ elseif case == 3 # =============================================================
     #x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
-    Plots.plot(solution[13][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    Plots.plot(solution[13][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
 
 end
 
