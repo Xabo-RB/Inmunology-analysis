@@ -16,7 +16,7 @@ include("Modelos.jl")
 #   OCCUPANCY       (1)
 #   McKeithan       (2)
 #   McKeithan10     (3)
-case = 2
+case = 1
 
 if case == 1
 
@@ -58,13 +58,13 @@ if case == 1
     ss2 = log10.(abs.(solution1[1][:, 3]))
     ss3 = log10.(abs.(solution2[1][:, 3]))
     pTlog = plot(ss1, label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
-    plot!(ss2, label = "koff = 0.1")
-    plot!(ss3, label = "koff = 0.001")
+    Plots.plot!(ss2, label = "koff = 0.1")
+    Plots.plot!(ss3, label = "koff = 0.001")
     display(pTlog)
 
     pT = plot(solution[1][:, 3], label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
-    plot!(solution1[1][:, 3], label = "koff = 0.1")
-    plot!(solution2[1][:, 3], label = "koff = 0.001")
+    Plots.plot!(solution1[1][:, 3], label = "koff = 0.1")
+    Plots.plot!(solution2[1][:, 3], label = "koff = 0.001")
     #Plots.plot(solution[1][:, 3], label = "x1", xlabel= "t", ylabel = "R(t)") #xlims = (tspan[1],tspan[2]))
     display(pT)
 
