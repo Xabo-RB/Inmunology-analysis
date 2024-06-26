@@ -98,11 +98,30 @@ elseif case == 2 # =============================================================
         return solution
     end
 
-    p = complex([5e-5, 0.01, 1]); # kon koff kp
+    
     x0 = complex([100, 2e4, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
-    solution = sensitivity(x0, p, d, tspan); # find solution and partials
-    Plots.plot(solution[4][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    p = complex([5e-5, 0.01, 1]); # kon koff kp
+    solution = sensitivity(x0, p, d, tspan); 
+    p1 = plot(solution[4][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[4][:, 3]))
+    for i in eachindex(koffVect)
+
+        p = complex([5e-5, koffVect[i], 1]);
+        solution = sensitivity(x0, p, d, tspan);
+        results_matrix[:, i] = solution[4][:, 3]
+
+    end
+
+    
+
+
+
+
+
 
 elseif case == 3 # ==============================================================================================================
 
