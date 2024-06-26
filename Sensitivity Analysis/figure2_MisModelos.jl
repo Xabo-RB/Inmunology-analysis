@@ -6,6 +6,7 @@ using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, Numeri
 # Pkg.add(url="https://github.com/alanderos91/BioSimulator.jl.git")
 using BioSimulator
 using AnalyticSensitivity
+using CairoMakie
 
 ASPkg = AnalyticSensitivity
 versioninfo()
@@ -15,7 +16,7 @@ include("Modelos.jl")
 #   OCCUPANCY       (1)
 #   McKeithan       (2)
 #   McKeithan10     (3)
-case = 3
+case = 2
 
 if case == 1
 
@@ -112,15 +113,29 @@ elseif case == 2 # =============================================================
 
         p = complex([5e-5, koffVect[i], 1]);
         solution = sensitivity(x0, p, d, tspan);
-        results_matrix[:, i] = solution[4][:, 3]
+        results_matrix[i, :] = solution[4][:, 3]
 
     end
 
-    
+    time1 = collect(range(0, stop =50, step = 1))
 
+    p = plot(heatmap(time1, koffVect, results_matrix),
+    xlabel="Time (s)", 
+    ylabel= "Dissociate rate",
+    title= L"Response sensitivity to $k_{off}$",
+    interpolate=true)
+    display(p)
 
-
-
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        title = L"Response sensitivity to $k_{off}$", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
 
 
 elseif case == 3 # ==============================================================================================================
