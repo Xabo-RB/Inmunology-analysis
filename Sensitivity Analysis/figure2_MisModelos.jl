@@ -16,7 +16,7 @@ include("Modelos.jl")
 #   OCCUPANCY       (1)
 #   McKeithan       (2)
 #   McKeithan10     (3)
-case = 1
+case = 2
 
 if case == 1
 
@@ -102,29 +102,39 @@ elseif case == 2 # =============================================================
     
     x0 = complex([100, 2e4, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
+
+    #== PLOTER LA TRAYECTORIA ÚNICA DEL OUTPUT
     p = complex([5e-5, 0.01, 1]); # kon koff kp
     solution = sensitivity(x0, p, d, tspan); 
-    p1 = plot(solution[4][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    p1 = Plots.plot(solution[4][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
+    ==# 
 
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
     koffVect = collect(range(0.001, stop =1, step = 0.001))
     results_matrix = zeros(length(koffVect), length(solution[4][:, 3]))
     for i in eachindex(koffVect)
 
         p = complex([5e-5, koffVect[i], 1]);
         solution = sensitivity(x0, p, d, tspan);
+
+        (solution[4][:, 3]*koffVect[i])/
+
         results_matrix[i, :] = solution[4][:, 3]
 
     end
 
+    # VECTOR TIEMPO PARA PLOTEAR
     time1 = collect(range(0, stop =50, step = 1))
 
-    p = plot(heatmap(time1, koffVect, results_matrix),
+    #== HEATMAP con plots sin interpolar
+    p = Plots.plot(Plots.heatmap(time1, koffVect, results_matrix),
     xlabel="Time (s)", 
     ylabel= "Dissociate rate",
     title= L"Response sensitivity to $k_{off}$",
     interpolate=true)
     display(p)
+    ==#
 
     # Suponiendo que time1, koffVect y results_matrix ya están definidos
     fig = Figure(resolution = (600, 400))
