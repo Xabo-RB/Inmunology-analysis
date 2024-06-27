@@ -4,6 +4,7 @@ using DataFrames, LaTeXStrings, ForwardDiff, DiffEqSensitivity, Sundials, Numeri
 #, DelimitedFiles, #, BenchmarkTools, Revise, PyPlot
 # El paquete BioSimulator, AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
 # Pkg.add(url="https://github.com/alanderos91/BioSimulator.jl.git")
+# Pkg.add(url="https://github.com/rachelmester/SensitivityAnalysis")
 using BioSimulator
 using AnalyticSensitivity
 using CairoMakie
@@ -103,9 +104,10 @@ elseif case == 2 # =============================================================
     x0 = complex([100, 2e4, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
 
-    #== PLOTER LA TRAYECTORIA ÚNICA DEL OUTPUT
+
     p = complex([5e-5, 0.01, 1]); # kon koff kp
     solution = sensitivity(x0, p, d, tspan); 
+    #== PLOTEAR LA TRAYECTORIA ÚNICA DEL OUTPUT
     p1 = Plots.plot(solution[4][:, 3], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
     ==# 
@@ -118,7 +120,7 @@ elseif case == 2 # =============================================================
         p = complex([5e-5, koffVect[i], 1]);
         solution = sensitivity(x0, p, d, tspan);
 
-        (solution[4][:, 3]*koffVect[i])/
+        #(solution[4][:, 3]*koffVect[i])/
 
         results_matrix[i, :] = solution[4][:, 3]
 
