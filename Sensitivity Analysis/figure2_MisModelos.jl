@@ -17,7 +17,10 @@ include("Modelos.jl")
 #   OCCUPANCY       (1)
 #   McKeithan       (2)
 #   McKeithan10     (3)
-case = 2
+#   Limited         (4)
+#   Sustained       (5)
+
+case = 6
 
 if case == 1
 
@@ -44,9 +47,10 @@ if case == 1
 
     p = complex([5e-5, 0.01]); # kon koff  (afinidad = 0.005)
     x0 = complex([0, 100, 2e4]); # initial values
-    (d, tspan) = (1.0e-16, (0.0,1000)); # step size and time interval in days
+    (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
 
+    #==
     (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
     p1 = complex([0.0005, 0.1]); # kon koff (afinidad = 0.005)
     solution1 = sensitivity(x0, p1, d, tspan); # find solution and partials
@@ -58,7 +62,7 @@ if case == 1
     ss1 = log10.(abs.(solution[1][:, 3]))
     ss2 = log10.(abs.(solution1[1][:, 3]))
     ss3 = log10.(abs.(solution2[1][:, 3]))
-    pTlog = plot(ss1, label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
+    pTlog = Plots.plot(ss1, label = "koff = 0.01", xlabel= "t", ylabel = "R(t)")
     Plots.plot!(ss2, label = "koff = 0.1")
     Plots.plot!(ss3, label = "koff = 0.001")
     display(pTlog)
@@ -75,6 +79,36 @@ if case == 1
     display(p2)
     p3 = plot(solution2[1][:, 3], label = "koff = 0.001", xlabel= "t", ylabel = "R(t)", title = "Solución 3")
     display(p3)
+    ==#
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
+    for i in eachindex(koffVect)
+
+        p = complex([5e-5, koffVect[i]]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        newSol = (solution[1][:, 3].*koffVect[i])./solution[1][:, 1]
+        results_matrix[i, :] = newSol
+
+        #results_matrix[i, :] = solution[4][:, 3]
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =50, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        title = "Occupancy model", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
 
 
 elseif case == 2 # ==============================================================================================================
@@ -120,9 +154,10 @@ elseif case == 2 # =============================================================
         p = complex([5e-5, koffVect[i], 1]);
         solution = sensitivity(x0, p, d, tspan);
 
-        #(solution[4][:, 3]*koffVect[i])/
+        newSol = (solution[4][:, 3].*koffVect[i])./solution[4][:, 1]
+        results_matrix[i, :] = newSol
 
-        results_matrix[i, :] = solution[4][:, 3]
+        #results_matrix[i, :] = solution[4][:, 3]
 
     end
 
@@ -141,7 +176,7 @@ elseif case == 2 # =============================================================
     # Suponiendo que time1, koffVect y results_matrix ya están definidos
     fig = Figure(resolution = (600, 400))
     ax = Axis(fig[1, 1], 
-        title = L"Response sensitivity to $k_{off}$", 
+        title = "McKeithan", 
         xlabel = "Time (s)", 
         ylabel = "Dissociate rate"
         )
@@ -181,5 +216,205 @@ elseif case == 3 # =============================================================
     solution = sensitivity(x0, p, d, tspan); # find solution and partials
     Plots.plot(solution[13][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
 
+elseif case == 4
+
+    function sensitivity(x0, p, d, tspan)
+        problem = ODEProblem{true}(ODEKPRLimSig, x0, tspan, p)
+        sol = solve(problem, saveat = 1.0) # solve ODE
+        (lp, ls, lx) = (length(p), length(sol), length(x0))  
+        solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
+        for j = 1:lx # record solution for each species
+            @views solution[j][:, 1] = sol[j, :]
+        end
+        for j = 1:lp
+            p[j] = p[j] + d * im # perturb parameter
+            problem = ODEProblem{true}(ODEKPRLimSig, x0, tspan, p)
+            sol = solve(problem, saveat = 1.0) # resolve ODE
+            p[j] = complex(real(p[j]), 0.0) # reset parameter
+            @views sol .= imag(sol) / d # compute partial
+            for k = 1:lx # record partial for each species
+            @views solution[k][:,j + 1] = sol[k, :]
+            end
+        end
+        return solution
+    end
+
+    
+    x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
+    (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
+    p = complex([5e-5, 0.01, 1, 0.09]); # kon koff kp phi
+    solution = sensitivity(x0, p, d, tspan); 
+    #==
+    # LA SALIDA ES C_N, es decir, x8
+    p1 = Plots.plot(solution[8][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+    ==#
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[8][:, 3]))
+    for i in eachindex(koffVect)
+
+        p = complex([5e-5, koffVect[i], 1, 0.09]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        newSol = (solution[8][:, 3].*koffVect[i])./solution[8][:, 1]
+        results_matrix[i, :] = newSol
+
+        #results_matrix[i, :] = solution[4][:, 3]
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =100, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        title = "Limited signaling", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+    
+
+elseif case == 5
+
+    function sensitivity(x0, p, d, tspan)
+        problem = ODEProblem{true}(ODEKPRSustSig, x0, tspan, p)
+        sol = solve(problem, saveat = 1.0) # solve ODE
+        (lp, ls, lx) = (length(p), length(sol), length(x0))  
+        solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
+        for j = 1:lx # record solution for each species
+            @views solution[j][:, 1] = sol[j, :]
+        end
+        for j = 1:lp
+            p[j] = p[j] + d * im # perturb parameter
+            problem = ODEProblem{true}(ODEKPRSustSig, x0, tspan, p)
+            sol = solve(problem, saveat = 1.0) # resolve ODE
+            p[j] = complex(real(p[j]), 0.0) # reset parameter
+            @views sol .= imag(sol) / d # compute partial
+            for k = 1:lx # record partial for each species
+            @views solution[k][:,j + 1] = sol[k, :]
+            end
+        end
+        return solution
+    end
+
+    
+    x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
+    (d, tspan) = (1.0e-16, (0.0,10000)); # step size and time interval in days
+    p = complex([5e-5, 0.01, 1, 0.001]); # kon koff kp lambda
+    solution = sensitivity(x0, p, d, tspan); 
+    
+    #==
+    NewSolR = solution[8][:, 1] .+ solution[9][:, 1]
+    # LA SALIDA ES C_N + Tast, es decir, x8 + x9
+    p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+    ==#
+    
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[8][:, 3]))
+    for i in eachindex(koffVect)
+
+        p = complex([5e-5, koffVect[i], 1, 0.001]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        SolResponse = solution[8][:, 3] .+ solution[9][:, 3]
+        SolResponseEst = solution[8][:, 1] .+ solution[9][:, 1]
+        newSol = (SolResponse.*koffVect[i])./SolResponseEst
+        results_matrix[i, :] = newSol
+
+        #results_matrix[i, :] = solution[4][:, 3]
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =10000, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        #title = L"Response sensitivity to $k_{off}$", 
+        title = "Sustained signaling", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+    
+    
+elseif case == 6
+
+    function sensitivity(x0, p, d, tspan)
+        problem = ODEProblem{true}(ODEKPRNegFeed, x0, tspan, p)
+        sol = solve(problem, saveat = 1.0) # solve ODE
+        (lp, ls, lx) = (length(p), length(sol), length(x0))  
+        solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
+        for j = 1:lx # record solution for each species
+            @views solution[j][:, 1] = sol[j, :]
+        end
+        for j = 1:lp
+            p[j] = p[j] + d * im # perturb parameter
+            problem = ODEProblem{true}(ODEKPRNegFeed, x0, tspan, p)
+            sol = solve(problem, saveat = 1.0) # resolve ODE
+            p[j] = complex(real(p[j]), 0.0) # reset parameter
+            @views sol .= imag(sol) / d # compute partial
+            for k = 1:lx # record partial for each species
+            @views solution[k][:,j + 1] = sol[k, :]
+            end
+        end
+        return solution
+    end
+
+    
+    x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
+    (d, tspan) = (1.0e-16, (0.0,200)); # step size and time interval in days
+    p = complex([5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5]); # kon koff kp gama b beta alpha ST
+    solution = sensitivity(x0, p, d, tspan); 
+    
+    #==
+    NewSolR = solution[8][:, 1]
+    # LA SALIDA ES C_N + Tast, es decir, x8 + x9
+    p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+    ==#
+    
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[8][:, 3]))
+    for i in eachindex(koffVect)
+
+        p = complex([5e-5, koffVect[i], 1, 4.4e-4, 0.04, 1, 2e-4, 6e5]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        SolResponse = solution[8][:, 3]
+        newSol = (SolResponse.*koffVect[i])./solution[8][:, 1]
+        results_matrix[i, :] = newSol
+
+        #results_matrix[i, :] = solution[4][:, 3]
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =200, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        #title = L"Response sensitivity to $k_{off}$", 
+        title = "Negative regulator", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+    
+    
 end
 

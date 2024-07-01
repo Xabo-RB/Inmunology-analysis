@@ -3,6 +3,10 @@ function ODE(dx, x, p, t) # CARRGO model
     dx[2] = p[2]* x[1] * x[2] - p[3] * x[2]
 end
 
+# p[1] = KON
+# P[2] = KOFF
+# P[3] = KP
+
 function ODEOccupancy(dx, x, p, t) # Occuppancy model
     dx[1] = p[1]*x[2]*x[3] - p[2]*x[1]                      #C0
     dx[2] = - p[1] * x[2] * x[3] + p[2]*x[1]                # P
@@ -38,5 +42,48 @@ function ODEKPRmcK10(dx, x, p, t) # McKeithan
     dx[12] = p[3]*x[11] - (p[2] + p[3])*x[12] # C9
     dx[13] = p[3]*x[12] - p[2]*x[13] # C10
     #dx[13] = p[3]*x[12] # C10
+
+end
+
+function ODEKPRLimSig(dx, x, p, t) #Limited Signaliing
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8] + p[2]*x[9]
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8] + p[2]*x[9]
+    dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3]
+    dx[4] = p[3]*x[3] - (p[2] + p[3])*x[4]
+    dx[5] = p[3]*x[4] - (p[2] + p[3])*x[5]
+    dx[6] = p[3]*x[5] - (p[2] + p[3])*x[6]
+    dx[7] = p[3]*x[6] - (p[2] + p[3])*x[7]
+    dx[8] = p[3]*x[7] - (p[2] + p[4])*x[8]
+    dx[9] = p[4]*x[8] - p[2]*x[9]
+end
+
+function ODEKPRSustSig(dx, x, p, t) #Sustained Signaliing
+    # lambda = p[4]
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8] - p[1] * x[1] * x[9]
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[4] * x[9]
+    dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3]
+    dx[4] = p[3]*x[3] - (p[2] + p[3])*x[4]
+    dx[5] = p[3]*x[4] - (p[2] + p[3])*x[5]
+    dx[6] = p[3]*x[5] - (p[2] + p[3])*x[6]
+    dx[7] = p[3]*x[6] - (p[2] + p[3])*x[7]
+    dx[8] = p[3]*x[7] - p[2]*x[8] + p[1]*x[1]*x[9]
+    dx[9] = p[2]*x[8] - p[1]*x[1]*x[9] - p[4]*x[9]
+end
+
+function ODEKPRNegFeed(dx, x, p, t) #Negative feedback
+    # gamma = p[4]
+    # b = p[5]
+    # beta = p[6]
+    # alpha = p[7]
+    # ST = p[8]
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8]
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5] + p[2]*x[6] + p[2]*x[7] + p[2]*x[8]
+    dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3] + (p[5] + p[4]*x[9])*x[4]
+    dx[4] = p[3]*x[3] - (p[2] + p[3] + p[5] + p[4]*x[9])*x[4] + (p[5] + p[4]*x[9])*x[5]
+    dx[5] = p[3]*x[4] - (p[2] + p[3] + p[5] + p[4]*x[9])*x[5] + (p[5] + p[4]*x[9])*x[6]
+    dx[6] = p[3]*x[5] - (p[2] + p[3] + p[5] + p[4]*x[9])*x[6] + (p[5] + p[4]*x[9])*x[7]
+    dx[7] = p[3]*x[6] - (p[2] + p[3] + p[5] + p[4]*x[9])*x[7] + (p[5] + p[4]*x[9])*x[8]
+    dx[8] = p[3]*x[7] - (p[2] + p[5] + p[4]*x[9])*x[8]
+    dx[9] = p[7]*x[4]*(p[8] - x[9]) - p[6]*x[9]
 
 end
