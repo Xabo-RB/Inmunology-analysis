@@ -7,8 +7,8 @@ using SIAN, Logging
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C1a(t) + koff*C2a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C1a(t) + koff*C2a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + lambdaR*C1a(t) + lambdaR*C2a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + lambdaR*C1a(t) + lambdaR*C2a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff)*C2(t) + rho2*C2a(t),
@@ -20,8 +20,8 @@ ode = @ODEmodel(
 # -------------------  N = 3 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -35,8 +35,8 @@ ode = @ODEmodel(
 # -------------------  N = 4 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -52,8 +52,8 @@ ode = @ODEmodel(
 # -------------------  N = 5 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -74,8 +74,8 @@ ode = @ODEmodel(
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t),
-    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t),
+    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t),
+    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t),
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t) + rho1*C1a(t),
     C2'(t) = kp(t)*C1(t) - (koff)*C2(t) + rho2*C2a(t),
@@ -92,8 +92,8 @@ ode = @ODEmodel(
 # -------------------  N = 3 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
-    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
+    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t) + rho1*C1a(t),
     C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t) + rho2*C2a(t),
@@ -112,8 +112,8 @@ ode = @ODEmodel(
 # -------------------  N = 4 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
-    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
+    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
+    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t) + rho1*C1a(t),
     C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t) + rho2*C2a(t),
@@ -134,8 +134,8 @@ ode = @ODEmodel(
 # -------------------  N = 5 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
-    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
+    P'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
+    T'(t) = - kon(t)*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t) + rho1*C1a(t),
     C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t) + rho2*C2a(t),
@@ -175,8 +175,8 @@ ode = @ODEmodel(
 # -------------------  N = 3 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -191,8 +191,8 @@ ode = @ODEmodel(
 # -------------------  N = 4 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -209,8 +209,8 @@ ode = @ODEmodel(
 # -------------------  N = 5 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -388,8 +388,8 @@ ode = @ODEmodel(
 using SIAN, Logging
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C1a(t) + koff*C2a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + koff*C1a(t) + koff*C2a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t) + lambdaR*C1a(t) + lambdaR*C2a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t) + lambdaR*C1a(t) + lambdaR*C2a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff)*C2(t) + rho2*C2a(t),
@@ -401,8 +401,8 @@ ode = @ODEmodel(
 # -------------------  N = 3 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
@@ -433,8 +433,8 @@ ode = @ODEmodel(
 # -------------------  N = 5 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
-    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + koff*C1a(t) + koff*C2a(t) + koff*C3a(t) + koff*C4a(t) + koff*C5a(t),
+    P'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
+    T'(t) = - kon*P(t)*T(t) + koff*C0(t)  + lambdaR*C1a(t) + lambdaR*C2a(t) + lambdaR*C3a(t) + lambdaR*C4a(t) + lambdaR*C5a(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + kp)*C1(t) + rho1*C1a(t),
     C2'(t) = kp*C1(t) - (koff + kp)*C2(t) + rho2*C2a(t),
