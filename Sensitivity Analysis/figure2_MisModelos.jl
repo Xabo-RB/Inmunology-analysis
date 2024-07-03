@@ -21,9 +21,11 @@ include("Modelos.jl")
 #   Sustained       (5)
 #   Negative        (6)
 #   Galvez          (7)
+#   LimIFF          (8)
+#   Induced         (9)
 
 
-case = 8
+case = 9
 
 if case == 1
 
@@ -514,7 +516,8 @@ elseif case == 8
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
     # phi = p[4],   gamma = p[5],   lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]
-    p = complex([5e-5, 0.01, exp(-2.6), exp(-0.4), 500, exp(4.4), exp(3.4), 500, 500, exp(4.2)]); # kon koff kp gama b beta alpha ST
+    p = complex([5e-5, 0.01, 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500]); # Valores sacados de Galvez
+    #p = complex([5e-5, 0.01, exp(-2.6), exp(-0.4), 500, exp(4.4), exp(3.4), 500, 500, exp(4.2), 500]); # Valores sacados del propio paper
     solution = sensitivity(x0, p, d, tspan); 
     
     
@@ -527,7 +530,7 @@ elseif case == 8
     koffVect = collect(range(0.001, stop =1, step = 0.001))
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
     for i in eachindex(koffVect)
-        p = complex([5e-5, koffVect[i], exp(-2.6), exp(-0.4), 500, exp(4.4), exp(3.4), 500, 500, exp(4.2)]);
+        p = complex([5e-5, koffVect[i], 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500]);
         solution = sensitivity(x0, p, d, tspan);
 
         SolResponse = solution[7][:, 3]
@@ -546,7 +549,75 @@ elseif case == 8
     fig = Figure(resolution = (600, 400))
     ax = Axis(fig[1, 1], 
         #title = L"Response sensitivity to $k_{off}$", 
-        title = "Stabilizing chain", 
+        title = "Limited signaling IFF", 
+        xlabel = "Time (s)", 
+        ylabel = "Dissociate rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+    
+    
+elseif case == 9
+
+    function sensitivity(x0, p, d, tspan)
+        problem = ODEProblem{true}(ODEIndReb, x0, tspan, p)
+        sol = solve(problem, saveat = 1.0) # solve ODE
+        (lp, ls, lx) = (length(p), length(sol), length(x0))  
+        solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
+        for j = 1:lx # record solution for each species
+            @views solution[j][:, 1] = sol[j, :]
+        end
+        for j = 1:lp
+            p[j] = p[j] + d * im # perturb parameter
+            problem = ODEProblem{true}(ODEIndReb, x0, tspan, p)
+            sol = solve(problem, saveat = 1.0) # resolve ODE
+            p[j] = complex(real(p[j]), 0.0) # reset parameter
+            @views sol .= imag(sol) / d # compute partial
+            for k = 1:lx # record partial for each species
+            @views solution[k][:,j + 1] = sol[k, :]
+            end
+        end
+        return solution
+    end
+
+    
+    x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
+    (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
+    # rho1 = p[4],  lambdaR = p[5], rho2 = p[6]
+    p = complex([5e-5, 0.01, 1, 0.09, 1000, 10000, 1000]); # Valores sacados de Galvez
+    solution = sensitivity(x0, p, d, tspan); 
+    
+    
+    NewSolR = solution[8][:, 1]
+    p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+    
+    
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
+    for i in eachindex(koffVect)
+        p = complex([5e-5, koffVect[i], 1, 0.09, 1000, 10000, 1000]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        SolResponse = solution[8][:, 3]
+        newSol = (SolResponse.*koffVect[i])./solution[8][:, 1]
+        results_matrix[i, :] = newSol
+        #results_matrix[i, :] = log10.(abs.(newSol))
+
+        #results_matrix[i, :] = solution[4][:, 3]
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =100, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        #title = L"Response sensitivity to $k_{off}$", 
+        title = "Limited signaling IFF", 
         xlabel = "Time (s)", 
         ylabel = "Dissociate rate"
         )
