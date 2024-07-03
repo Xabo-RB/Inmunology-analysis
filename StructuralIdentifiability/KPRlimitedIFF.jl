@@ -10,7 +10,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C0'(t) = kon * L(t) * R(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + phi*kp)*C1(t),
     C2'(t) = phi*kp*C1(t) - koff*C2(t),
     Y'(t) = gammaPosY * (YT - Y(t)) - gammaNegY*Y(t) + lambda*C1(t)*(YT - Y(t)),
@@ -24,7 +24,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C0'(t) = kon * L(t) * R(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + phi*kp)*C1(t),
     C2'(t) = phi*kp*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
@@ -37,7 +37,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon(t) * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon(t) * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C0'(t) = kon(t) * L(t) * R(t)  - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + phi*kp(t))*C1(t),
     C2'(t) = phi*kp(t)*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
@@ -55,7 +55,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C0'(t) = kon * L(t) * R(t)  - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + phi*kp)*C1(t),
     C2'(t) = phi*kp*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
@@ -69,7 +69,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon(t) * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon(t) * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp)*C0(t),
+    C0'(t) = kon(t) * L(t) * R(t)  - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff + phi*kp)*C1(t),
     C2'(t) = phi*kp*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
@@ -84,7 +84,7 @@ ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     L'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
     R'(t) = - kon * L(t) * R(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C0'(t) = kon * L(t) * R(t)  - (koff + kp(t))*C0(t),
     C1'(t) = kp(t)*C0(t) - (koff + phi*kp(t))*C1(t),
     C2'(t) = phi*kp(t)*C1(t) - koff*C2(t),
     Y'(t) = gamma * (YT - Y(t)) - gamma*Y(t) + lambda*C1(t)*(YT - Y(t)),
