@@ -603,10 +603,12 @@ elseif case == 9
 
         SolResponse = solution[8][:, 3]
         newSol = (SolResponse.*koffVect[i])./solution[8][:, 1]
-        results_matrix[i, :] = newSol
-        #results_matrix[i, :] = log10.(abs.(newSol))
 
-        #results_matrix[i, :] = solution[4][:, 3]
+        #SolResponse = solution[7][:, 3] + solution[5][:, 3]
+        #newSol = (SolResponse.*koffVect[i])./(solution[7][:, 1] + solution[5][:, 1])
+
+        
+        results_matrix[i, :] = newSol
 
     end
 
