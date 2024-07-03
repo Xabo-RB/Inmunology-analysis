@@ -583,7 +583,7 @@ elseif case == 9
 
     
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
-    (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
+    (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
     # rho1 = p[4],  lambdaR = p[5], rho2 = p[6]
     p = complex([5e-5, 0.01, 1, 0.09, 1000, 10000, 1000]); # Valores sacados de Galvez
     solution = sensitivity(x0, p, d, tspan); 
@@ -619,7 +619,7 @@ elseif case == 9
     fig = Figure(resolution = (600, 400))
     ax = Axis(fig[1, 1], 
         #title = L"Response sensitivity to $k_{off}$", 
-        title = "Limited signaling IFF", 
+        title = "Induced rebinding", 
         xlabel = "Time (s)", 
         ylabel = "Dissociate rate"
         )
