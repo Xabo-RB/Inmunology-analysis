@@ -400,11 +400,19 @@ elseif case == 6
         SolResponse = solution[8][:, 3]
         newSol = (SolResponse.*koffVect[i])./solution[8][:, 1]
         results_matrix[i, :] = newSol
+
+
         #results_matrix[i, :] = log10.(abs.(newSol))
 
         #results_matrix[i, :] = solution[4][:, 3]
 
     end
+    #==
+    results_matrix = results_matrix[:, 2:end]
+    minimo = abs(minimum(results_matrix))
+    results_matrix = minimo .+ results_matrix
+    results_matrix = log10.(results_matrix)
+    ==#
 
     # VECTOR TIEMPO PARA PLOTEAR
     time1 = collect(range(0, stop =200, step = 1))
