@@ -25,7 +25,7 @@ include("Modelos.jl")
 #   Induced         (9)
 
 
-case = 6
+case = 7
 
 if case == 1
 
