@@ -139,3 +139,12 @@ function ODEIndReb(dx, x, p, t) # Induced Rebinding
     dx[8] = (p[3]*x[6] + p[2]*x[5] - (p[6] + p[5])*x[7]) + (p[3]*x[4] - (p[2])*x[5] + p[6]*x[7])
 
 end
+
+function ODEIndReb(dx, x, p, t) # Induced Rebinding
+    # S(t) = x1, T(t) = x2, A(t) = x3, Y(t) = x4, lambda = p[1], phi = p[2], s = p[3], k = p[4], ki = p[5], L = p[6], h = p[7]
+    dx[1] = -p[1] * p[2] * (x[1]-x[2]) + p[3]*(1-x[1]),
+    dx[2] =  p[2] * (x[1] - x[2]) + p[3]*(1-x[2]) - p[4] * (x[2]^p[7])*(p[6]^p[7]),
+    dx[3] =  p[4] * (x[2]^p[7])*(p[6]^p[7]) - p[p[7]]*x[3],
+    dx[4] = x[1]/(p[1]+1) + ((x[2]+x[3])*p[1]/(p[1]+1))
+
+end
