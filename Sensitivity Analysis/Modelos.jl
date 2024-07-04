@@ -106,6 +106,15 @@ function ODEStabChain(dx, x, p, t) # Galvez
 
 end
 
+function ODEStabChain2(dx, x, p, t) # Galvez
+    # r_p = p[5], r = p[4]
+    dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + (2/(1+p[4]))*p[2]*x[4] + (3/(1+2*p[4]))*p[2]*x[5],
+    dx[2] = - p[1] * x[1] * x[2] + p[2]*x[3] + (2/(1+p[4]))*p[2]*x[4] + (3/(1+2*p[4]))*p[2]*x[5],
+    dx[3] = p[1] * x[1] * x[2] - (p[2] + p[3])*x[3],
+    dx[4] = p[3]*x[3] - ((2/(1+p[4]))*p[2] + p[5]*p[3])*x[4],
+    dx[5] = p[5]*p[3]*x[4] - (3/(1 + 2*p[4]))*p[2]*x[5]
+end
+
 function ODELimIFF(dx, x, p, t) # Limited signaling IFF
     # phi = p[4],   gamma = p[5],   lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10], gamma_menos = p[11]
     dx[1] = - p[1] * x[1] * x[2] + p[2]*x[3] + p[2]*x[4] + p[2]*x[5]

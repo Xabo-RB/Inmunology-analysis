@@ -433,7 +433,7 @@ elseif case == 6
 elseif case == 7
 
     function sensitivity(x0, p, d, tspan)
-        problem = ODEProblem{true}(ODEStabChain, x0, tspan, p)
+        problem = ODEProblem{true}(ODEStabChain2, x0, tspan, p)
         sol = solve(problem, saveat = 1.0) # solve ODE
         (lp, ls, lx) = (length(p), length(sol), length(x0))  
         solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
@@ -442,7 +442,7 @@ elseif case == 7
         end
         for j = 1:lp
             p[j] = p[j] + d * im # perturb parameter
-            problem = ODEProblem{true}(ODEStabChain, x0, tspan, p)
+            problem = ODEProblem{true}(ODEStabChain2, x0, tspan, p)
             sol = solve(problem, saveat = 1.0) # resolve ODE
             p[j] = complex(real(p[j]), 0.0) # reset parameter
             @views sol .= imag(sol) / d # compute partial
@@ -454,13 +454,13 @@ elseif case == 7
     end
 
     
-    x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0]); # initial values
+    x0 = complex([100, 2e4, 0, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,100)); # step size and time interval in days
-    p = complex([5e-5, 0.01, 1, 1.5, 1.03]); # kon koff kp gama b beta alpha ST
+    p = complex([5e-5, 0.01, 1, 1.5, 1.03]); # kon koff kp r rp
     solution = sensitivity(x0, p, d, tspan); 
     
     
-    NewSolR = solution[8][:, 1]
+    NewSolR = solution[5][:, 1]
     p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
     
@@ -472,8 +472,8 @@ elseif case == 7
         p = complex([5e-5, koffVect[i], 1, 1.5, 1.03]); # kon koff kp r rp
         solution = sensitivity(x0, p, d, tspan);
 
-        SolResponse = solution[8][:, 3]
-        newSol = (SolResponse.*koffVect[i])./solution[8][:, 1]
+        SolResponse = solution[5][:, 3]
+        newSol = (SolResponse.*koffVect[i])./solution[5][:, 1]
         results_matrix[i, :] = newSol
         #results_matrix[i, :] = log10.(abs.(newSol))
 

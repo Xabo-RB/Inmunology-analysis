@@ -32,8 +32,8 @@ ode = @ODEmodel(
     P'(t) = - kon * P(t) * T(t) + koff*C0(t) + (2/(1+r))*koff*C1(t) + (3/(1+2*r))*koff*C2(t),
     T'(t) = - kon * P(t) * T(t) + koff*C0(t) + (2/(1+r))*koff*C1(t) + (3/(1+2*r))*koff*C2(t),
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
-    C1'(t) = kp*C0(t) - ((2/(1+r))*koff + r*kp)*C1(t),
-    C2'(t) = r*kp*C1(t) - (3/(1 + 2*r))*koff*C2(t),
+    C1'(t) = kp*C0(t) - ((2/(1+r))*koff + rp*kp)*C1(t),
+    C2'(t) = rp*kp*C1(t) - (3/(1 + 2*r))*koff*C2(t),
     y1(t) = C2(t)
 )
 
