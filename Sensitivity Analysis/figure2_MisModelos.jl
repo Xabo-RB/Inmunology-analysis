@@ -23,9 +23,10 @@ include("Modelos.jl")
 #   Galvez          (7)
 #   LimIFF          (8)
 #   Induced         (9)
+#   ST              (10)
 
 
-case = 10
+case = 6
 
 if case == 1
 
