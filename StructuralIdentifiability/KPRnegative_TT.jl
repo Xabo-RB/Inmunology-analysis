@@ -47,6 +47,25 @@ ode = @ODEmodel(
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
+# __________ R(t) ________________________________________________________
+
+# -------------------  N = 4 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t),
+    T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) + koff*C4(t),
+    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t) + (b + gamma*S(t))*C1(t),
+    C1'(t) = kp*C0(t) - (koff + kp + b + gamma*S(t))*C1(t) + (b + gamma*S(t))*C2(t),
+    C2'(t) = kp*C1(t) - (koff + kp + b + gamma*S(t))*C2(t) + (b + gamma*S(t))*C3(t),
+    C3'(t) = kp*C2(t) - (koff + kp + b + gamma*S(t))*C3(t) + (b + gamma*S(t))*C4(t),
+    C4'(t) = kp*C3(t) - (koff + b + gamma*S(t))*C4(t),
+    S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
+    y1(t) = T(t) + C1(t) + C2(t) + C3(t) + C4(t),
+    y2(t) = C4(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
 
 # __________ CONOCIENDO kon ________________________________________________________
 # -------------------  N = 1 -------------------
