@@ -135,6 +135,14 @@ ode = @ODEmodel(
 )
 
 ode = @ODEmodel(
+    C0'(t) = kon * P(t) * T(t) - koff*C0(t),
+    P'(t) = - kon * P(t) * T(t) + koff*C0(t),
+    T'(t) = - kon * P(t) * T(t) + koff*C0(t),
+    y1(t) = T(t) + C0(t),
+    y2(t) = C0(t)
+)
+
+ode = @ODEmodel(
     C0'(t) = kon(t) * P(t) * T(t) - koff*C0(t),
     P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t),
     T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t),
