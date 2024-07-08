@@ -120,7 +120,7 @@ ode = @ODEmodel(
     kon'(t) = 0,
     kp'(t) = 0,
     y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t),
-    y2(t) = T(t),
+    y2(t) = C3(t),
     y3(t) = kon(t),
     y4(t) = kp(t)
 )

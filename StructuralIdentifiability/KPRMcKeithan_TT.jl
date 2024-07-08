@@ -88,6 +88,22 @@ ode = @ODEmodel(
     y3(t) = kp(t)
 )
 
+# -------------------  N = 2 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff)*C2(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t)+ C0(t) + C1(t) + C2(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t),
+    y4(t) = C2(t)
+)
+
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
