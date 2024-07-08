@@ -14,7 +14,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp + b + gamma*S(t))*C1(t) + (b + gamma*S(t))*C2(t),
     C2'(t) = kp*C1(t) - (koff + b + gamma*S(t))*C2(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
-    y1(t) = T(t) + C1(t) + C2(t)
+    y1(t) = T(t) + C0(t) +C1(t) + C2(t)
 
 )
 
@@ -28,7 +28,7 @@ ode = @ODEmodel(
     C2'(t) = kp*C1(t) - (koff + kp + b + gamma*S(t))*C2(t) + (b + gamma*S(t))*C3(t),
     C3'(t) = kp*C2(t) - (koff + b + gamma*S(t))*C3(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
-    y1(t) = T(t) + C1(t) + C2(t) + C3(t)
+    y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t)
 )
 
 # -------------------  N = 4 -------------------
@@ -42,7 +42,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - (koff + kp + b + gamma*S(t))*C3(t) + (b + gamma*S(t))*C4(t),
     C4'(t) = kp*C3(t) - (koff + b + gamma*S(t))*C4(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
-    y1(t) = T(t) + C1(t) + C2(t) + C3(t) + C4(t)
+    y1(t) = T(t) + C0(t)+ C1(t) + C2(t) + C3(t) + C4(t)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
@@ -60,7 +60,7 @@ ode = @ODEmodel(
     C3'(t) = kp*C2(t) - (koff + kp + b + gamma*S(t))*C3(t) + (b + gamma*S(t))*C4(t),
     C4'(t) = kp*C3(t) - (koff + b + gamma*S(t))*C4(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
-    y1(t) = T(t) + C1(t) + C2(t) + C3(t) + C4(t),
+    y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t) + C4(t),
     y2(t) = C4(t)
 )
 
@@ -76,7 +76,7 @@ ode = @ODEmodel(
     C0'(t) = kon(t) * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - (koff)*C1(t),
     kon'(t) = 0,
-    y1(t) = T(t),
+    y1(t) = T(t) + C0(t) + C1(t),
     y2(t) = kon(t)
 )
 
