@@ -42,6 +42,20 @@ ode = @ODEmodel(
     y1(t) = ((kp/(kp + koff))*(kp/(kp + koff)) * (C0(t)+C1(t)+C2(t)) * (koff + lambda - kon*(C0(t)+C1(t)+C2(t)) + kon*(1/2)*(T(t)+C0(t)+C1(t)+C2(t)+Tast(t))) - (lambda * (T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2))) / ( (kp/(kp + koff))*(kp/(kp + koff)) * kon * ((T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2) - (C0(t)+C1(t)+C2(t))) ),
 )
 
+# __________ TT ________________________________________________________
+# -------------------  N = 2 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) - kon * P(t) * Tast(t),
+    T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + lambda * Tast(t),
+    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
+    C1'(t) = kp*C0(t) - (koff + kp)*C1(t),
+    C2'(t) = kp*C1(t) - koff*C2(t) + kon*P(t)*Tast(t),
+    Tast'(t) = koff*C2(t) - kon*P(t)*Tast(t) - lambda*Tast(t),
+    y1(t) = ((kp/(kp + koff))*(kp/(kp + koff)) * (C0(t)+C1(t)+C2(t)) * (koff + lambda - kon*(C0(t)+C1(t)+C2(t)) + kon*(1/2)*(T(t)+C0(t)+C1(t)+C2(t)+Tast(t))) - (lambda * (T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2))) / ( (kp/(kp + koff))*(kp/(kp + koff)) * kon * ((T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2) - (C0(t)+C1(t)+C2(t))) ),
+    y2(t) = C0(t)+C1(t)+C2(t) + T(t)
+)
+
 # __________ kon ________________________________________________________
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
@@ -70,6 +84,28 @@ ode = @ODEmodel(
     kp'(t) = 0,
     y1(t) = ((kp/(kp + koff))*(kp/(kp + koff)) * (C0(t)+C1(t)+C2(t)) * (koff + lambda - kon*(C0(t)+C1(t)+C2(t)) + kon*(1/2)*(T(t)+C0(t)+C1(t)+C2(t)+Tast(t))) - (lambda * (T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2))) / ( (kp/(kp + koff))*(kp/(kp + koff)) * kon * ((T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2) - (C0(t)+C1(t)+C2(t))) ),
     y2(t) = kp(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+# __________ conociendo TODOS ________________________________________________________
+# -------------------  N = 3 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + koff*C3(t) - kon(t) * P(t) * Tast(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t) + lambda * Tast(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - (koff + kp(t))*C1(t),
+    C2'(t) = kp(t)*C1(t) - (koff + kp(t))*C2(t),
+    C3'(t) = kp(t)*C2(t) - koff*C3(t) + kon(t)*P(t)*Tast(t),
+    Tast'(t) = koff*C3(t) - kon(t)*P(t)*Tast(t) - lambda*Tast(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = T(t) + C0(t) + C1(t) + C2(t) + C3(t) + Tast(t),
+    y2(t) = kon(t),
+    y3(t) = kp(t),
+    y4(t) = ((kp/(kp + koff))*(kp/(kp + koff)) * (C0(t)+C1(t)+C2(t)) * (koff + lambda - kon*(C0(t)+C1(t)+C2(t)) + kon*(1/2)*(T(t)+C0(t)+C1(t)+C2(t)+Tast(t))) - (lambda * (T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2))) / ( (kp/(kp + koff))*(kp/(kp + koff)) * kon * ((T(t)+C0(t)+C1(t)+C2(t)+Tast(t)) *(1/2) - (C0(t)+C1(t)+C2(t))) ),
+
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
