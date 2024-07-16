@@ -26,7 +26,7 @@ include("Modelos.jl")
 #   ST              (10)
 
 
-case = 10
+case = 5
 
 if case == 1
 
@@ -51,6 +51,7 @@ if case == 1
         return solution
     end
 
+    kon = 5e-5; koff = 0.01; afinidad = kon/koff
     p = complex([5e-5, 0.01]); # kon koff  (afinidad = 0.005)
     x0 = complex([0, 100, 2e4]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
@@ -92,6 +93,8 @@ if case == 1
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
     for i in eachindex(koffVect)
 
+        #konCorregido = afinidad*koffVect[i]
+        #p = complex([konCorregido, koffVect[i]]);
         p = complex([5e-5, koffVect[i]]);
         solution = sensitivity(x0, p, d, tspan);
 
@@ -308,7 +311,7 @@ elseif case == 5
         return solution
     end
 
-    
+    #kon = 5e-5; koff = 0.01; afinidad = kon/koff
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,10000)); # step size and time interval in days
     p = complex([5e-5, 0.01, 1, 0.001]); # kon koff kp lambda
@@ -326,7 +329,9 @@ elseif case == 5
     results_matrix = zeros(length(koffVect), length(solution[8][:, 3]))
     for i in eachindex(koffVect)
 
-        p = complex([5e-5, koffVect[i], 1, 0.001]);
+        #konCorreg = afinidad*koffVect[i]
+        #p = complex([konCorreg, koffVect[i], 1, 0.001]);
+        #p = complex([5e-5, koffVect[i], 1, 0.001]);
         solution = sensitivity(x0, p, d, tspan);
 
         SolResponse = solution[8][:, 3] .+ solution[9][:, 3]
