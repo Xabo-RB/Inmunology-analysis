@@ -26,7 +26,7 @@ include("Modelos.jl")
 #   ST              (10)
 
 
-case = 5
+case = 12
 
 if case == 1
 
@@ -805,19 +805,19 @@ elseif case == 12
         return solution
     end
 
-    # S(t) = x1, T(t) = x2, A(t) = x3, Y(t) = x4,
-    x0 = complex([100]); # initial values
+    x0 = complex([0, 0, 0, 0, 0, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
-    # keff = p[1], . = p[2], . = p[3]
-    p = complex([0.6, 100, 0.1]); # Valores sacados de Galvez
+    # k = p[1] = kon,  L1 = p[2], R = p[3], phi = p[4], tao1 = p[5], tao2 = p[6], b = p[7], gamma = p[8]
+    # ST = p[9], alpha = p[10], beta = p[11], L2 = p[12]
+    p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4]); # Valores sacados de Galvez
     solution = sensitivity(x0, p, d, tspan); 
     
     
-    NewSolR = solution[4][:, 1]
+    NewSolR = solution[3][:, 1]
     p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
     
-    
+    #==
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
     koffVect = collect(range(0.001, stop =1, step = 0.001))
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
@@ -850,7 +850,7 @@ elseif case == 12
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
-    
+    ==#
     
 end
 
