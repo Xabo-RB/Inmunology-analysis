@@ -140,11 +140,25 @@ function ODEIndReb(dx, x, p, t) # Induced Rebinding
 
 end
 
-function ODEST(dx, x, p, t) # Induced Rebinding
+function ODEST(dx, x, p, t) # Serial triggering
     # S(t) = x1, T(t) = x2, A(t) = x3, Y(t) = x4, lambda = p[1], phi = p[2], s = p[3], k = p[4], ki = p[5], L = p[6], h = p[7]
     dx[1] = -p[1] * p[2] * (x[1]-x[2]) + p[3]*(1-x[1])
     dx[2] =  p[2] * (x[1] - x[2]) + p[3]*(1-x[2]) - p[4] * (x[2]^p[7])*(p[6]^p[7])
     dx[3] =  p[4] * (x[2]^p[7])*(p[6]^p[7]) - p[p[7]]*x[3]
     dx[4] = x[1]/(p[1]+1) + ((x[2]+x[3])*p[1]/(p[1]+1))
+
+end
+
+function ODENegativeII(dx, x, p, t) # Negative feedback II
+    # k = p[1] = kon,  L1 = p[2], R = p[3], phi = p[4], tao1 = p[5], tao2 = p[6], b = p[7], gamma = p[8]
+    # ST = p[9], alpha = p[10], beta = p[11], L2 = p[12]
+
+    dx[1] = p[1] * (p[2] - x[1] - x[2] - x[3]) * (p[3] - x[1] - x[2] - x[3] - x[5]- x[6] - x[7]) - ((1/p[5]) + p[4]) * x[1] + (p[7] + p[8]*x[4])*x[2]
+    dx[2] = p[4]*x[1] + (p[7] + p[8]*x[4])*x[3] - ((1/p[5]) + p[4] + p[7] + p[8]*x[4])*x[2]
+    dx[3] = p[4]*x[2] - ((1/p[5]) + p[7] + p[8]*x[4])*x[3]
+    dx[4] = p[10]*(x[2]+x[6])*(p[9] - x[4]) - p[11]*x[4]
+    dx[5] = p[1] * (p[12] - x[5] - x[6] - x[7]) * (p[3] - x[1] - x[2] - x[3] - x[5]- x[6] - x[7]) - ((1/p[6]) + p[4]) * x[5] + (p[7] + p[8]*x[4])*x[6]
+    dx[6] = p[4]*x[5] + (p[7] + p[8]*x[4])*x[7] - ((1/p[6]) + p[4] + p[7] + p[8]*x[4])*x[6]
+    dx[7] = p[4]*x[6] - ((1/p[6]) + p[7] + p[8]*x[4])*x[7]
 
 end
