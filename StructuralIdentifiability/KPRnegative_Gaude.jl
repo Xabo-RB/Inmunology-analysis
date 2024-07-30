@@ -33,7 +33,7 @@ ode = @ODEmodel(
     C1'(t) = phi*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi + b + gamma*S(t))*C1(t),
     C2'(t) = phi*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*C1(t),
+    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*D1(t),
     D1'(t) = phi*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi + b + gamma*S(t))*D1(t),
     D2'(t) = phi*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     y1(t) = C2(t) + D2(t)
@@ -49,11 +49,28 @@ ode = @ODEmodel(
     C1'(t) = phi*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi + b + gamma*S(t))*C1(t),
     C2'(t) = phi*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*C1(t),
+    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*D1(t),
     D1'(t) = phi*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi + b + gamma*S(t))*D1(t),
     D2'(t) = phi*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     y1(t) = C2(t) + D2(t),
     y2(t) = R - C0(t) - C1(t) - C2(t) - D0(t) - D1(t) - D2(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+# __________ R(t) y TT ________________________________________________________
+# -------------------  N = 2 -------------------
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    C0'(t) = k * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi) * C0(t) + (b + gamma*S(t))*C1(t),
+    C1'(t) = phi*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi + b + gamma*S(t))*C1(t),
+    C2'(t) = phi*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
+    S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
+    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*D1(t),
+    D1'(t) = phi*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi + b + gamma*S(t))*D1(t),
+    D2'(t) = phi*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
+    y1(t) = C2(t) + D2(t),
+    y2(t) = R(t)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
@@ -66,7 +83,7 @@ ode = @ODEmodel(
     C1'(t) = phi*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi + b + gamma*S(t))*C1(t),
     C2'(t) = phi*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*C1(t),
+    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))*D1(t),
     D1'(t) = phi*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi + b + gamma*S(t))*D1(t),
     D2'(t) = phi*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     y1(t) = R - C0(t) - C1(t) - C2(t) - D0(t) - D1(t) - D2(t)
@@ -79,11 +96,11 @@ ode = @ODEmodel(
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    C0'(t) = k(t) * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi(t)) * C0(t) + (b + gamma*S(t)),
+    C0'(t) = k(t) * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi(t)) * C0(t) + (b + gamma*S(t)) * C1(t),
     C1'(t) = phi(t)*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi(t) + b + gamma*S(t))*C1(t),
     C2'(t) = phi(t)*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k(t) * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi(t)) * D0(t) + (b + gamma*S(t)),
+    D0'(t) = k(t) * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi(t)) * D0(t) + (b + gamma*S(t)) * D1(t),
     D1'(t) = phi(t)*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi(t) + b + gamma*S(t))*D1(t),
     D2'(t) = phi(t)*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     k'(t) = 0,
@@ -97,15 +114,15 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 
-# __________ conociendo kon ________________________________________________________
+# __________ conociendo kon y T(t) ________________________________________________________
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    C0'(t) = k(t) * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi) * C0(t) + (b + gamma*S(t)),
+    C0'(t) = k(t) * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi) * C0(t) + (b + gamma*S(t))* C1(t),
     C1'(t) = phi*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi + b + gamma*S(t))*C1(t),
     C2'(t) = phi*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k(t) * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t)),
+    D0'(t) = k(t) * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi) * D0(t) + (b + gamma*S(t))* D1(t),
     D1'(t) = phi*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi + b + gamma*S(t))*D1(t),
     D2'(t) = phi*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     k'(t) = 0,
@@ -116,15 +133,15 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 
-# __________ conociendo kp ________________________________________________________
+# __________ conociendo kp y T(t) ________________________________________________________
 # -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    C0'(t) = k * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) + - ((1/tao1) + phi(t)) * C0(t) + (b + gamma*S(t)),
+    C0'(t) = k * (L1 - C0(t) - C1(t) - C2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao1) + phi(t)) * C0(t) + (b + gamma*S(t)) * C1(t),
     C1'(t) = phi(t)*C0(t) + (b + gamma*S(t))*C2(t) - ((1/tao1) + phi(t) + b + gamma*S(t))*C1(t),
     C2'(t) = phi(t)*C1(t) - ((1/tao1) + b + gamma*S(t))*C2(t),
     S'(t) = alpha*(C1(t)+D1(t))*(ST - S(t)) - beta*S(t),
-    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) + - ((1/tao2) + phi(t)) * D0(t) + (b + gamma*S(t)),
+    D0'(t) = k * (L2 - D0(t) - D1(t) - D2(t)) * (R - C0(t) - C1(t) - C2(t) - D0(t)- D1(t) - D2(t)) - ((1/tao2) + phi(t)) * D0(t) + (b + gamma*S(t)) * D1(t),
     D1'(t) = phi(t)*D0(t) + (b + gamma*S(t))*D2(t) - ((1/tao2) + phi(t) + b + gamma*S(t))*D1(t),
     D2'(t) = phi(t)*D1(t) - ((1/tao2) + b + gamma*S(t))*D2(t),
     phi'(t) = 0,
@@ -133,3 +150,4 @@ ode = @ODEmodel(
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
