@@ -806,7 +806,7 @@ elseif case == 12
     end
 
     x0 = complex([0, 0, 0, 0, 0, 0, 0]); # initial values
-    (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
+    (d, tspan) = (1.0e-11, (0.0,20)); # step size and time interval in days
     # k = p[1] = kon,  L1 = p[2], R = p[3], phi = p[4], tao1 = p[5], tao2 = p[6], b = p[7], gamma = p[8]
     # ST = p[9], alpha = p[10], beta = p[11], L2 = p[12]
     p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4]); # Valores sacados de Galvez
