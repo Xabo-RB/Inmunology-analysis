@@ -126,7 +126,7 @@ elseif case == 2 # =============================================================
 
     function sensitivity(x0, p, d, tspan)
         problem = ODEProblem{true}(ODEKPRmcK, x0, tspan, p)
-        sol = solve(problem, saveat = 1.0) # solve ODE
+        sol = solve(problem, saveat = 1) # solve ODE
         (lp, ls, lx) = (length(p), length(sol), length(x0))  
         solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
         for j = 1:lx # record solution for each species
@@ -135,7 +135,7 @@ elseif case == 2 # =============================================================
         for j = 1:lp
             p[j] = p[j] + d * im # perturb parameter
             problem = ODEProblem{true}(ODEKPRmcK, x0, tspan, p)
-            sol = solve(problem, saveat = 1.0) # resolve ODE
+            sol = solve(problem, saveat = 1) # resolve ODE
             p[j] = complex(real(p[j]), 0.0) # reset parameter
             @views sol .= imag(sol) / d # compute partial
             for k = 1:lx # record partial for each species
@@ -152,8 +152,10 @@ elseif case == 2 # =============================================================
 
     p = complex([5e-5, 0.01, 1]); # kon koff kp
     solution = sensitivity(x0, p, d, tspan); 
-    p1 = Plots.plot(solution[4][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
+    vec = 0:0.01:50
+    p1 = Plots.plot(vec, solution[3][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
+    
     
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
     koffVect = collect(range(0.001, stop =1, step = 0.001))
@@ -192,6 +194,7 @@ elseif case == 2 # =============================================================
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
+    
     
 
 elseif case == 3 # ==============================================================================================================
@@ -817,7 +820,7 @@ elseif case == 12
     p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
     
-    #==
+    
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
     koffVect = collect(range(0.001, stop =1, step = 0.001))
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
@@ -850,7 +853,7 @@ elseif case == 12
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
-    ==#
+    
     
 end
 
