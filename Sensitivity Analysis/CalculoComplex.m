@@ -1,24 +1,86 @@
 clear
 
-%% NEGATIVE II
-% initial values
-x0 = complex([0, 0, 0, 0, 0, 0, 0], 0); 
-% step size and time interval in days
-d = 1.0e-11; 
-tspan = [0.0 20];
-p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+%% VALORES INICIALES INTEGRACIÓN DEL MODELO
+    %% NEGATIVE II
+    % initial values
+    x0 = complex([0, 0, 0, 0, 0, 0, 0, 0], 0); 
+    % step size and time interval in days
+    d = 1.0e-16; 
+    tspan = 0.0:0.05:20;
+    %k = p[1] = kon,  L1 = p[2], R = p[3], phi = p[4], tao1 = p[5], 
+    % tao2 = p[6], b = p[7], gamma = p[8], ST = p[9], alpha = p[10], 
+    % beta = p[11], L2 = p[12]
+    p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
 
-%% McKeithan
-x0 = complex([100, 2e4, 0, 0], 0);
-% Fijar el paso del intervalo de tiempo para que no varíe el tamaño del
-% vector con cada resultado
-tspan = 0:0.1:50;
-d = 1.0e-16; 
-p = complex([5e-5, 0.01, 1], 0);
+% % Vector de valores de koff
+% koffVect = 0.001:0.001:1;
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+% for i = 1:length(koffVect)
+%     p = complex([5e-5, koffVect(i), 1], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{4}(:, 3); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* koffVect(i)) ./ solution{4}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+
+
+    %% McKeithan
+%     x0 = complex([100, 2e4, 0, 0], 0);
+%     % Fijar el paso del intervalo de tiempo para que no varíe el tamaño del
+%     % vector con cada resultado
+%     tspan = 0:0.1:50;
+%     d = 1.0e-16; 
+%     p = complex([5e-5, 0.01, 1], 0);
+% 
+% % Vector de valores de koff
+% koffVect = 0.001:0.001:1;
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+% for i = 1:length(koffVect)
+%     p = complex([5e-5, koffVect(i), 1], 0);
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{4}(:, 3); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* koffVect(i)) ./ solution{4}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% inferno = csvread('inferno_colormap.csv');
+% figure; 
+% imagesc(tspan, koffVect, results_matrix); 
+% colormap(inferno);
+% colorbar;
+% xlabel('Time (s)');
+% ylabel('Dissociate rate (koff)');
+% title('McKeithan');
+% set(gca, 'YDir', 'normal');
+
 
 %% SOLUCION
 
 solution = sensitivity(x0, p, d, tspan); 
+
+% solution{estado}(:, nºparametro)
+NewSolR = solution{8}(:, 1);
+
+% Crear el gráfico
+plot(tspan, NewSolR);
+xlabel('t');
+legend;
+title('Sensitivity');
 
 % % COMPROBACIÓN
 % neg = @(t,y)ODEKPRmcK(t, y, p);
@@ -26,54 +88,12 @@ solution = sensitivity(x0, p, d, tspan);
 % [t,x] = ode45(neg, tspan, x0, options);
 % plot(t, x(:,4), 'DisplayName', 'x1');
 
-%% Plotear
-
-% solution{estado}(:, nºparametro)
-
-NewSolR = solution{3}(:, 1);
-
-% Crear el gráfico
-plot(NewSolR, 'DisplayName', 'x1');
-xlabel('t');
-ylabel('S');
-legend;
-title('Solución de la tercera especie sin perturbaciones');
-
-%%
-% Vector de valores de koff
-koffVect = 0.001:0.001:1;
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-for i = 1:length(koffVect)
-    p = complex([5e-5, koffVect(i), 1], 0);
-    solution = sensitivity(x0, p, d, tspan);
-    
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{4}(:, 3); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* koffVect(i)) ./ solution{4}(:, 1); 
-    
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-%%
-inferno = csvread('inferno_colormap.csv');
-figure; 
-imagesc(tspan, koffVect, results_matrix); 
-colormap(inferno);
-colorbar;
-xlabel('Time (s)');
-ylabel('Dissociate rate (koff)');
-title('McKeithan');
-set(gca, 'YDir', 'normal');
 
 
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    neg = @(t,y)ODEKPRmcK(t, y, p);
+    neg = @(t,y)negativeII(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
     [t,x] = ode45(neg, tspan, x0, options);
     
@@ -96,7 +116,7 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-        neg = @(t,y)ODEKPRmcK(t, y, p);
+        neg = @(t,y)negativeII(t, y, p);
         [t,x] = ode45(neg, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
@@ -122,7 +142,7 @@ function solution = sensitivity(x0, p, d, tspan)
 end
 
 function dx = negativeII(t, x, p)
-    dx = zeros(7,1);
+    dx = zeros(8,1);
 
     dx(1) = p(1) * (p(2) - x(1) - x(2) - x(3)) * (p(3) - x(1) - x(2) - x(3) - x(5) - x(6) - x(7)) - ((1/p(5)) + p(4)) * x(1) + (p(7) + p(8)*x(4))*x(2);
     dx(2) = p(4)*x(1) + (p(7) + p(8)*x(4))*x(3) - ((1/p(5)) + p(4) + p(7) + p(8)*x(4))*x(2);
@@ -131,6 +151,7 @@ function dx = negativeII(t, x, p)
     dx(5) = p(1) * (p(12) - x(5) - x(6) - x(7)) * (p(3) - x(1) - x(2) - x(3) - x(5) - x(6) - x(7)) - ((1/p(6)) + p(4)) * x(5) + (p(7) + p(8)*x(4))*x(6);
     dx(6) = p(4)*x(5) + (p(7) + p(8)*x(4))*x(7) - ((1/p(6)) + p(4) + p(7) + p(8)*x(4))*x(6);
     dx(7) = p(4)*x(6) - ((1/p(6)) + p(7) + p(8)*x(4))*x(7);
+    dx(8) = p(4)*x(2) - ((1/p(5)) + p(7) + p(8)*x(4))*x(3) + p(4)*x(6) - ((1/p(6)) + p(7) + p(8)*x(4))*x(7);
 
 end
 
