@@ -61,7 +61,7 @@ for i = 1:length(bVect)
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{8}(:, 6); 
+    SolResponse = solution{8}(:, 8); 
     % Normalización de la respuesta
     newSol = (SolResponse .* bVect(i)) ./ solution{8}(:, 1); 
 
@@ -81,7 +81,42 @@ xlabel('Time (s)');
 ylabel('Spontaneous dephosphorylation rate');
 title('Negative regulator II');
 set(gca, 'YDir', 'normal');
+hold on
 
+    % --------------- b (dephosphorylation rate) -----------------------------
+% % Vector de valores de koff
+% gammaVect = 1e-8:1e-7:1e-4;
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(gammaVect), length(solution{8}(:, 1))); 
+% for i = 1:length(gammaVect)
+% 
+%     p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, gammaVect(i), 6e5, 1, 500, 10^4], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{8}(:, 9); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* gammaVect(i)) ./ solution{8}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% inferno = csvread('inferno_colormap.csv');
+% inferno = flipud(inferno);
+% figure; 
+% %imagesc(tspan, koffVect, results_matrix); 
+% imagesc(tspan, gammaVect, results_matrix); 
+% colormap(inferno);
+% cb = colorbar;
+% cb.Label.String = 'Sensitivity';
+% xlabel('Time (s)');
+% ylabel('Dephosphorylation rate by SHP-1');
+% title('Negative regulator II');
+% set(gca, 'YDir', 'normal');
+% hold on
 
     %% McKeithan
 %     x0 = complex([100, 2e4, 0, 0], 0);
