@@ -11,25 +11,38 @@ clear
     % tao2 = p[6], b = p[7], gamma = p[8], ST = p[9], alpha = p[10], 
     % beta = p[11], L2 = p[12]
     p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+    solution = sensitivity(x0, p, d, tspan); 
+    
+% Vector de valores de koff
+koffVect = 0.001:0.001:1;
+tao1Vect = 1./koffVect;
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(tao1Vect), length(solution{8}(:, 1))); 
+for i = 1:length(tao1Vect)
 
-% % Vector de valores de koff
-% koffVect = 0.001:0.001:1;
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-% for i = 1:length(koffVect)
-%     p = complex([5e-5, koffVect(i), 1], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{4}(:, 3); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* koffVect(i)) ./ solution{4}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
+    p = complex([1e-4, 10000, 3e4, 0.09, tao1Vect(i), 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{8}(:, 6); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* tao1Vect(i)) ./ solution{8}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+inferno = csvread('inferno_colormap.csv');
+figure; 
+imagesc(tspan, koffVect, results_matrix); 
+colormap(inferno);
+colorbar;
+xlabel('Time (s)');
+ylabel('Dissociate rate (koff)');
+title('McKeithan');
+set(gca, 'YDir', 'normal');
 
 
     %% McKeithan
