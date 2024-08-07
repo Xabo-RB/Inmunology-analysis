@@ -13,7 +13,7 @@ clear
     p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
     solution = sensitivity(x0, p, d, tspan); 
 
-    % --------------- TAO1 / KOFF1 -----------------------------
+    % --------------- TAO1 / 
 % % Vector de valores de koff
 % koffVect = 0.001:0.001:1;
 % tao1Vect = 1./koffVect;
@@ -48,7 +48,6 @@ clear
 % title('Negative regulator II');
 % set(gca, 'YDir', 'normal');
 
-    % --------------- b (dephosphorylation rate) -----------------------------
 % Vector de valores de koff
 bVect = 0.001:0.001:1;
 % Resultados con el número de filas de koff y en cada columna el instante
