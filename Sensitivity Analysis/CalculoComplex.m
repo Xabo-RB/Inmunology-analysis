@@ -51,7 +51,7 @@ clear
     % --------------- b (dephosphorylation rate) -----------------------------
 % Vector de valores de koff
 bVect = 0.004:0.001:0.44;
-bVect = linspace(0.004, 0.44, 1000);
+bVect = linspace(0.004, 0.44, 1000); % 1000% por arriba y por abajo
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
 results_matrix = zeros(length(bVect), length(solution{8}(:, 1))); 
