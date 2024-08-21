@@ -34,16 +34,18 @@ for i = 1:length(keffVect)
 end
 
 inferno = csvread('inferno_colormap.csv');
-inferno = flipud(inferno);
+%inferno = flipud(inferno);
 figure; 
-%imagesc(tspan, koffVect, results_matrix); 
+% imagesc(tspan, koffVect, results_matrix); 
+% results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
+results_matrix = log10(abs(results_matrix));
 imagesc(tspan, keffVect, results_matrix); 
 colormap(inferno);
 cb = colorbar;
 cb.Label.String = 'Sensitivity';
 xlabel('Time (s)');
 ylabel('Dissociate rate (koff)');
-title('Serial Triggering', 'Interpreter', 'latex');
+title('Serial Triggering');
 set(gca, 'YDir', 'normal');
 hold on
 
