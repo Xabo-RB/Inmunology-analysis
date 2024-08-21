@@ -50,12 +50,12 @@ clear
 %% Parameters
 lambda = 0.61; phi = 0.0055; s = 0.0011; ki = 0.094;
 keff = 0.001; 
-L = 0.5; h = 5;
+L = 1; h = 5;
 
 %% Modelo con solvers de Matlab
-x0 = [0.1, 0.1, 0, 1];
+x0 = [0, 0, 0, 1];
 ST = @(t,y)SerialTriggering(t, y, lambda, phi, s, keff, ki, L, h);
-options = odeset('RelTol',1e-3,'AbsTol',1e-3);
+options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
 [t,x] = ode45(ST, [0 100], x0, options);
 
 figure
