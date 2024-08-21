@@ -38,7 +38,7 @@ inferno = csvread('inferno_colormap.csv');
 figure; 
 % imagesc(tspan, koffVect, results_matrix); 
 % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
-results_matrix = log10(abs(results_matrix));
+%results_matrix = log10(abs(results_matrix));
 imagesc(tspan, keffVect, results_matrix); 
 colormap(inferno);
 cb = colorbar;
