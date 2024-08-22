@@ -49,22 +49,57 @@ clear
 % set(gca, 'YDir', 'normal');
 
     % --------------- TAO1 / KOFF1 para S(t) -----------------------------
+% % Vector de valores de koff
+% koffVect = 0.001:0.001:1;
+% tao1Vect = 1./koffVect;
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(tao1Vect), length(solution{4}(:, 1))); 
+% for i = 1:length(tao1Vect)
+% 
+%     p = complex([1e-4, 10000, 3e4, 0.09, tao1Vect(i), 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{4}(:, 6); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* tao1Vect(i)) ./ solution{4}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% inferno = csvread('inferno_colormap.csv');
+% %inferno = flipud(inferno);
+% figure; 
+% %imagesc(tspan, koffVect, results_matrix); 
+% imagesc(tspan, tao1Vect, results_matrix); 
+% colormap(inferno);
+% cb = colorbar;
+% cb.Label.String = 'Sensitivity';
+% xlabel('Time (s)');
+% ylabel('Dissociate rate');
+% title('Quantity of active SHP-1 molecules');
+% set(gca, 'YDir', 'normal');
+
+    % --------------- b (dephosphorylation rate) -----------------------------
 % Vector de valores de koff
-koffVect = 0.001:0.001:1;
-tao1Vect = 1./koffVect;
+bVect = 0.004:0.001:0.44;
+bVect = linspace(0.004, 0.44, 1000); % 1000% por arriba y por abajo
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
-results_matrix = zeros(length(tao1Vect), length(solution{4}(:, 1))); 
-for i = 1:length(tao1Vect)
+results_matrix = zeros(length(bVect), length(solution{4}(:, 1))); 
+for i = 1:length(bVect)
 
-    p = complex([1e-4, 10000, 3e4, 0.09, tao1Vect(i), 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+    p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, bVect(i), 1.2e-6, 6e5, 1, 500, 10^4], 0);
 
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{4}(:, 6); 
+    SolResponse = solution{4}(:, 8); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* tao1Vect(i)) ./ solution{4}(:, 1); 
+    newSol = (SolResponse .* bVect(i)) ./ solution{4}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
@@ -74,14 +109,15 @@ inferno = csvread('inferno_colormap.csv');
 %inferno = flipud(inferno);
 figure; 
 %imagesc(tspan, koffVect, results_matrix); 
-imagesc(tspan, tao1Vect, results_matrix); 
+imagesc(tspan, bVect, results_matrix); 
 colormap(inferno);
 cb = colorbar;
 cb.Label.String = 'Sensitivity';
 xlabel('Time (s)');
-ylabel('Dissociate rate');
-title('Quantity of active SHP-1 molecules');
+ylabel('Spontaneous dephosphorylation rate');
+title('Sensitivity to $b$', 'Interpreter', 'latex');
 set(gca, 'YDir', 'normal');
+hold on
 
     % --------------- b (dephosphorylation rate) -----------------------------
 % % Vector de valores de koff
