@@ -28,7 +28,7 @@ include("Modelos.jl")
 #   NegativeII      (12)
 
 
-case = 1
+case = 6
 
 if case == 1
 
@@ -149,12 +149,13 @@ elseif case == 2 # =============================================================
     x0 = complex([100, 2e4, 0, 0]); # initial values
     (d, tspan) = (1.0e-16, (0.0,50)); # step size and time interval in days
 
-
+    #==
     p = complex([5e-5, 0.01, 1]); # kon koff kp
     solution = sensitivity(x0, p, d, tspan); 
     vec = 0:0.01:50
     p1 = Plots.plot(vec, solution[3][:, 1], label = "x1", xlabel= "t", ylabel = "S") #xlims = (tspan[1],tspan[2]))
     display(p1)
+    ==#
     
     
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
@@ -416,13 +417,13 @@ elseif case == 6
         #results_matrix[i, :] = solution[4][:, 3]
 
     end
-    # #==
+    #==
     results_matrix = results_matrix[:, 2:end]
     results_matrix = abs.(results_matrix)
     #minimo = abs(minimum(results_matrix))
     #results_matrix = minimo .+ results_matrix
     results_matrix = log10.(results_matrix)
-    # ==#
+    ==#
 
     # VECTOR TIEMPO PARA PLOTEAR
     time1 = collect(range(0, stop =200, step = 1))
