@@ -126,3 +126,25 @@ ode = @ODEmodel(
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+
+# ===================================================================
+#               y =  Emax 
+# ===================================================================
+
+# __________ SIN CONOCER NINGÚN PARÁMETRO ________________________________________________________
+# -------------------  N = 2 -------------------
+
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    P'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + (2/(1+r))*koff*C1(t) + (3/(1+2*r))*koff*C2(t),
+    T'(t) = - kon(t) * P(t) * T(t) + koff*C0(t) + (2/(1+r))*koff*C1(t) + (3/(1+2*r))*koff*C2(t),
+    C0'(t) = kon(t) * P(t) * T(t) - (koff + kp(t))*C0(t),
+    C1'(t) = kp(t)*C0(t) - ((2/(1+r))*koff + rp*kp(t))*C1(t),
+    C2'(t) = rp*kp(t)*C1(t) - (3/(1 + 2*r))*koff*C2(t),
+    kon'(t) = 0,
+    kp'(t) = 0,
+    y1(t) = (kp * (kp - koff * (psi - 1)))/(kp * (koff + kp) + (b + gamma * S) * (koff - kp * (psi - 2))) * T_T
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
