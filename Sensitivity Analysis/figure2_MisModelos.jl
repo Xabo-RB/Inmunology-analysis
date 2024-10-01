@@ -28,7 +28,7 @@ include("Modelos.jl")
 #   NegativeII      (12)
 
 
-case = 2
+case = 1
 
 if case == 1
 
@@ -115,7 +115,7 @@ if case == 1
     ax = Axis(fig[1, 1], 
         title = "Occupancy model", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -178,7 +178,7 @@ elseif case == 2 # =============================================================
     #== HEATMAP con plots sin interpolar
     p = Plots.plot(Plots.heatmap(time1, koffVect, results_matrix),
     xlabel="Time (s)", 
-    ylabel= "Dissociate rate",
+    ylabel= "Unbinding rate",
     title= L"Response sensitivity to $k_{off}$",
     interpolate=true)
     display(p)
@@ -189,7 +189,7 @@ elseif case == 2 # =============================================================
     ax = Axis(fig[1, 1], 
         title = "McKeithan", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -284,7 +284,7 @@ elseif case == 4
     ax = Axis(fig[1, 1], 
         title = "Limited signaling", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -355,7 +355,7 @@ elseif case == 5
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Sustained signaling", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -416,12 +416,13 @@ elseif case == 6
         #results_matrix[i, :] = solution[4][:, 3]
 
     end
-    #==
+    # #==
     results_matrix = results_matrix[:, 2:end]
-    minimo = abs(minimum(results_matrix))
-    results_matrix = minimo .+ results_matrix
+    results_matrix = abs.(results_matrix)
+    #minimo = abs(minimum(results_matrix))
+    #results_matrix = minimo .+ results_matrix
     results_matrix = log10.(results_matrix)
-    ==#
+    # ==#
 
     # VECTOR TIEMPO PARA PLOTEAR
     time1 = collect(range(0, stop =200, step = 1))
@@ -432,7 +433,7 @@ elseif case == 6
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Negative regulator", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -499,7 +500,7 @@ elseif case == 7
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Stabilizing chain", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -568,7 +569,7 @@ elseif case == 8
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Limited signaling IFF", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -638,7 +639,7 @@ elseif case == 9
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Induced rebinding", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -708,7 +709,7 @@ elseif case == 10
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Induced rebinding", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -778,7 +779,7 @@ elseif case == 11
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Induced rebinding", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
@@ -848,7 +849,7 @@ elseif case == 12
         #title = L"Response sensitivity to $k_{off}$", 
         title = "Induced rebinding", 
         xlabel = "Time (s)", 
-        ylabel = "Dissociate rate"
+        ylabel = "Unbinding rate"
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
