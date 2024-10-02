@@ -235,7 +235,7 @@ ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - ((2/(1+r))*koff + rp*kp)*C1(t),
     C2'(t) = rp*kp*C1(t) - (3/(1 + 2*r))*koff*C2(t),
-    y1(t) = ((1 + (4 * koff * (6 * koff^2 + kp^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kon*(24*koff^3 + kp^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp)*(2*koff+kp*(1+r)*rp)*(3*koff+kp*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2,
     y2(t) = T(t)
 )
 
@@ -251,7 +251,7 @@ ode = @ODEmodel(
     C1'(t) = kp(t)*C0(t) - ((2/(1+r))*koff + rp*kp(t))*C1(t),
     C2'(t) = rp*kp(t)*C1(t) - (3/(1 + 2*r))*koff*C2(t),
     kp'(t) = 0,
-    y1(t) = ((1 + (4 * koff * (6 * koff^2 + kp(t)^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp(t) * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp(t)^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kon*(24*koff^3 + kp(t)^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp(t)^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp(t)*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp(t))*(2*koff+kp(t)*(1+r)*rp)*(3*koff+kp(t)*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2,
     y2(t) = kp(t)
 )
 
@@ -268,7 +268,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - ((2/(1+r))*koff + rp*kp)*C1(t),
     C2'(t) = rp*kp*C1(t) - (3/(1 + 2*r))*koff*C2(t),
     kon'(t) = 0,
-    y1(t) = ((1 + (4 * koff * (6 * koff^2 + kp^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kon(t)*(24*koff^3 + kp^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp)*(2*koff+kp*(1+r)*rp)*(3*koff+kp*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2,
     y2(t) = kon(t)
 )
 
@@ -284,7 +284,7 @@ ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t),
     C1'(t) = kp*C0(t) - ((2/(1+r))*koff + rp*kp)*C1(t),
     C2'(t) = rp*kp*C1(t) - (3/(1 + 2*r))*koff*C2(t),
-    y1(t) = ((1 + (4 * koff * (6 * koff^2 + kp^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kon*(24*koff^3 + kp^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp)*(2*koff+kp*(1+r)*rp)*(3*koff+kp*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2,
     y2(t) = T(t) + C0(t) + C1(t) + C2(t)
 )
 
@@ -304,7 +304,7 @@ ode = @ODEmodel(
     y1(t) = T(t) + C0(t) + C1(t) + C2(t),
     y2(t) = kon(t),
     y3(t) = kp(t),
-    y4(t) = ((1 + (4 * koff * (6 * koff^2 + kp(t)^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp(t) * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp(t)^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t))
+    y4(t) = (kon*(24*koff^3 + kp^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp)*(2*koff+kp*(1+r)*rp)*(3*koff+kp*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
@@ -323,7 +323,7 @@ ode = @ODEmodel(
     y1(t) = T(t),
     y2(t) = kon(t),
     y3(t) = kp(t),
-    y4(t) = ((1 + (4 * koff * (6 * koff^2 + kp(t)^2 * (1 + 3 * r + 2 * r^2) * rp^3 * (2 + rp) + koff * kp(t) * rp * (3 + 5 * rp + r * (3 + 7 * rp)))) / (kp(t)^3 * (1 + r) * (1 + 2 * r) * (1 + 3 * r) * rp^5)) ) * (T(t) + C0(t) + C1(t) + C2(t))
+    y4(t) = (kon(t)*(24*koff^3 + kp(t)^3*(1+6*r+11*r^2+6*r^3)*rp^3 + 4*koff*kp(t)^2*(1+3*r+2*r^2)*rp*(2+rp) + 4*koff^2*kp(t)*(3+5*rp+r*(3+7*rp)))) / (4*koff*(koff+kp(t))*(2*koff+kp(t)*(1+r)*rp)*(3*koff+kp(t)*(1+2*r)*rp)) + (T(t) + C0(t) + C1(t) + C2(t))/2,
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
