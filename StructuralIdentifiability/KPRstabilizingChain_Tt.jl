@@ -276,7 +276,7 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 # __________ TT ________________________________________________________
-# -------------------  N = 3 -------------------
+# -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     P'(t) = - kon * P(t) * T(t) + koff*C0(t) + (2/(1+r))*koff*C1(t) + (3/(1+2*r))*koff*C2(t),
