@@ -5,15 +5,17 @@ using SIAN, Logging
 
 
 # __________ nada ________________________________________________________
+# -------------------  N = 2 -------------------
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     T'(t) = -k1 * T(t) * P(t) + k3 * D(t) + kmenos1 * C0(t) + kmenos1*C1(t) + kmenos1*C2(t),
     P'(t) = -k1 * T(t) * P(t) + w*C2(t) + kmenos1 * C0(t) + kmenos1*C1(t) + kmenos1*C2(t),
-    
-    C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
-    D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = w*C2(t) - k2*Tp(t)*Q(t) + kmenos2*D(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
+    D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
+    C0'(t) = k1 * T(t) * P(t) - (kmenos1 + w) * C0(t),
+    C1'(t) = - kmenos1*C1(t) - w*C1(t) + w*C0(t),
+    C2'(t) = - kmenos1*C2(t) - w*C2(t) + w*C1(t),
     y1(t) = Tp(t)
 )
 
