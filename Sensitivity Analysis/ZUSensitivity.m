@@ -1,53 +1,56 @@
 clear
 
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
-    %% KPC
+    %% ZU
     % initial values
-    x0 = complex([100, 2, 0, 0, 0, 0, 0], 0); 
+    % x(1) -> T(t), x(2) -> P(t), x(3) -> Tp(t), x(4) -> Q(t)
+    % x(5) -> D(t), x(6) -> C0(t), x(7) -> C1(t), x(8) -> C2(t)
+    x0 = complex([100, 5, 0, 1, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
     tspan = 0.0:0.05:700;
-    % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
+    % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+    % p(6)
     p = complex([10, 1, 0.1, 1, 1, 10], 0);
     solution = sensitivity(x0, p, d, tspan); 
 
-    % --------------- KOFF -----------------------------
-% Vector de valores de koff
-koffVect = 0.001:0.001:1;
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-for i = 1:length(koffVect)
-
-    p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{3}(:, 4); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-inferno = csvread('inferno_colormap.csv');
-%inferno = flipud(inferno);
-figure; 
+%     % --------------- KOFF -----------------------------
+% % Vector de valores de koff
+% koffVect = 0.001:0.001:1;
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+% for i = 1:length(koffVect)
+% 
+%     p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{3}(:, 4); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% inferno = csvread('inferno_colormap.csv');
+% %inferno = flipud(inferno);
+% figure; 
+% % imagesc(tspan, koffVect, results_matrix); 
+% % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
+% %results_matrix = log10(abs(results_matrix));
 % imagesc(tspan, koffVect, results_matrix); 
-% results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
-%results_matrix = log10(abs(results_matrix));
-imagesc(tspan, koffVect, results_matrix); 
-colormap(inferno);
-cb = colorbar;
-cb.Label.String = 'Sensitivity';
-xlabel('Time (s)');
-ylabel('Dissociate rate (koff)');
-title('KPC');
-set(gca, 'YDir', 'normal');
-hold on
+% colormap(inferno);
+% cb = colorbar;
+% cb.Label.String = 'Sensitivity';
+% xlabel('Time (s)');
+% ylabel('Dissociate rate (koff)');
+% title('KPC');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 
 %% SOLUCION
@@ -75,9 +78,9 @@ title('Sensitivity');
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    KPC = @(t,y)ODEKPZU(t, y, p);
+    KPZU = @(t,y)ODEKPZU(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-    [t,x] = ode45(KPC, tspan, x0, options);
+    [t,x] = ode45(KPZU, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -98,8 +101,8 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-        KPC = @(t,y)ODEKPZU(t, y, p);
-        [t,x] = ode45(KPC, tspan, x0, options);
+        KPZU = @(t,y)ODEKPZU(t, y, p);
+        [t,x] = ode45(KPZU, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
