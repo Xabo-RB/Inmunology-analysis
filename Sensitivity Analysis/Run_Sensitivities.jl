@@ -863,7 +863,8 @@ elseif case == 13
 
     function sensitivity(x0, p, d, tspan)
         problem = ODEProblem{true}(ODEKPC, x0, tspan, p)
-        sol = solve(problem, saveat = 1.0) # solve ODE
+        #sol = solve(problem, saveat = 1.0) # solve ODE
+        sol = solve(problem) # solve ODE
         (lp, ls, lx) = (length(p), length(sol), length(x0))  
         solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
         for j = 1:lx # record solution for each species
@@ -872,7 +873,8 @@ elseif case == 13
         for j = 1:lp
             p[j] = p[j] + d * im # perturb parameter
             problem = ODEProblem{true}(ODEKPC, x0, tspan, p)
-            sol = solve(problem, saveat = 1.0) # resolve ODE
+            #sol = solve(problem, saveat = 1.0) # resolve ODE
+            sol = solve(problem) # solve ODE
             p[j] = complex(real(p[j]), 0.0) # reset parameter
             @views sol .= imag(sol) / d # compute partial
             for k = 1:lx # record partial for each species
@@ -883,7 +885,7 @@ elseif case == 13
     end
 
     x0 = complex([100, 2, 0, 0, 0, 0, 0]); # initial values
-    (d, tspan) = (1.0e-11, (0.0,100)); # step size and time interval in days
+    (d, tspan) = (1.0e-11, (0.0,700)); # step size and time interval in days
      # k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
     p = complex([10, 1, 0.1, 1, 1, 10]);
     solution = sensitivity(x0, p, d, tspan); 
