@@ -26,6 +26,8 @@ include("Modelos.jl")
 #   ST              (10)
 #   STBach          (11)
 #   NegativeII      (12)
+#   KPC             (13)
+
 
 
 case = 6
@@ -832,6 +834,75 @@ elseif case == 12
 
         SolResponse = solution[1][:, 4]
         newSol = (SolResponse.*koffVect[i])./solution[1][:, 1]
+
+        #SolResponse = solution[7][:, 3] + solution[5][:, 3]
+        #newSol = (SolResponse.*koffVect[i])./(solution[7][:, 1] + solution[5][:, 1])
+
+        
+        results_matrix[i, :] = newSol
+
+    end
+
+    # VECTOR TIEMPO PARA PLOTEAR
+    time1 = collect(range(0, stop =100, step = 1))
+
+    # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        #title = L"Response sensitivity to $k_{off}$", 
+        title = "Induced rebinding", 
+        xlabel = "Time (s)", 
+        ylabel = "Unbinding rate"
+        )
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+    
+    
+elseif case == 13
+
+    function sensitivity(x0, p, d, tspan)
+        problem = ODEProblem{true}(ODEKPC, x0, tspan, p)
+        sol = solve(problem, saveat = 1.0) # solve ODE
+        (lp, ls, lx) = (length(p), length(sol), length(x0))  
+        solution = Dict{Int, Any}(i => zeros(ls, lp + 1) for i in 1:lx)
+        for j = 1:lx # record solution for each species
+            @views solution[j][:, 1] = sol[j, :]
+        end
+        for j = 1:lp
+            p[j] = p[j] + d * im # perturb parameter
+            problem = ODEProblem{true}(ODEKPC, x0, tspan, p)
+            sol = solve(problem, saveat = 1.0) # resolve ODE
+            p[j] = complex(real(p[j]), 0.0) # reset parameter
+            @views sol .= imag(sol) / d # compute partial
+            for k = 1:lx # record partial for each species
+            @views solution[k][:,j + 1] = sol[k, :]
+            end
+        end
+        return solution
+    end
+
+    x0 = complex([100, 2, 0, 0, 0, 0, 0]); # initial values
+    (d, tspan) = (1.0e-11, (0.0,100)); # step size and time interval in days
+     # k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
+    p = complex([10, 1, 0.1, 1, 1, 10]);
+    solution = sensitivity(x0, p, d, tspan); 
+    
+    
+    NewSolR = solution[3][:, 1]
+    p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "Rp") #xlims = (tspan[1],tspan[2]))
+    display(p1)
+    
+    
+    # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
+    koffVect = collect(range(0.001, stop =1, step = 0.001))
+    results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
+    for i in eachindex(koffVect)
+        p = complex([10, 1, koffVect[i], 1, 1, 10]);
+        solution = sensitivity(x0, p, d, tspan);
+
+        SolResponse = solution[3][:, 4]
+        newSol = (SolResponse.*koffVect[i])./solution[3][:, 1]
 
         #SolResponse = solution[7][:, 3] + solution[5][:, 3]
         #newSol = (SolResponse.*koffVect[i])./(solution[7][:, 1] + solution[5][:, 1])

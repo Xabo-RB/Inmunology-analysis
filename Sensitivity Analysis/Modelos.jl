@@ -163,8 +163,15 @@ function ODENegativeII(dx, x, p, t) # Negative feedback II
 
 end
 
-function ODENKPC(dx, x, p, t) # KPC
+function ODEKPC(dx, x, p, t) # KPC
     # k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
+    # x[1]  => T(t) / R(t)
+    # x[2]  => X(t)
+    # x[3]  => Tp(t) / Rp(t)
+    # x[4]  => D(t)
+    # x[5]  => C0(t)
+    # x[6]  => C1(t)
+    # x[7]  => C2(t)
 
     dx[1] = -p[1] * x[0] * x[1] + p[2] * x[3] + p[3] * (x[4] + x[5] + x[6])
     dx[2] = -p[1] * x[0] * x[1] + p[4] * x[6] + p[3] * (x[4] + x[5] + x[6]) - p[5] * x[2] * x[1] + p[6] * x[3] + p[2] * x[3]
