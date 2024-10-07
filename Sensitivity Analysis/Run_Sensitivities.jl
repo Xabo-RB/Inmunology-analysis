@@ -897,7 +897,7 @@ elseif case == 13
     p1 = Plots.plot(NewSolR, label = "x1", xlabel= "t", ylabel = "Rp") #xlims = (tspan[1],tspan[2]))
     display(p1)
     
-    #==
+    
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
     koffVect = collect(range(0.001, stop =1, step = 0.001))
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
@@ -930,7 +930,7 @@ elseif case == 13
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
-    ==#
+    
     
 end
 
