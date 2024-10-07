@@ -4,10 +4,10 @@ using Plots
 include("Modelos.jl")
 
 # Parámetros de la ODE
-p = [10, 1, 0.1, 1, 1, 10]
+p = complex([10, 1, 0.1, 1, 1, 10])
 
 # Condiciones iniciales
-x0 = [100, 2, 0, 0, 0, 0, 0]
+x0 = complex([100, 2, 0, 0, 0, 0, 0])
 
 (d, tspan) = (1.0e-11, (0.0,700)); # step size and time interval in days
 
