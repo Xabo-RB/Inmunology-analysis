@@ -3,12 +3,12 @@ clear
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
     %% ZU
     % initial values
-    % x(1) -> T(t), x(2) -> P(t), x(3) -> Tp(t), x(4) -> Q(t)
-    % x(5) -> D(t), x(6) -> C0(t), x(7) -> C1(t), x(8) -> C2(t)
-    x0 = complex([100, 5, 0, 1, 0, 0, 0, 0], 0); 
+    % x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
+    % x(5) -> Tp(t) x(6) -> Q(t)
+    x0 = complex([100, 5, 0, 0, 0, 1], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:0.05:700;
+    tspan = 0.0:0.05:100;
     % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
     % p(6)
     p = complex([10, 1, 0.1, 1, 1, 10], 0);
@@ -28,9 +28,9 @@ clear
 %     solution = sensitivity(x0, p, d, tspan);
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{3}(:, 4); 
+%     SolResponse = solution{5}(:, 4); 
 %     % Normalización de la respuesta
-%     newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
+%     newSol = (SolResponse .* koffVect(i)) ./ solution{5}(:, 1); 
 % 
 %     % En la fila que define un valor de koff
 %     results_matrix(i, :) = newSol;
@@ -48,7 +48,7 @@ clear
 % cb.Label.String = 'Sensitivity';
 % xlabel('Time (s)');
 % ylabel('Dissociate rate (koff)');
-% title('KPC');
+% title('ZU');
 % set(gca, 'YDir', 'normal');
 % hold on
 
@@ -58,7 +58,7 @@ clear
 solution = sensitivity(x0, p, d, tspan); 
 
 % solution{estado}(:, nºparametro)
-NewSolR = solution{3}(:, 1);
+NewSolR = solution{5}(:, 1);
 
 figure
 % Crear el gráfico
@@ -78,9 +78,9 @@ title('Sensitivity');
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    KPZU = @(t,y)ODEKPZU(t, y, p);
+    ZU = @(t,y)ODEZU(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-    [t,x] = ode45(KPZU, tspan, x0, options);
+    [t,x] = ode45(ZU, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -101,8 +101,8 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-        KPZU = @(t,y)ODEKPZU(t, y, p);
-        [t,x] = ode45(KPZU, tspan, x0, options);
+        ZU = @(t,y)ODEZU(t, y, p);
+        [t,x] = ode45(ZU, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
@@ -126,16 +126,14 @@ function solution = sensitivity(x0, p, d, tspan)
 
 end
 
-function dx = ODEKPZU(t, x, p)
-    dx = zeros(8,1);
+function dx = ODEZU(t, x, p)
+    dx = zeros(6,1);
     % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
     % p(6)
-    dx(1) = -p(1) * x(1) * x(2) + p(2) * x(5) + p(3) * (x(6) + x(7) + x(8));     % T'(t)
-    dx(2) = -p(1) * x(1) * x(2) + p(4) * x(8) + p(3) * (x(6) + x(7) + x(8));      % P'(t)
-    dx(3) = p(4) * x(8) - p(5) * x(3) * x(4) + p(6) * x(5);                       % Tp'(t)
-    dx(4) = -p(5) * x(3) * x(4) + p(6) * x(5) + p(2) * x(5);                     % Q'(t)
-    dx(5) = p(5) * x(3) * x(4) - (p(6) + p(2)) * x(5);                           % D'(t)
-    dx(6) = p(1) * x(1) * x(2) - (p(3) + p(4)) * x(6);                            % C0'(t)
-    dx(7) = -p(3) * x(7) - p(4) * x(7) + p(4) * x(6);                              % C1'(t)
-    dx(8) = -p(3) * x(8) - p(4) * x(8) + p(4) * x(7);                              % C2'(t)
+    dx(1) = -p(1) * x(1) * x(2) + p(2) * x(4) + p(3) * x(3);                % T'(t)
+    dx(2) = -p(1) * x(1) * x(2) + p(4) * x(3) + p(3) * x(3);                  % L'(t)
+    dx(3) = p(1) * x(1) * x(2) - (p(3) + p(4)) * x(3);                        % C0'(t)
+    dx(4) = p(5) * x(5) * x(6) - (p(6) + p(2)) * x(4);                       % D'(t)
+    dx(5) = -p(5) * x(5) * x(6) + p(6) * x(4) + p(4)* x(3);                  % Tp'(t)
+    dx(6) = -p(5) * x(5) * x(6) + p(6) * x(4) + p(2) * x(4);                 % Q'(t)
 end
