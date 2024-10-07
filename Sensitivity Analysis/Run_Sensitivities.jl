@@ -30,7 +30,7 @@ include("Modelos.jl")
 
 
 
-case = 6
+case = 13
 
 if case == 1
 
