@@ -75,9 +75,9 @@ title('Sensitivity');
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    ST = @(t,y)ODESerialTrig(t, y, p);
+    KPC = @(t,y)ODEKPZU(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-    [t,x] = ode45(ST, tspan, x0, options);
+    [t,x] = ode45(KPC, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -98,8 +98,8 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-        KPC = @(t,y)ODEKPC(t, y, p);
-        [t,x] = ode45(ST, tspan, x0, options);
+        KPC = @(t,y)ODEKPZU(t, y, p);
+        [t,x] = ode45(KPC, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
@@ -123,14 +123,16 @@ function solution = sensitivity(x0, p, d, tspan)
 
 end
 
-function dx = ODEKPC(t, x, p)
-    dx = zeros(7,1);
-    dx(1) = -p(1) * x(1) * x(2) + p(2) * x(4) + p(3) * (x(5) + x(6) + x(7));
-    dx(2) = -p(1) * x(1) * x(2) + p(4) * x(7) + p(3) * (x(5) + x(6) + x(7)) ...
-            - p(5) * x(3) * x(2) + p(6) * x(4) + p(2) * x(4);
-    dx(3) = p(4) * x(7) - p(5) * x(3) * x(2) + p(6) * x(4);
-    dx(4) = p(5) * x(3) * x(2) - (p(6) + p(2)) * x(4);
-    dx(5) = p(1) * x(1) * x(2) - (p(3) + p(4)) * x(5);
-    dx(6) = -p(3) * x(6) - p(4) * x(6) + p(4) * x(5);
-    dx(7) = -p(3) * x(7) - p(4) * x(7) + p(4) * x(6);
+function dx = ODEKPZU(t, x, p)
+    dx = zeros(8,1);
+    % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+    % p(6)
+    dx(1) = -p(1) * x(1) * x(2) + p(2) * x(5) + p(3) * (x(6) + x(7) + x(8));     % T'(t)
+    dx(2) = -p(1) * x(1) * x(2) + p(4) * x(8) + p(3) * (x(6) + x(7) + x(8));      % P'(t)
+    dx(3) = p(4) * x(8) - p(5) * x(3) * x(4) + p(6) * x(5);                       % Tp'(t)
+    dx(4) = -p(5) * x(3) * x(4) + p(6) * x(5) + p(2) * x(5);                     % Q'(t)
+    dx(5) = p(5) * x(3) * x(4) - (p(6) + p(2)) * x(5);                           % D'(t)
+    dx(6) = p(1) * x(1) * x(2) - (p(3) + p(4)) * x(6);                            % C0'(t)
+    dx(7) = -p(3) * x(7) - p(4) * x(7) + p(4) * x(6);                              % C1'(t)
+    dx(8) = -p(3) * x(8) - p(4) * x(8) + p(4) * x(7);                              % C2'(t)
 end
