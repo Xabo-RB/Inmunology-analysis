@@ -44,7 +44,7 @@ colormap(inferno);
 cb = colorbar;
 cb.Label.String = 'Sensitivity';
 xlabel('Time (s)');
-ylabel('Dissociate rate (koff)');
+ylabel('Unbinding rate');
 title('KPC');
 set(gca, 'YDir', 'normal');
 hold on
