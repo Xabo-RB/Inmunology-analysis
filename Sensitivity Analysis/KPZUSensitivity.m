@@ -14,43 +14,43 @@ clear
     p = complex([10, 1, 0.1, 1, 1, 10], 0);
     solution = sensitivity(x0, p, d, tspan); 
 
-%     % --------------- KOFF -----------------------------
-% % Vector de valores de koff
-% koffVect = 0.001:0.001:1;
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-% for i = 1:length(koffVect)
-% 
-%     p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{3}(:, 4); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% inferno = csvread('inferno_colormap.csv');
-% %inferno = flipud(inferno);
-% figure; 
-% % imagesc(tspan, koffVect, results_matrix); 
-% % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
-% %results_matrix = log10(abs(results_matrix));
+    % --------------- KOFF -----------------------------
+% Vector de valores de koff
+koffVect = 0.001:0.001:1;
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+for i = 1:length(koffVect)
+
+    p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{3}(:, 4); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+inferno = csvread('inferno_colormap.csv');
+%inferno = flipud(inferno);
+figure; 
 % imagesc(tspan, koffVect, results_matrix); 
-% colormap(inferno);
-% cb = colorbar;
-% cb.Label.String = 'Sensitivity';
-% xlabel('Time (s)');
-% ylabel('Dissociate rate (koff)');
-% title('KPC');
-% set(gca, 'YDir', 'normal');
-% hold on
+% results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
+%results_matrix = log10(abs(results_matrix));
+imagesc(tspan, koffVect, results_matrix); 
+colormap(inferno);
+cb = colorbar;
+cb.Label.String = 'Sensitivity';
+xlabel('Time (s)');
+ylabel('Unbinding rate');
+title('KPZU');
+set(gca, 'YDir', 'normal');
+hold on
 
 
 %% SOLUCION
