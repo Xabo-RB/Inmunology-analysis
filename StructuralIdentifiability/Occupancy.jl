@@ -142,7 +142,7 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 # ============================================
-#               y = Tt(t) 
+#               y = Tt(t) = Emax
 # ============================================
 
 ode = @ODEmodel(
@@ -150,6 +150,14 @@ ode = @ODEmodel(
     P'(t) = - kon * P(t) * T(t) + koff*C0(t),
     T'(t) = - kon * P(t) * T(t) + koff*C0(t),
     y1(t) = T(t) + C0(t)
+)
+
+ode = @ODEmodel(
+    C0'(t) = kon * P(t) * T(t) - koff*C0(t),
+    P'(t) = - kon * P(t) * T(t) + koff*C0(t),
+    T'(t) = - kon * P(t) * T(t) + koff*C0(t),
+    y1(t) = T(t) + C0(t),
+    y2(t) = T(t)
 )
 
 ode = @ODEmodel(
