@@ -12,7 +12,7 @@ ode = @ODEmodel(
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
     Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
-    y1(t) = (T(t) + Tp(t) + C0(t) + D(t)) - ((kmenos2 + k3)/k2)
+    y1(t) = (2*k2*k3*(Q(t)+D(t))*(k3 + kmenos2 - k2*(T(t) + Tp(t) + C0(t) + D(t)))*(kmenos1+w))/ ( k2*(T(t) + Tp(t) + C0(t) + D(t))*(2*kmenos1 + w*(2 + k1*(k3 + kmenos2))) - 3*k1*w*(k3 + kmenos2)^2)
 )
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
