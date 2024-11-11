@@ -10,8 +10,9 @@ using BioSimulator
 using AnalyticSensitivity
 using CairoMakie
 
-ASPkg = AnalyticSensitivity
-versioninfo()
+#   Si no funciona AnalyticSensitivity entonces comento estas líneas:
+#ASPkg = AnalyticSensitivity
+#versioninfo()
 
 include("Modelos.jl")
 
