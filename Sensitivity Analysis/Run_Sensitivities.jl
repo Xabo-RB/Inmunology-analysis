@@ -96,21 +96,24 @@ if case == 1
     # ------------- RECOGER LOS RESULTADOS DE SENSIBILIDAD PARA CADA KOFF DEL VECTOR
 
     koffVect = collect(range(0.001, stop =1, step = 0.001))
+    konVect = collect(range(4e-6, stop=2e-2, step=1e-6))
     results_matrix = zeros(length(koffVect), length(solution[1][:, 3]))
     for i in eachindex(koffVect)
 
         #konCorregido = afinidad*koffVect[i]
         #p = complex([konCorregido, koffVect[i]]);
-        p = complex([5e-5, koffVect[i]]);
+        # KOFF  p = complex([5e-5, koffVect[i]]);
+        p = complex([konVect[i], 0.01]);
         solution = sensitivity(x0, p, d, tspan);
 
-        newSol = (solution[1][:, 3].*koffVect[i])./solution[1][:, 1]
+        #CAMBIAR AQUÍ TAMBIÉN EL PARÁMETRO
+        newSol = (solution[1][:, 2].*koffVect[i])./solution[1][:, 1]
         results_matrix[i, :] = newSol
 
         #results_matrix[i, :] = solution[4][:, 3]
 
     end
-
+    results_matrix = log10.(results_matrix)
     # VECTOR TIEMPO PARA PLOTEAR
     time1 = collect(range(0, stop =50, step = 1))
 
@@ -119,7 +122,7 @@ if case == 1
     ax = Axis(fig[1, 1], 
         title = "Occupancy model", 
         xlabel = "Time (s)", 
-        ylabel = "Unbinding rate",
+        ylabel = "Binding rate",
         titlecolor = :black, 
         #titlefont = "Arial",
         titlesize = 24,   
@@ -205,6 +208,24 @@ elseif case == 2 # =============================================================
         )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    fig
+
+        # Suponiendo que time1, koffVect y results_matrix ya están definidos
+    fig = Figure(resolution = (600, 400))
+    ax = Axis(fig[1, 1], 
+        title = "Occupancy model", 
+        xlabel = "Time (s)", 
+        ylabel = "Unbinding rate",
+        titlecolor = :black, 
+        #titlefont = "Arial",
+        titlesize = 24,   
+        xlabelcolor = :black,
+        xlabelsize = 24,
+        ylabelcolor = :black,
+        ylabelsize = 24
+        )   
+    hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
+    Colorbar(fig[1, 2], hm)#, label = "Sensitivity") 
     fig
     
     
