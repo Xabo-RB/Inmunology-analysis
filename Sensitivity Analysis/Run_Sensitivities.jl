@@ -121,7 +121,7 @@ if case == 1
         xlabel = "Time (s)", 
         ylabel = "Unbinding rate",
         titlecolor = :black, 
-        titlefont = "Arial",
+        #titlefont = "Arial",
         titlesize = 24,   
         xlabelcolor = :black,
         xlabelsize = 24,
@@ -129,7 +129,7 @@ if case == 1
         ylabelsize = 24
         )   
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
-    Colorbar(fig[1, 2])#, hm, label = "Sensitivity") 
+    Colorbar(fig[1, 2], hm)#, label = "Sensitivity") 
     fig
 
 
