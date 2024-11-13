@@ -119,22 +119,17 @@ if case == 1
     ax = Axis(fig[1, 1], 
         title = "Occupancy model", 
         xlabel = "Time (s)", 
-        ylabel = "Unbinding rate"
-        )
-    ax = Axis(fig[1, 1], 
-        title = "Occupancy model", 
-        xlabel = "Time (s)", 
         ylabel = "Unbinding rate",
         titlecolor = :black, 
         titlefont = "Arial",
         titlesize = 24,   
         xlabelcolor = :black,
-        xlabelsize = 18,
+        xlabelsize = 24,
         ylabelcolor = :black,
-        ylabelsize = 18
+        ylabelsize = 24
         )   
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
-    Colorbar(fig[1, 2], hm, label = "Sensitivity") 
+    Colorbar(fig[1, 2])#, hm, label = "Sensitivity") 
     fig
 
 
