@@ -1,13 +1,13 @@
 using Statistics, Random, LinearAlgebra, Plots, QuadGK, Polyester, Enzyme
 using DifferentialEquations
 using DataFrames, LaTeXStrings, ForwardDiff, Sundials, NumericIO
-using DiffEqSensitivity
+#using DiffEqSensitivity
 #, DelimitedFiles, #, BenchmarkTools, Revise, PyPlot
 # El paquete BioSimulator, AnalyticSensitivity hay que instalarlo a mano desde el repositorio de github
 # Pkg.add(url="https://github.com/alanderos91/BioSimulator.jl.git")
 # Pkg.add(url="https://github.com/rachelmester/SensitivityAnalysis")
 using BioSimulator
-using AnalyticSensitivity
+#using AnalyticSensitivity
 using CairoMakie
 
 #   Si no funciona AnalyticSensitivity entonces comento estas líneas:
