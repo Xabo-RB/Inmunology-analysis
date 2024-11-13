@@ -127,12 +127,12 @@ if case == 1
         ylabel = "Unbinding rate",
         titlecolor = :black, 
         titlefont = "Arial",
-        titlesize = 24,          # Ajusta el tamaño del título
+        titlesize = 24,   
         xlabelcolor = :black,
-        xlabelsize = 18,          # Ajusta el tamaño de la etiqueta del eje X
+        xlabelsize = 18,
         ylabelcolor = :black,
-        ylabelsize = 18           # Ajusta el tamaño de la etiqueta del eje Y
-    )
+        ylabelsize = 18
+        )   
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
