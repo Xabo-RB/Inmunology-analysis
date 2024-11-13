@@ -32,7 +32,7 @@ include("Modelos.jl")
 
 
 
-case = 9
+case = 1
 
 if case == 1
 
@@ -121,6 +121,18 @@ if case == 1
         xlabel = "Time (s)", 
         ylabel = "Unbinding rate"
         )
+    ax = Axis(fig[1, 1], 
+        title = "Occupancy model", 
+        xlabel = "Time (s)", 
+        ylabel = "Unbinding rate",
+        titlecolor = :black, 
+        titlefont = "Arial",
+        titlesize = 24,          # Ajusta el tamaño del título
+        xlabelcolor = :black,
+        xlabelsize = 18,          # Ajusta el tamaño de la etiqueta del eje X
+        ylabelcolor = :black,
+        ylabelsize = 18           # Ajusta el tamaño de la etiqueta del eje Y
+    )
     hm = CairoMakie.heatmap!(ax, time1, koffVect, results_matrix', interpolate = true, colormap = :inferno)
     Colorbar(fig[1, 2], hm, label = "Sensitivity") 
     fig
