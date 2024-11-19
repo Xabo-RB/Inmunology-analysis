@@ -55,6 +55,24 @@ set(gca, 'YDir', 'normal');
 hold on
 
 
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, koffVect, results_matrix);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+%xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
+%yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
+% set(gca, 'YDir', 'normal');
+% set(gca, 'FontSize', 16, ...       
+%          'FontWeight', 'normal', ... 
+%          'LineWidth', 0.5);  
+hold on
+
 %% SOLUCION
 
 solution = sensitivity(x0, p, d, tspan); 
