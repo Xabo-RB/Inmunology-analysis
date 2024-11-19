@@ -17,6 +17,8 @@ clear
 %     % --------------- KOFF -----------------------------
 % Vector de valores de koff
 koffVect = 0.001:0.001:1;
+konVect = linspace(4e-6, 2e-2, 2000);  % 2
+kpVect = linspace(0.001, 10, 2000);    % 4
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
