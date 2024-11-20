@@ -32,21 +32,39 @@ for i = 1:length(keffVect)
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
 end
+% 
+% inferno = csvread('inferno_colormap.csv');
+% %inferno = flipud(inferno);
+% figure; 
+% % imagesc(tspan, koffVect, results_matrix); 
+% % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
+% %results_matrix = log10(abs(results_matrix));
+% imagesc(tspan, keffVect, results_matrix); 
+% colormap(inferno);
+% cb = colorbar;
+% cb.Label.String = 'Sensitivity';
+% xlabel('Time (s)');
+% ylabel('Dissociate rate (koff)');
+% title('Serial Triggering');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 inferno = csvread('inferno_colormap.csv');
-%inferno = flipud(inferno);
-figure; 
-% imagesc(tspan, koffVect, results_matrix); 
-% results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
-%results_matrix = log10(abs(results_matrix));
-imagesc(tspan, keffVect, results_matrix); 
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, keffVect, results_matrix);
 colormap(inferno);
 cb = colorbar;
-cb.Label.String = 'Sensitivity';
-xlabel('Time (s)');
-ylabel('Dissociate rate (koff)');
-title('Serial Triggering');
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('Serial Triggering', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
+%xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
+%yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
+% set(gca, 'YDir', 'normal');
+% set(gca, 'FontSize', 16, ...       
+%          'FontWeight', 'normal', ... 
+%          'LineWidth', 0.5);  
 hold on
 
 
