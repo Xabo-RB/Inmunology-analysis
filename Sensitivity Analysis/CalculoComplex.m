@@ -55,7 +55,7 @@ colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('Negative Regulator II', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
