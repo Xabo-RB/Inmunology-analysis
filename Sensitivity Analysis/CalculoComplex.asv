@@ -194,28 +194,17 @@ for i = 1:length(bVect)
     results_matrix(i, :) = newSol;
 end
 
-% inferno = csvread('inferno_colormap.csv');
-% %inferno = flipud(inferno);
-% figure; 
-% %imagesc(tspan, koffVect, results_matrix); 
-% imagesc(tspan, bVect, results_matrix); 
-% colormap(inferno);
-% cb = colorbar;
-% cb.Label.String = 'Sensitivity';
-% xlabel('Time (s)');
-% ylabel('Spontaneous dephosphorylation rate');
-% title('Sensitivity to $b$', 'Interpreter', 'latex');
-% set(gca, 'YDir', 'normal');
-% hold on
-
 inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, bVect, results_matrix);
+%inferno = flipud(inferno);
+figure; 
+%imagesc(tspan, koffVect, results_matrix); 
+imagesc(tspan, bVect, results_matrix); 
 colormap(inferno);
 cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('Sensitivity to $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+cb.Label.String = 'Sensitivity';
+xlabel('Time (s)');
+ylabel('Spontaneous dephosphorylation rate');
+title('Sensitivity to $b$', 'Interpreter', 'latex');
 set(gca, 'YDir', 'normal');
 hold on
 

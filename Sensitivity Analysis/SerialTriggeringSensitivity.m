@@ -50,13 +50,14 @@ end
 % hold on
 
 inferno = csvread('inferno_colormap.csv');
+%figure('Position', [100, 100, 600, 380]);
 figure('Position', [100, 100, 600, 400]);
 imagesc(tspan, keffVect, results_matrix);
 colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('Serial Triggering', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 %xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
 %yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
