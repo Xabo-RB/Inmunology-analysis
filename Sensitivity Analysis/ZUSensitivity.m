@@ -133,7 +133,7 @@ end
 %results_matrix = log10(abs(results_matrix));
 
 inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 650, 380]);
+figure('Position', [100, 100, 800, 500]);
 imagesc(tspan, kpVect, results_matrix);
 colormap(inferno);
 cb = colorbar;

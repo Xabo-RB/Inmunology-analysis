@@ -84,7 +84,7 @@ ode = @ODEmodel(
     k1'(t) = 0,
     w'(t) = 0,
     y1(t) = w(t),
-    y1(t) = ((C0(t)+C1(t)+C2(t)) * (k2 + k3) * kmenos1 * w(t) * (w(t) / (kmenos1 + w(t)))^2)/(k2 * (k2 + k3 - kmenos2) * (kmenos1 + w(t) - w(t) * (w(t) / (kmenos1 + w(t)))^2) * X(t))
+    y1(t) = ((C0(t)+C1(t)+C2(t)) * (k2 + k3) * kmenos1 * w(t) * (w(t) / (kmenos1 + w(t)))^2)/(k2 * (k2 + k3 - kmenos2) * (kmenos1 + w(t) - w(t) * (w(t) / (kmenos1 + w(t)))^2) * X(t)).
     y3(t) = k1(t),    
     y4(t) = T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t),
 
@@ -106,7 +106,7 @@ ode = @ODEmodel(
     k1'(t) = 0,
     w'(t) = 0,
     y1(t) = w(t),
-    y2(t) = ((C0(t)+C1(t)+C2(t)) * (k2 + k3) * kmenos1 * w(t) * (w(t) / (kmenos1 + w(t)))^2)/(k2 * (k2 + k3 - kmenos2) * (kmenos1 + w(t) - w(t) * (w(t) / (kmenos1 + w(t)))^2) * X(t))
+    y2(t) = ((C0(t)+C1(t)+C2(t)) * (k2 + k3) * kmenos1 * w(t) * (w(t) / (kmenos1 + w(t)))^2)/(k2 * (k2 + k3 - kmenos2) * (kmenos1 + w(t) - w(t) * (w(t) / (kmenos1 + w(t)))^2) * X(t)).
     y3(t) = k1(t),    
     y4(t) = T(t)
 
