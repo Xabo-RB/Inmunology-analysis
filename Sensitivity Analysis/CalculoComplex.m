@@ -59,7 +59,7 @@ clear
 % set(gca, 'YDir', 'normal');
 % hold on
 
-    % --------------- TAO1 / KOFF1 -----------------------------
+    % --------------- KON-----------------------------
 % Vector de valores de koff
 konVect = linspace(4e-6, 2e-2, 2000);  % 2
 
@@ -75,7 +75,7 @@ for i = 1:length(konVect)
     % COJO LA RESPUESTA QUE ME INTERESA:
     SolResponse = solution{8}(:, 2); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* tao1Vect(i)) ./ solution{8}(:, 1); 
+    newSol = (SolResponse .* konVect(i)) ./ solution{8}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
@@ -97,6 +97,17 @@ end
 inferno = csvread('inferno_colormap.csv');
 figure('Position', [100, 100, 600, 400]);
 imagesc(tspan, konVect, results_matrix);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+results_matrix1 = log10(abs(results_matrix));
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, konVect, results_matrix1);
 colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
@@ -266,39 +277,39 @@ hold on
 % hold on
 
     % --------------- gamma -----------------------------
-% Vector de valores de koff
-gammaVect = 1e-8:1e-7:1e-4;
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(gammaVect), length(solution{8}(:, 1))); 
-for i = 1:length(gammaVect)
-
-    p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, gammaVect(i), 6e5, 1, 500, 10^4], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{8}(:, 9); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* gammaVect(i)) ./ solution{8}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-
-
-inferno = csvread('inferno_colormap.csv');
-inferno = flipud(inferno);
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, gammaVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Dephospho. rate by SHP-1 ($\gamma$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('Sensitivity to $\gamma$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
+% % Vector de valores de koff
+% gammaVect = 1e-8:1e-7:1e-4;
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(gammaVect), length(solution{8}(:, 1))); 
+% for i = 1:length(gammaVect)
+% 
+%     p = complex([1e-4, 10000, 3e4, 0.09, 10, 1.5, 0.04, gammaVect(i), 6e5, 1, 500, 10^4], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{8}(:, 9); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* gammaVect(i)) ./ solution{8}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% 
+% 
+% inferno = csvread('inferno_colormap.csv');
+% inferno = flipud(inferno);
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, gammaVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Dephospho. rate by SHP-1 ($\gamma$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('Sensitivity to $\gamma$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
     %% McKeithan
 %     x0 = complex([100, 2e4, 0, 0], 0);
