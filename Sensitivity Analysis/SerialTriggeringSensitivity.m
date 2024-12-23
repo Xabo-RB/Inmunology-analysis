@@ -69,6 +69,36 @@ set(gca, 'YDir', 'normal');
 hold on
 
 
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 380]);
+contourf(tspan, keffVect, results_matrix, 20, 'LineColor', 'none');
+colormap(inferno);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 380]);
+contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+colorbar; 
+
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, keffVect, results_matrix);
+colormap(gray);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
 %% SOLUCION
 
 solution = sensitivity(x0, p, d, tspan); 
