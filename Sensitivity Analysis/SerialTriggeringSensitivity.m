@@ -81,8 +81,9 @@ set(gca, 'YDir', 'normal');
 hold on
 
 figure('Position', [100, 100, 600, 380]);
-contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
+[C, h] = contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
+clabel(C, h, 'FontSize', 12, 'Color', 'k'); % Agregar etiquetas a las líneas
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
