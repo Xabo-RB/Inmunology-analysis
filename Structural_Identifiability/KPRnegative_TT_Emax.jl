@@ -159,7 +159,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp + b + gamma*S(t))*C1(t) + (b + gamma*S(t))*C2(t),
     C2'(t) = kp*C1(t) - (koff + b + gamma*S(t))*C2(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t),
-    y1(t) = (kp * (koff^2 + koff * kp + kp^2 + (b + gamma * S(t)) * (koff + kp))) / (kp * (koff + kp)^2 + (b + gamma * S(t))^2 * (koff + 2 * kp) + (b + gamma * S(t)) * (koff^2 + 4 * koff * kp + 2 * kp^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kp * (koff^2 + koff * kp + kp^2 + (b) * (koff + kp))) / (kp * (koff + kp)^2 + (b)^2 * (koff + 2 * kp) + (b) * (koff^2 + 4 * koff * kp + 2 * kp^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
     y2(t) = T(t)
 )
 
@@ -176,7 +176,7 @@ ode = @ODEmodel(
     C1'(t) = kp*C0(t) - (koff + kp + b + gamma*S(t))*C1(t) + (b + gamma*S(t))*C2(t),
     C2'(t) = kp*C1(t) - (koff + b + gamma*S(t))*C2(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t),
-    y1(t) = (kp * (koff^2 + koff * kp + kp^2 + (b + gamma * S(t)) * (koff + kp))) / (kp * (koff + kp)^2 + (b + gamma * S(t))^2 * (koff + 2 * kp) + (b + gamma * S(t)) * (koff^2 + 4 * koff * kp + 2 * kp^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kp * (koff^2 + koff * kp + kp^2 + (b) * (koff + kp))) / (kp * (koff + kp)^2 + (b)^2 * (koff + 2 * kp) + (b) * (koff^2 + 4 * koff * kp + 2 * kp^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
     y2(t) = kon(t)
 )
 
@@ -194,7 +194,7 @@ ode = @ODEmodel(
     C2'(t) = kp(t)*C1(t) - (koff + b + gamma*S(t))*C2(t),
     S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t),
     kp'(t) = 0,
-    y1(t) = (kp(t) * (koff^2 + koff * kp(t) + kp(t)^2 + (b + gamma * S(t)) * (koff + kp(t)))) / (kp(t) * (koff + kp(t))^2 + (b + gamma * S(t))^2 * (koff + 2 * kp(t)) + (b + gamma * S(t)) * (koff^2 + 4 * koff * kp(t) + 2 * kp(t)^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
+    y1(t) = (kp(t) * (koff^2 + koff * kp(t) + kp(t)^2 + (b) * (koff + kp(t)))) / (kp(t) * (koff + kp(t))^2 + (b)^2 * (koff + 2 * kp(t)) + (b) * (koff^2 + 4 * koff * kp(t) + 2 * kp(t)^2)) * (T(t) + C0(t) + C1(t) + C2(t)),
     y2(t) = kp(t)
 )
 
