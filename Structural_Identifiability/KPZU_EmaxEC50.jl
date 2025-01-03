@@ -156,9 +156,8 @@ ode = @ODEmodel(
     C0'(t) = k1 * T(t) * P(t) - (kmenos1 + w) * C0(t),
     C1'(t) = - kmenos1*C1(t) - w*C1(t) + w*C0(t),
     C2'(t) = - kmenos1*C2(t) - w*C2(t) + w*C1(t),
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t)))
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w)^2 - w * (kmenos1 + 2*w) * (w / (kmenos1 + w))^3)) / (k1 * w * (w / (kmenos1 + w))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1 * (Q(t) + D(t)) * (kmenos1 + w))
 )
-
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
@@ -174,7 +173,7 @@ ode = @ODEmodel(
     C0'(t) = k1 * T(t) * P(t) - (kmenos1 + w) * C0(t),
     C1'(t) = - kmenos1*C1(t) - w*C1(t) + w*C0(t),
     C2'(t) = - kmenos1*C2(t) - w*C2(t) + w*C1(t),
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w)^2 - w * (kmenos1 + 2*w) * (w / (kmenos1 + w))^3)) / (k1 * w * (w / (kmenos1 + w))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1 * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = T(t)
 )
 
@@ -192,7 +191,7 @@ ode = @ODEmodel(
     C0'(t) = k1 * T(t) * P(t) - (kmenos1 + w) * C0(t),
     C1'(t) = - kmenos1*C1(t) - w*C1(t) + w*C0(t),
     C2'(t) = - kmenos1*C2(t) - w*C2(t) + w*C1(t),
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w)^2 - w * (kmenos1 + 2*w) * (w / (kmenos1 + w))^3)) / (k1 * w * (w / (kmenos1 + w))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1 * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)
 )
 
@@ -211,7 +210,7 @@ ode = @ODEmodel(
     C1'(t) = - kmenos1*C1(t) - w*C1(t) + w*C0(t),
     C2'(t) = - kmenos1*C2(t) - w*C2(t) + w*C1(t),
     k1'(t) = 0,
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w)^2 - w * (kmenos1 + 2*w) * (w / (kmenos1 + w))^3)) / (k1(t) * w * (w / (kmenos1 + w))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1(t) * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = k1(t)
 )
 
@@ -230,7 +229,7 @@ ode = @ODEmodel(
     C1'(t) = - kmenos1*C1(t) - w(t)*C1(t) + w(t)*C0(t),
     C2'(t) = - kmenos1*C2(t) - w(t)*C2(t) + w(t)*C1(t),
     w'(t) = 0,
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w(t))^2 - w(t) * (kmenos1 + 2*w(t)) * (w(t) / (kmenos1 + w(t)))^3)) / (k1 * w(t) * (w(t) / (kmenos1 + w(t)))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1 * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = w(t)
 )
 
@@ -250,12 +249,12 @@ ode = @ODEmodel(
     C2'(t) = - kmenos1*C2(t) - w(t)*C2(t) + w(t)*C1(t),
     k1'(t) = 0,
     w'(t) = 0,
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w(t))^2 - w(t) * (kmenos1 + 2*w(t)) * (w(t) / (kmenos1 + w(t)))^3)) / (k1(t) * w(t) * (w(t) / (kmenos1 + w(t)))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1(t) * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = w(t),
     y3(t) = k1(t),
     y4(t) = T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)
-
 )
+
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 # __________ kon kp T ________________________________________________________
@@ -272,7 +271,7 @@ ode = @ODEmodel(
     C2'(t) = - kmenos1*C2(t) - w(t)*C2(t) + w(t)*C1(t),
     k1'(t) = 0,
     w'(t) = 0,
-    y1(t) = (P(t)*( (kmenos1 + w)*(1-(w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1)*(2 + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(Q(t)+D(t))*k_3) / (2*( (kmenos1+w)*(1 - (w/(w+kmenos1)))/(1 - (w/(w+kmenos1))^(3)) - kmenos1) + (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t))*(T(t) + C0(t) + C1(t) + C2(t))),
+    y1(t) = (2 * k2 * k3 * (Q(t) + D(t)) * ((kmenos1 + w(t))^2 - w(t) * (kmenos1 + 2*w(t)) * (w(t) / (kmenos1 + w(t)))^3)) / (k1(t) * w(t) * (w(t) / (kmenos1 + w(t)))^3 * (-2 * k2 * k3 * (Q(t) + D(t)) + 2 * k2 * kmenos1 * ((T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t)) + 2) + kmenos1 * (T(t) + C0(t) + C1(t) + C2(t) + Tp(t) + D(t) + 2) * (k3 + kmenos2)) + 2 * k2 * k3 * k1(t) * (Q(t) + D(t)) * (kmenos1 + w)),
     y2(t) = w(t),
     y3(t) = k1(t),
     y4(t) = T(t)
