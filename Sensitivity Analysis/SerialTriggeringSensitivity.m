@@ -68,45 +68,47 @@ set(gca, 'YDir', 'normal');
 %          'LineWidth', 0.5);  
 hold on
 
+% 
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 380]);
+% contourf(tspan, keffVect, results_matrix, 20, 'LineColor', 'none');
+% colormap(inferno);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 380]);
-contourf(tspan, keffVect, results_matrix, 20, 'LineColor', 'none');
-colormap(inferno);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-figure('Position', [100, 100, 600, 380]);
+figure('Position', [100, 100, 600, 400]);
 [C, h] = contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
-clabel(C, h, 'FontSize', 12, 'Color', 'k'); % Agregar etiquetas a las líneas
+%clabel(C, h, 'FontSize', 14, 'Color', 'k'); % Agregar etiquetas a las líneas
+selected_levels = [min(results_matrix(:)), mean(results_matrix(:)), max(results_matrix(:))]; 
+clabel(C, h, 'FontSize', 14, 'Color', 'k', 'v', selected_levels);
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 colorbar; 
 
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, keffVect, results_matrix);
-colormap(gray);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-figure('Position', [100, 100, 600, 380]);
-[C, h] = contour(tspan, keffVect, results_matrix, 20, 'LineColor', 'k'); % Crear contorno
-clabel(C, h, 'FontSize', 12, 'Color', 'k'); % Agregar etiquetas a las líneas
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, keffVect, results_matrix);
+% colormap(gray);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% figure('Position', [100, 100, 600, 380]);
+% [C, h] = contour(tspan, keffVect, results_matrix, 20, 'LineColor', 'k'); % Crear contorno
+% clabel(C, h, 'FontSize', 12, 'Color', 'k'); % Agregar etiquetas a las líneas
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
 
 %% SOLUCION
 
