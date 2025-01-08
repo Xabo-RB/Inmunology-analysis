@@ -94,6 +94,11 @@ title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
+writematrix(results_matrix, 'resultados.csv');
+writematrix(koffVect, 'ejeYs.csv');
+writematrix(tspan, 'ejeXs.csv');
+
+
     % --------------- KON-----------------------------
 % % Vector de valores de koff
 % konVect = linspace(4e-6, 2e-2, 2000);  % 2
