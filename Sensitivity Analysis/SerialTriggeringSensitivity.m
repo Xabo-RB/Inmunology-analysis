@@ -49,26 +49,26 @@ end
 % set(gca, 'YDir', 'normal');
 % hold on
 
-inferno = csvread('inferno_colormap.csv');
-%figure('Position', [100, 100, 600, 380]);
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, keffVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-%xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
-%yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
-% set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
+% inferno = csvread('inferno_colormap.csv');
+% %figure('Position', [100, 100, 600, 380]);
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, keffVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
-% set(gca, 'FontSize', 16, ...       
-%          'FontWeight', 'normal', ... 
-%          'LineWidth', 0.5);  
-hold on
+% %xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
+% %yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
+% % set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
+% % set(gca, 'YDir', 'normal');
+% % set(gca, 'FontSize', 16, ...       
+% %          'FontWeight', 'normal', ... 
+% %          'LineWidth', 0.5);  
+% hold on
 
-% 
+
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 380]);
 % contourf(tspan, keffVect, results_matrix, 20, 'LineColor', 'none');
@@ -81,16 +81,26 @@ hold on
 % hold on
 
 figure('Position', [100, 100, 600, 400]);
-[C, h] = contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
+contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'none');
 colormap(gray);
-%clabel(C, h, 'FontSize', 14, 'Color', 'k'); % Agregar etiquetas a las líneas
-selected_levels = [min(results_matrix(:)), mean(results_matrix(:)), max(results_matrix(:))]; 
-clabel(C, h, 'FontSize', 14, 'Color', 'k', 'v', selected_levels);
+colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
-colorbar; 
+hold on
+
+% figure('Position', [100, 100, 600, 400]);
+% [C, h] = contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% %clabel(C, h, 'FontSize', 14, 'Color', 'k'); % Agregar etiquetas a las líneas
+% selected_levels = [min(results_matrix(:)), mean(results_matrix(:)), max(results_matrix(:))]; 
+% clabel(C, h, 'FontSize', 14, 'Color', 'k', 'v', selected_levels);
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% colorbar; 
 
 % figure('Position', [100, 100, 600, 400]);
 % imagesc(tspan, keffVect, results_matrix);
