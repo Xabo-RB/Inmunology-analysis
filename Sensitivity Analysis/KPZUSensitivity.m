@@ -55,86 +55,96 @@ clear
 % hold on
 
 %% % --------------- KON -----------------------------
-% % Vector de valores de koff
-% konVect = linspace(4e-6, 2e-2, 2000);  % 2
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
-% for i = 1:length(konVect)
-% 
-%     p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{3}(:, 2); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* konVect(i)) ./ solution{3}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% inferno = csvread('inferno_colormap.csv');
-% figure('Position', [100, 100, 600, 380]);
-% imagesc(tspan, konVect, results_matrix);
-% colormap(inferno);
-% cb = colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-
-%%     % --------------- KP -----------------------------
-% Vector de valores de kon
-kpVect = linspace(0.001, 10, 2000);    % 4
+% Vector de valores de koff
+konVect = linspace(4e-6, 2e-2, 2000);  % 2
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
-results_matrix = zeros(length(kpVect), length(solution{4}(:, 1))); 
-for i = 1:length(kpVect)
+results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
+for i = 1:length(konVect)
 
-    p = complex([10, 1, 0.1, kpVect(i), 1, 10], 0);
+    p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
 
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{3}(:, 5); 
+    SolResponse = solution{3}(:, 2); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* kpVect(i)) ./ solution{3}(:, 1); 
+    newSol = (SolResponse .* konVect(i)) ./ solution{3}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
 end
 
-%results_matrix = log10(abs(results_matrix));
-
 inferno = csvread('inferno_colormap.csv');
 figure('Position', [100, 100, 600, 380]);
-imagesc(tspan, kpVect, results_matrix);
+imagesc(tspan, konVect, results_matrix);
 colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
+%%     % --------------- KP -----------------------------
+% Vector de valores de kon
+% kpVect = linspace(0.001, 10, 2000);    % 4
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(kpVect), length(solution{4}(:, 1))); 
+% for i = 1:length(kpVect)
+% 
+%     p = complex([10, 1, 0.1, kpVect(i), 1, 10], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{3}(:, 5); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* kpVect(i)) ./ solution{3}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% %results_matrix = log10(abs(results_matrix));
+% 
+% % inferno = csvread('inferno_colormap.csv');
+% % figure('Position', [100, 100, 600, 380]);
+% % imagesc(tspan, kpVect, results_matrix);
+% % colormap(inferno);
+% % cb = colorbar;
+% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% % set(gca, 'YDir', 'normal');
+% % hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+
 %% SOLUCION
 
-solution = sensitivity(x0, p, d, tspan); 
-
-% solution{estado}(:, nºparametro)
-NewSolR = solution{3}(:, 1);
-
-figure
-% Crear el gráfico
-plot(tspan, NewSolR);
-xlabel('t');
-legend;
-title('Sensitivity');
+% solution = sensitivity(x0, p, d, tspan); 
+% 
+% % solution{estado}(:, nºparametro)
+% NewSolR = solution{3}(:, 1);
+% 
+% figure
+% % Crear el gráfico
+% plot(tspan, NewSolR);
+% xlabel('t');
+% legend;
+% title('Sensitivity');
 
 % % COMPROBACIÓN
 % neg = @(t,y)ODEKPRmcK(t, y, p);
@@ -148,7 +158,7 @@ title('Sensitivity');
 function solution = sensitivity(x0, p, d, tspan)
 
     KPZU = @(t,y)ODEKPZU(t, y, p);
-    options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
+    options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
     [t,x] = ode45(KPZU, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
@@ -169,7 +179,7 @@ function solution = sensitivity(x0, p, d, tspan)
         % para calcular la derivada parcial de la solución con respecto a ese parámetro.
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
-        options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
+        options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
         KPZU = @(t,y)ODEKPZU(t, y, p);
         [t,x] = ode45(KPZU, tspan, x0, options);
         
