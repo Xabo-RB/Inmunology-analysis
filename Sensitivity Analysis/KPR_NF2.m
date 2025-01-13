@@ -156,9 +156,9 @@ title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
-writematrix(results_matrix1, 'resultados.csv');
-writematrix(konVect, 'ejeYs.csv');
-writematrix(tspan, 'ejeXs.csv');
+% writematrix(results_matrix1, 'resultados.csv');
+% writematrix(konVect, 'ejeYs.csv');
+% writematrix(tspan, 'ejeXs.csv');
 
     % --------------- KP-----------------------------
 % % Vector de valores de koff

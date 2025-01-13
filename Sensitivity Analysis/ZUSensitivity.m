@@ -132,11 +132,21 @@ end
 
 %results_matrix = log10(abs(results_matrix));
 
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 800, 500]);
-imagesc(tspan, kpVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 800, 500]);
+% imagesc(tspan, kpVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
@@ -144,19 +154,20 @@ set(gca, 'YDir', 'normal');
 hold on
 
 
+
 %% SOLUCION
 
-solution = sensitivity(x0, p, d, tspan); 
-
-% solution{estado}(:, nºparametro)
-NewSolR = solution{5}(:, 1);
-
-figure
-% Crear el gráfico
-plot(tspan, NewSolR);
-xlabel('t');
-legend;
-title('Sensitivity');
+% solution = sensitivity(x0, p, d, tspan); 
+% 
+% % solution{estado}(:, nºparametro)
+% NewSolR = solution{5}(:, 1);
+% 
+% figure
+% % Crear el gráfico
+% plot(tspan, NewSolR);
+% xlabel('t');
+% legend;
+% title('Sensitivity');
 
 % % COMPROBACIÓN
 % neg = @(t,y)ODEKPRmcK(t, y, p);
