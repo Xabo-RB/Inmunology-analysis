@@ -15,27 +15,27 @@ clear
     solution = sensitivity(x0, p, d, tspan); 
 
 %%    % --------------- KOFF -----------------------------
-% % Vector de valores de koff
-% koffVect = 0.001:0.001:1;
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-% for i = 1:length(koffVect)
-% 
-%     p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{3}(:, 4); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
+% Vector de valores de koff
+koffVect = 0.001:0.001:1;
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+for i = 1:length(koffVect)
+
+    p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{3}(:, 4); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
 % imagesc(tspan, koffVect, results_matrix);
@@ -54,38 +54,58 @@ clear
 % %          'LineWidth', 0.5);  
 % hold on
 
-%% % --------------- KON -----------------------------
-% Vector de valores de koff
-konVect = linspace(4e-6, 2e-2, 2000);  % 2
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
-for i = 1:length(konVect)
-
-    p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{3}(:, 2); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* konVect(i)) ./ solution{3}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 380]);
-imagesc(tspan, konVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
+
+%% % --------------- KON -----------------------------
+% % Vector de valores de koff
+% konVect = linspace(4e-6, 2e-2, 2000);  % 2
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
+% for i = 1:length(konVect)
+% 
+%     p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{3}(:, 2); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* konVect(i)) ./ solution{3}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% % inferno = csvread('inferno_colormap.csv');
+% % figure('Position', [100, 100, 600, 380]);
+% % imagesc(tspan, konVect, results_matrix);
+% % colormap(inferno);
+% % cb = colorbar;
+% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% % set(gca, 'YDir', 'normal');
+% % hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 %%     % --------------- KP -----------------------------
 % Vector de valores de kon
