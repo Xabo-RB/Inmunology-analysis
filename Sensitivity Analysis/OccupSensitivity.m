@@ -1,7 +1,6 @@
 clear
 
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
-    %% Serial Triggering
     % initial values
     x0 = complex([0, 100, 2e4], 0); 
     % step size and time interval in days
