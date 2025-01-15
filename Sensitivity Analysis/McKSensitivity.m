@@ -56,15 +56,15 @@ for i = 1:length(konVect)
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{1}(:, 2); 
+    SolResponse = solution{4}(:, 2); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* konVect(i)) ./ solution{1}(:, 1); 
+    newSol = (SolResponse .* konVect(i)) ./ solution{4}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
 end
 
-results_matrix1 = log10(results_matrix);
+results_matrix1 = log10.(results_matrix);
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
@@ -73,6 +73,17 @@ colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 title('KPR-1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, konVect, results_matrix);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
