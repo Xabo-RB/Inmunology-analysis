@@ -6,7 +6,7 @@ clear
     x0 = complex([100, 2, 0, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:0.05:200;
+    tspan = 0.0:0.05:600;
     % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
     p = complex([10, 1, 0.1, 1, 1, 10], 0);
     solution = sensitivity(x0, p, d, tspan); 
@@ -33,23 +33,23 @@ for i = 1:length(koffVect)
     results_matrix(i, :) = newSol;
 end
 
-% inferno = csvread('inferno_colormap.csv');
-% figure('Position', [100, 100, 600, 400]);
-% imagesc(tspan, koffVect, results_matrix);
-% colormap(inferno);
-% cb = colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, koffVect, results_matrix);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+%xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
+%yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
 % set(gca, 'YDir', 'normal');
-% %xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
-% %yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
-% % set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
-% % set(gca, 'YDir', 'normal');
-% % set(gca, 'FontSize', 16, ...       
-% %          'FontWeight', 'normal', ... 
-% %          'LineWidth', 0.5);  
-% hold on
+% set(gca, 'FontSize', 16, ...       
+%          'FontWeight', 'normal', ... 
+%          'LineWidth', 0.5);  
+hold on
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');

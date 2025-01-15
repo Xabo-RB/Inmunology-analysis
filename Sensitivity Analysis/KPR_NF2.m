@@ -100,61 +100,61 @@ clear
 
 
     % --------------- KON-----------------------------
-% Vector de valores de koff
-konVect = linspace(4e-6, 2e-2, 2000);  % 2
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(konVect), length(solution{8}(:, 1))); 
-for i = 1:length(konVect)
-
-    p = complex([konVect(i), 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{8}(:, 2); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* konVect(i)) ./ solution{8}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
+% % Vector de valores de koff
+% konVect = linspace(4e-6, 2e-2, 2000);  % 2
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(konVect), length(solution{8}(:, 1))); 
+% for i = 1:length(konVect)
+% 
+%     p = complex([konVect(i), 10000, 3e4, 0.09, 10, 1.5, 0.04, 1.2e-6, 6e5, 1, 500, 10^4], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{8}(:, 2); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* konVect(i)) ./ solution{8}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% % inferno = csvread('inferno_colormap.csv');
+% % %inferno = flipud(inferno);
+% % figure; 
+% % %imagesc(tspan, koffVect, results_matrix); 
+% % imagesc(tspan, tao1Vect, results_matrix); 
+% % colormap(inferno);
+% % cb = colorbar;
+% % cb.Label.String = 'Sensitivity';
+% % xlabel('Time (s)');
+% % ylabel('Dissociate rate');
+% % title('Negative regulator II');
+% % set(gca, 'YDir', 'normal');
+% 
 % inferno = csvread('inferno_colormap.csv');
-% %inferno = flipud(inferno);
-% figure; 
-% %imagesc(tspan, koffVect, results_matrix); 
-% imagesc(tspan, tao1Vect, results_matrix); 
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, konVect, results_matrix);
 % colormap(inferno);
 % cb = colorbar;
-% cb.Label.String = 'Sensitivity';
-% xlabel('Time (s)');
-% ylabel('Dissociate rate');
-% title('Negative regulator II');
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, konVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-results_matrix1 = log10(abs(results_matrix));
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, konVect, results_matrix1);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
+% hold on
+% 
+% results_matrix1 = log10(abs(results_matrix));
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, konVect, results_matrix1);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 % writematrix(results_matrix1, 'resultados.csv');
 % writematrix(konVect, 'ejeYs.csv');
