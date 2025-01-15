@@ -64,7 +64,7 @@ for i = 1:length(konVect)
     results_matrix(i, :) = newSol;
 end
 
-results_matrix1 = log10.(results_matrix);
+results_matrix1 = log10(results_matrix);
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
