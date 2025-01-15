@@ -17,6 +17,18 @@ ode = @ODEmodel(
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 ode = @ODEmodel(
+    x1'(t) = alpha(t)*(x2(t)-x1(t)),
+    x2'(t) = x1(t)*(rho(t)-x3(t))-x2(t),
+    x3'(t) = x1(t)*x2(t)-beta(t)*x3(t),
+    y1(t) = x1(t),
+    y2(t) = x2(t),
+    y3(t) = x3(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
+
+ode = @ODEmodel(
     C0'(t) = kon * P(t) * T(t) - koff*C0(t),
     P'(t) = - kon * P(t) * T(t) + koff*C0(t),
     T'(t) = - kon * P(t) * T(t) + koff*C0(t),
