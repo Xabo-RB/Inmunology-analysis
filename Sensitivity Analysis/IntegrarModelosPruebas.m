@@ -47,30 +47,53 @@ clear
 % title('');
 
 %% NEGATIVE I
-%% Parameters
-% Parámetros del modelo
-kon = 5e-5;       % Constante de asociación
-koff = 0.01;      % Constante de disociación
-kp = 1;           % Constante de producción
-gamma = 4.4e-4;   % Factor gamma
-b = 0.04;         % Factor b
-beta = 1;         % Factor beta
-alpha = 2e-4;     % Factor alpha
-ST = 6e5;         % Concentración máxima de S
-
-%% Modelo con solvers de Matlab
-x0 = [100, 2e4, 0, 0, 0, 0];
-negII = @(t,y)NegativeFeedbackI(t, x, kon, koff, kp, b, gamma, ST, alpha, beta);
-options = odeset('RelTol',1e-6,'AbsTol',1e-6);
-[t,x] = ode45(negII, [0 200], x0, options);
-
-figure
-plot(t, x(:, 3));
-xlabel('Tiempo');
-ylabel('');
-legend('C1(t)');
-title('');
-
+% %% Parameters
+% % Parámetros del modelo
+% kon = 5e-5;       % Constante de asociación
+% koff = 0.01;      % Constante de disociación
+% kp = 1;           % Constante de producción
+% gamma = 4.4e-4;   % Factor gamma
+% b = 0.04;         % Factor b
+% beta = 1;         % Factor beta
+% alpha = 2e-4;     % Factor alpha
+% ST = 6e5;         % Concentración máxima de S
+% 
+% %% Modelo con solvers de Matlab
+% x0 = [100, 2e4, 0, 0, 0, 0];
+% negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
+% options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+% [t,x] = ode45(negII, [0 20], x0, options);
+% 
+% figure
+% plot(t, x(:, 5));
+% xlabel('Tiempo');
+% ylabel('');
+% legend('R(t)');
+% title('');
+% hold on
+% 
+% %% 
+% 
+% n = 5000;
+% logeado = linspace(0, 6, n);
+% LT = 10.^logeado;
+% respuesta_steady_state = zeros(1,n);
+% 
+% for i = 1:length(LT)
+% 
+%     x0 = [LT(i), LT(i), 0, 0, 0, 0];
+%     negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
+%     options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+%     [t,x] = ode45(negII, [0 20], x0, options);
+%     respuesta_steady_state(i) = max(x(:, 5));
+% 
+% end
+% 
+% LTlog = log10(LT);
+% 
+% figure
+% plot(LTlog, respuesta_steady_state);
+% hold on
 
 
 %% SERIAL TRIGGERING
@@ -91,6 +114,54 @@ title('');
 % ylabel('Concentraciones');
 % legend('C1(t)');
 % title('Solución del sistema de ODEs');
+
+%% ZU
+%%
+% initial values
+% x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
+% x(5) -> Tp(t) x(6) -> Q(t)
+x0 = [100, 80, 0, 0, 0, 1];
+% step size and time interval in days
+d = 1.0e-16; 
+tspan = 0.0:0.05:100;
+% k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+% p(6)
+p = [10, 1, 0.1, 1, 1, 10];
+
+ZU = @(t,y)ODEZU(t, y, p);
+options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
+[t,x] = ode45(ZU, tspan, x0, options);
+
+figure
+plot(t, x(:, 5));
+xlabel('Tiempo');
+hold on
+%% 
+
+n = 1000;
+logeado = linspace(0, 6, n);
+LT = 10.^logeado;
+respuesta_steady_state = zeros(1,n);
+
+for i = 1:length(LT)
+
+    x0 = [100, LT(i), 0, 0, 0, 0];
+    ZU = @(t,y)ODEZU(t, y, p);
+    options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+    [t,x] = ode45(ZU, [0 20], x0, options);
+    respuesta_steady_state(i) = max(x(:, 5));
+
+end
+
+LTlog = log10(LT);
+
+figure
+plot(LTlog, respuesta_steady_state);
+hold on
+
+
+
+%% funciones
 
 function dy = KPRMcK1(t, y, kon, koff, kp)
     
@@ -145,4 +216,17 @@ function dx = SerialTriggering(t, x, lambda, phi, s, keff, ki, L, h)
     dx(3) =  keff * (x(2)^h) * (L^h) - ki * x(3);
     dx(4) =  x(1) / (lambda + 1) + ((x(2) + x(3)) * lambda / (lambda + 1));
 
+end
+
+
+function dx = ODEZU(t, x, p)
+    dx = zeros(6,1);
+    % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+    % p(6)
+    dx(1) = -p(1) * x(1) * x(2) + p(2) * x(4) + p(3) * x(3);                % T'(t)
+    dx(2) = -p(1) * x(1) * x(2) + p(4) * x(3) + p(3) * x(3);                  % L'(t)
+    dx(3) = p(1) * x(1) * x(2) - (p(3) + p(4)) * x(3);                        % C0'(t)
+    dx(4) = p(5) * x(5) * x(6) - (p(6) + p(2)) * x(4);                       % D'(t)
+    dx(5) = -p(5) * x(5) * x(6) + p(6) * x(4) + p(4)* x(3);                  % Tp'(t)
+    dx(6) = -p(5) * x(5) * x(6) + p(6) * x(4) + p(2) * x(4);                 % Q'(t)
 end
