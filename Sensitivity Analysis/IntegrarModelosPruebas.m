@@ -26,44 +26,44 @@ clear
 % legend('C1(t)');
 % title('Solución del sistema de ODEs');
 
-% %% NEGATIVE II
-% %% Parameters
-% k = 1e-4; phi = 0.09; 
-% b = 0.04; gamma = 1.2e-6;
-% tao1 = 10; tao2 = 1.5;
-% alpha = 1; beta = 500; 
-% L1 = 10000; R = 3e4; L2 = 10^4; ST = 6e5;
+%% NEGATIVE II
+%% Parameters
+k = 1e-4; phi = 0.09; 
+b = 0.04; gamma = 1.2e-6;
+tao1 = 10; tao2 = 1.5;
+alpha = 1; beta = 500; 
+L1 = 10000; R = 3e4; L2 = 10^4; ST = 6e5;
+%% Modelo con solvers de Matlab
+x0 = [0, 0, 0, 0, 0, 0, 0];
+negII = @(t,y)NegativeFeedbackII(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
+options = odeset('RelTol',1e-3,'AbsTol',1e-3);
+[t,x] = ode45(negII, [0 20], x0, options);
+
+figure
+plot(t, x(:, 3));
+xlabel('Tiempo');
+ylabel('');
+legend('C1(t)');
+title('');
+
+%% SERIAL TRIGGERING
+%% Parameters
+% lambda = 0.61; phi = 0.0055; s = 0.0011; ki = 0.094;
+% keff = 0.001; 
+% L = 1; h = 5;
+% 
 % %% Modelo con solvers de Matlab
-% x0 = [0, 0, 0, 0, 0, 0, 0];
-% negII = @(t,y)NegativeFeedbackII(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
-% options = odeset('RelTol',1e-3,'AbsTol',1e-3);
-% [t,x] = ode45(negII, [0 20], x0, options);
+% x0 = [0, 0, 0, 1];
+% ST = @(t,y)SerialTriggering(t, y, lambda, phi, s, keff, ki, L, h);
+% options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
+% [t,x] = ode45(ST, [0 100], x0, options);
 % 
 % figure
-% plot(t, x(:, 3));
+% plot(t, x(:, 4));
 % xlabel('Tiempo');
 % ylabel('Concentraciones');
 % legend('C1(t)');
 % title('Solución del sistema de ODEs');
-
-%% SERIAL TRIGGERING
-%% Parameters
-lambda = 0.61; phi = 0.0055; s = 0.0011; ki = 0.094;
-keff = 0.001; 
-L = 1; h = 5;
-
-%% Modelo con solvers de Matlab
-x0 = [0, 0, 0, 1];
-ST = @(t,y)SerialTriggering(t, y, lambda, phi, s, keff, ki, L, h);
-options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-[t,x] = ode45(ST, [0 100], x0, options);
-
-figure
-plot(t, x(:, 4));
-xlabel('Tiempo');
-ylabel('Concentraciones');
-legend('C1(t)');
-title('Solución del sistema de ODEs');
 
 function dy = KPRMcK1(t, y, kon, koff, kp)
     
