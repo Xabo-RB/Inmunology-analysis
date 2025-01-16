@@ -28,16 +28,41 @@ clear
 
 %% NEGATIVE II
 %% Parameters
-k = 1e-4; phi = 0.09; 
-b = 0.04; gamma = 1.2e-6;
-tao1 = 10; tao2 = 1.5;
-alpha = 1; beta = 500; 
-L1 = 10000; R = 3e4; L2 = 10^4; ST = 6e5;
+% k = 1e-4; phi = 0.09; 
+% b = 0.04; gamma = 1.2e-6;
+% tao1 = 10; tao2 = 1.5;
+% alpha = 1; beta = 500; 
+% L1 = 10000; R = 3e4; L2 = 10^4; ST = 6e5;
+% %% Modelo con solvers de Matlab
+% x0 = [0, 0, 0, 0, 0, 0, 0];
+% negII = @(t,y)NegativeFeedbackII(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
+% options = odeset('RelTol',1e-3,'AbsTol',1e-3);
+% [t,x] = ode45(negII, [0 20], x0, options);
+% 
+% figure
+% plot(t, x(:, 3));
+% xlabel('Tiempo');
+% ylabel('');
+% legend('C1(t)');
+% title('');
+
+%% NEGATIVE I
+%% Parameters
+% Parámetros del modelo
+kon = 5e-5;       % Constante de asociación
+koff = 0.01;      % Constante de disociación
+kp = 1;           % Constante de producción
+gamma = 4.4e-4;   % Factor gamma
+b = 0.04;         % Factor b
+beta = 1;         % Factor beta
+alpha = 2e-4;     % Factor alpha
+ST = 6e5;         % Concentración máxima de S
+
 %% Modelo con solvers de Matlab
-x0 = [0, 0, 0, 0, 0, 0, 0];
-negII = @(t,y)NegativeFeedbackII(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
-options = odeset('RelTol',1e-3,'AbsTol',1e-3);
-[t,x] = ode45(negII, [0 20], x0, options);
+x0 = [100, 2e4, 0, 0, 0, 0];
+negII = @(t,y)NegativeFeedbackI(t, x, kon, koff, kp, b, gamma, ST, alpha, beta);
+options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+[t,x] = ode45(negII, [0 200], x0, options);
 
 figure
 plot(t, x(:, 3));
@@ -45,6 +70,8 @@ xlabel('Tiempo');
 ylabel('');
 legend('C1(t)');
 title('');
+
+
 
 %% SERIAL TRIGGERING
 %% Parameters

@@ -35,7 +35,32 @@ alpha = 1; beta = 500;
 L1 = 10000; R = 3e4; L2 = 10^4; ST = 6e5;
 %% Modelo con solvers de Matlab
 x0 = [0, 0, 0, 0, 0, 0, 0];
-negII = @(t,y)NegativeFeedbackII(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
+negI = @(t,y)NegativeFeedbackII(t, x, kon, koff, kp, b, gamma, ST, alpha, beta);
+options = odeset('RelTol',1e-3,'AbsTol',1e-3);
+[t,x] = ode45(negI, [0 20], x0, options);
+
+figure
+plot(t, x(:, 3));
+xlabel('Tiempo');
+ylabel('');
+legend('C1(t)');
+title('');
+
+%% NEGATIVE II
+%% Parameters
+% Parámetros del modelo
+kon = 5e-5;       % Constante de asociación
+koff = 0.01;      % Constante de disociación
+kp = 1;           % Constante de producción
+gamma = 4.4e-4;   % Factor gamma
+b = 0.04;         % Factor b
+beta = 1;         % Factor beta
+alpha = 2e-4;     % Factor alpha
+ST = 6e5;         % Concentración máxima de S
+
+%% Modelo con solvers de Matlab
+x0 = [0, 0, 0, 0, 0, 0, 0];
+negII = @(t,y)NegativeFeedbackI(t,y, k, L1, R, phi, tao1, tao2, b, gamma, ST, alpha, beta, L2);
 options = odeset('RelTol',1e-3,'AbsTol',1e-3);
 [t,x] = ode45(negII, [0 20], x0, options);
 
@@ -45,6 +70,8 @@ xlabel('Tiempo');
 ylabel('');
 legend('C1(t)');
 title('');
+
+
 
 %% SERIAL TRIGGERING
 %% Parameters
@@ -90,28 +117,16 @@ function dx = NegativeFeedbackII(t, x, k, L1, R, phi, tao1, tao2, b, gamma, ST, 
 
 end
 
-
-ode = @ODEmodel(
-    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    P'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    T'(t) = - kon * P(t) * T(t) + koff*C0(t) + koff*C1(t) + koff*C2(t),
-    C0'(t) = kon * P(t) * T(t) - (koff + kp)*C0(t) + (b + gamma*S(t))*C1(t),
-    C1'(t) = kp*C0(t) - (koff + kp + b + gamma*S(t))*C1(t) + (b + gamma*S(t))*C2(t),
-    C2'(t) = kp*C1(t) - (koff + b + gamma*S(t))*C2(t),
-    S'(t) = alpha*C1(t)*(ST - S(t)) - beta*S(t), 
-    y1(t) = C2(t)
-)
-
 function dx = NegativeFeedbackI(t, x, kon, koff, kp, b, gamma, ST, alpha, beta)
 
     dx = zeros(6, 1);
     
-    dx(1) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(4);
-    dx(2) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(4);
-    dx(3) = kon * x(1) * x(2) - (koff + kp)*x(3) + (b + gamma*S(t))*x(4);
-    dx(4) = kp*x(3) - (koff + kp + b + gamma*S(t))*x(4) + (b + gamma*S(t))*x(4);
-    dx(5) = kp*x(4) - (koff + b + gamma*S(t))*x(4);
-    dx(6) = alpha*x(4)*(ST - S(t)) - beta*S(t);
+    dx(1) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(5);
+    dx(2) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(5);
+    dx(3) = kon * x(1) * x(2) - (koff + kp)*x(3) + (b + gamma*x(6))*x(4);
+    dx(4) = kp*x(3) - (koff + kp + b + gamma*x(6))*x(4) + (b + gamma*x(6))*x(5);
+    dx(5) = kp*x(4) - (koff + b + gamma*x(6))*x(5);
+    dx(6) = alpha*x(4)*(ST - x(6)) - beta*x(6);
 
 end
 
