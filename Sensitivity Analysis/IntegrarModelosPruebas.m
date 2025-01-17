@@ -47,53 +47,53 @@ clear
 % title('');
 
 %% NEGATIVE I
-% %% Parameters
-% % Parámetros del modelo
-% kon = 5e-5;       % Constante de asociación
-% koff = 0.01;      % Constante de disociación
-% kp = 1;           % Constante de producción
-% gamma = 4.4e-4;   % Factor gamma
-% b = 0.04;         % Factor b
-% beta = 1;         % Factor beta
-% alpha = 2e-4;     % Factor alpha
-% ST = 6e5;         % Concentración máxima de S
-% 
-% %% Modelo con solvers de Matlab
-% x0 = [100, 2e4, 0, 0, 0, 0];
-% negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
-% options = odeset('RelTol',1e-6,'AbsTol',1e-6);
-% [t,x] = ode45(negII, [0 20], x0, options);
-% 
-% figure
-% plot(t, x(:, 5));
-% xlabel('Tiempo');
-% ylabel('');
-% legend('R(t)');
-% title('');
-% hold on
-% 
-% %% 
-% 
-% n = 5000;
-% logeado = linspace(0, 6, n);
-% LT = 10.^logeado;
-% respuesta_steady_state = zeros(1,n);
-% 
-% for i = 1:length(LT)
-% 
-%     x0 = [LT(i), LT(i), 0, 0, 0, 0];
-%     negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
-%     options = odeset('RelTol',1e-6,'AbsTol',1e-6);
-%     [t,x] = ode45(negII, [0 20], x0, options);
-%     respuesta_steady_state(i) = max(x(:, 5));
-% 
-% end
-% 
-% LTlog = log10(LT);
-% 
-% figure
-% plot(LTlog, respuesta_steady_state);
-% hold on
+%% Parameters
+% Parámetros del modelo
+kon = 5e-5;       % Constante de asociación
+koff = 0.01;      % Constante de disociación
+kp = 1;           % Constante de producción
+gamma = 4.4e-4;   % Factor gamma
+b = 0.04;         % Factor b
+beta = 1;         % Factor beta
+alpha = 2e-4;     % Factor alpha
+ST = 6e5;         % Concentración máxima de S
+
+%% Modelo con solvers de Matlab
+x0 = [100, 2e4, 0, 0, 0, 0];
+negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
+options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+[t,x] = ode45(negII, [0 20], x0, options);
+
+figure
+plot(t, x(:, 5));
+xlabel('Tiempo');
+ylabel('');
+legend('R(t)');
+title('');
+hold on
+
+%% 
+
+n = 5000;
+logeado = linspace(0, 6, n);
+LT = 10.^logeado;
+respuesta_steady_state = zeros(1,n);
+
+for i = 1:length(LT)
+
+    x0 = [2e4, LT(i), 0, 0, 0, 0];
+    negII = @(t,y)NegativeFeedbackI(t, y, kon, koff, kp, b, gamma, ST, alpha, beta);
+    options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+    [t,x] = ode45(negII, [0 20], x0, options);
+    respuesta_steady_state(i) = max(x(:, 5));
+
+end
+
+LTlog = log10(LT);
+
+figure
+plot(LTlog, respuesta_steady_state);
+hold on
 
 
 %% SERIAL TRIGGERING
@@ -117,47 +117,47 @@ clear
 
 %% ZU
 %%
-% initial values
-% x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
-% x(5) -> Tp(t) x(6) -> Q(t)
-x0 = [100, 80, 0, 0, 0, 1];
-% step size and time interval in days
-d = 1.0e-16; 
-tspan = 0.0:0.05:100;
-% k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
-% p(6)
-p = [10, 1, 0.1, 1, 1, 10];
-
-ZU = @(t,y)ODEZU(t, y, p);
-options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
-[t,x] = ode45(ZU, tspan, x0, options);
-
-figure
-plot(t, x(:, 5));
-xlabel('Tiempo');
-hold on
-%% 
-
-n = 1000;
-logeado = linspace(0, 6, n);
-LT = 10.^logeado;
-respuesta_steady_state = zeros(1,n);
-
-for i = 1:length(LT)
-
-    x0 = [100, LT(i), 0, 0, 0, 0];
-    ZU = @(t,y)ODEZU(t, y, p);
-    options = odeset('RelTol',1e-6,'AbsTol',1e-6);
-    [t,x] = ode45(ZU, [0 20], x0, options);
-    respuesta_steady_state(i) = max(x(:, 5));
-
-end
-
-LTlog = log10(LT);
-
-figure
-plot(LTlog, respuesta_steady_state);
-hold on
+% % initial values
+% % x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
+% % x(5) -> Tp(t) x(6) -> Q(t)
+% x0 = [100, 80, 0, 0, 0, 1];
+% % step size and time interval in days
+% d = 1.0e-16; 
+% tspan = 0.0:0.05:100;
+% % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+% % p(6)
+% p = [10, 1, 0.1, 1, 1, 10];
+% 
+% ZU = @(t,y)ODEZU(t, y, p);
+% options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
+% [t,x] = ode45(ZU, tspan, x0, options);
+% 
+% figure
+% plot(t, x(:, 5));
+% xlabel('Tiempo');
+% hold on
+% %% 
+% 
+% n = 1000;
+% logeado = linspace(0, 6, n);
+% LT = 10.^logeado;
+% respuesta_steady_state = zeros(1,n);
+% 
+% for i = 1:length(LT)
+% 
+%     x0 = [100, LT(i), 0, 0, 0, 0];
+%     ZU = @(t,y)ODEZU(t, y, p);
+%     options = odeset('RelTol',1e-6,'AbsTol',1e-6);
+%     [t,x] = ode45(ZU, [0 20], x0, options);
+%     respuesta_steady_state(i) = max(x(:, 5));
+% 
+% end
+% 
+% LTlog = log10(LT);
+% 
+% figure
+% plot(LTlog, respuesta_steady_state);
+% hold on
 
 
 
@@ -189,6 +189,19 @@ function dx = NegativeFeedbackII(t, x, k, L1, R, phi, tao1, tao2, b, gamma, ST, 
 end
 
 function dx = NegativeFeedbackI(t, x, kon, koff, kp, b, gamma, ST, alpha, beta)
+
+    dx = zeros(6, 1);
+    
+    dx(1) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(5);
+    dx(2) = - kon * x(1) * x(2) + koff*x(3) + koff*x(4) + koff*x(5);
+    dx(3) = kon * x(1) * x(2) - (koff + kp)*x(3) + (b + gamma*x(6))*x(4);
+    dx(4) = kp*x(3) - (koff + kp + b + gamma*x(6))*x(4) + (b + gamma*x(6))*x(5);
+    dx(5) = kp*x(4) - (koff + b + gamma*x(6))*x(5);
+    dx(6) = alpha*x(4)*(ST - x(6)) - beta*x(6);
+
+end
+
+function dx = NegativeFeedbackI3(t, x, kon, koff, kp, b, gamma, ST, alpha, beta)
 
     dx = zeros(6, 1);
     
