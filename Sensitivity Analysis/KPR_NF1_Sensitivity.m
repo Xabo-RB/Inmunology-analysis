@@ -108,7 +108,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
