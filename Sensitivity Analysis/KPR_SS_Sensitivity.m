@@ -5,7 +5,7 @@ tic
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:1:10000;
+    tspan = 0.0:0.1:5000;
     % kon koff
     p = complex([5e-5, 0.01, 1, 0.001], 0);
     solution = sensitivity(x0, p, d, tspan); 
@@ -175,23 +175,23 @@ toc
 
 %% SOLUCION
 
-% solution = sensitivity(x0, p, d, tspan); 
-% 
-% % solution{estado}(:, nºparametro)
-% NewSolR = solution{4}(:, 1);
-% 
-% figure
-% % Crear el gráfico
-% plot(tspan, NewSolR);
-% xlabel('t');
-% legend;
-% title('Sensitivity');
+%solution = sensitivity(x0, p, d, tspan); 
 
-% % COMPROBACIÓN
-% neg = @(t,y)ODEKPRmcK(t, y, p);
-% options = odeset('RelTol',1e-6,'AbsTol',1e-9);
-% [t,x] = ode45(neg, tspan, x0, options);
-% plot(t, x(:,4), 'DisplayName', 'x1');
+% solution{estado}(:, nºparametro)
+NewSolR = solution{8}(:, 1) + solution{9}(:, 1);
+
+figure
+% Crear el gráfico
+plot(tspan, NewSolR);
+xlabel('t');
+legend;
+title('Sensitivity');
+
+% COMPROBACIÓN
+neg = @(t,y)ODEKPRSustSig(t, y, p);
+options = odeset('RelTol',1e-6,'AbsTol',1e-9);
+[t,x] = ode45(neg, tspan, x0, options);
+plot(t, x(:,4), 'DisplayName', 'x1');
 
 
 
