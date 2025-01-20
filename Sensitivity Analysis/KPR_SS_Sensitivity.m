@@ -5,7 +5,7 @@ tic
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:0.05:10000;
+    tspan = 0.0:1:10000;
     % kon koff
     p = complex([5e-5, 0.01, 1, 0.001], 0);
     solution = sensitivity(x0, p, d, tspan); 
