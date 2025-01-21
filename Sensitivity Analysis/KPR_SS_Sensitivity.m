@@ -174,7 +174,7 @@ hold on
 
 inferno = csvread('inferno_colormap.csv');
 figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, konVect, results_matrix1);
+imagesc(tspan, kpVect, results_matrix1);
 colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
