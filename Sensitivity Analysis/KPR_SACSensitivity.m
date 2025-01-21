@@ -13,60 +13,60 @@ tic
 
     % --------------- UNBINDING RATE -----------------------------
 % Vector de valores de koff
-koffVect = 0.001:0.001:1;
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
-for i = 1:length(koffVect)
-
-    p = complex([5e-5, koffVect(i), 1, 1.5, 1.03], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{8}(:, 3);
-    newSol = (SolResponse.*koffVect(i))./solution{8}(:, 1);
-    % SolResponse = solution{5}(:, 3);
-    % newSol = (SolResponse.*koffVect(i))./solution{5}(:, 1);
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-
-end
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, koffVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-results_matrix2 = log10(abs(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
+% koffVect = 0.001:0.001:1;
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
+% for i = 1:length(koffVect)
+% 
+%     p = complex([5e-5, koffVect(i), 1, 1.5, 1.03], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{8}(:, 3);
+%     newSol = (SolResponse.*koffVect(i))./solution{8}(:, 1);
+%     % SolResponse = solution{5}(:, 3);
+%     % newSol = (SolResponse.*koffVect(i))./solution{5}(:, 1);
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% 
+% end
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, koffVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% results_matrix2 = log10(abs(results_matrix));
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 
 %     % --------------- BINDING RATE -----------------------------
@@ -100,7 +100,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
@@ -110,7 +110,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
@@ -121,7 +121,7 @@ colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('KPR-SAC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
