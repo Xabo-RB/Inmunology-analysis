@@ -1,4 +1,4 @@
-    clear
+clear
 tic
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
     % initial values
