@@ -5,7 +5,7 @@ tic
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:0.1:5000;
+    tspan = 0.0:1:10000;
     % kon koff
     p = complex([5e-5, 0.01, 1, 0.001], 0);
     solution = sensitivity(x0, p, d, tspan); 
@@ -70,106 +70,118 @@ tic
 
 %     % --------------- BINDING RATE -----------------------------
 % Vector de valores de koff
-konVect = 4e-6:1e-6:2e-2;
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
-for i = 1:length(konVect)
-
-    p = complex([konVect(i), 0.01, 1, 0.001], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{8}(:, 2); 
-    % Normalización de la respuesta
-    SolResponse = solution{8}(:, 2) + solution{9}(:, 2);
-    SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
-    newSol = SolResponse.*konVect(i)./SolResponseEst;
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-results_matrix1 = log10(abs(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 380]);
-imagesc(tspan, konVect, results_matrix1);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-% 
-%     % --------------- FORWARD RATE -----------------------------
-%Vector de valores de koff
-% kpVect = linspace(0.001, 10, 2000); 
+% konVect = 4e-6:1e-6:2e-2;
 % 
 % % Resultados con el número de filas de koff y en cada columna el instante
 % % temporal
-% results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
-% for i = 1:length(kpVect)
+% results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
+% for i = 1:length(konVect)
 % 
-%     p = complex([5e-5, 0.01, kpVect(i), 0.09, 1000, 10000, 1000], 0);
+%     p = complex([konVect(i), 0.01, 1, 0.001], 0);
 % 
 %     solution = sensitivity(x0, p, d, tspan);
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{8}(:, 4); 
+%     % SolResponse = solution{8}(:, 2); 
 %     % Normalización de la respuesta
-%     newSol = (SolResponse .* kpVect(i)) ./ solution{8}(:, 1); 
+%     SolResponse = solution{8}(:, 2) + solution{9}(:, 2);
+%     SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
+%     newSol = SolResponse.*konVect(i)./SolResponseEst;
 % 
 %     % En la fila que define un valor de koff
 %     results_matrix(i, :) = newSol;
 % end
 % 
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-IR', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-% 
 % results_matrix1 = log10(abs(results_matrix));
 % 
 % figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+% contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
 % colormap(gray);
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-IR', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, konVect, results_matrix1);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+
+% 
+%     % --------------- FORWARD RATE -----------------------------
+%Vector de valores de koff
+kpVect = linspace(0.001, 10, 2000); 
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
+for i = 1:length(kpVect)
+
+    p = complex([5e-5, 0.01, kpVect(i), 0.001], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{8}(:, 4) + solution{9}(:, 4);
+    SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
+    % Normalización de la respuesta
+    newSol = (SolResponse .* kpVect(i)) ./ SolResponseEst; 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+results_matrix1 = log10(abs(results_matrix));
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, konVect, results_matrix1);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
 
 toc
 
@@ -199,7 +211,7 @@ plot(t, x(:,4), 'DisplayName', 'x1');
 function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODEKPRSustSig(t, y, p);
-    options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
+    options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
     [t,x] = ode15s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
@@ -220,7 +232,7 @@ function solution = sensitivity(x0, p, d, tspan)
         % para calcular la derivada parcial de la solución con respecto a ese parámetro.
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
-        options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
+        options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
         ST = @(t,y)ODEKPRSustSig(t, y, p);
         [t,x] = ode15s(ST, tspan, x0, options);
         
