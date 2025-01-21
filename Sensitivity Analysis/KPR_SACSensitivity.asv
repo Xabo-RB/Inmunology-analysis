@@ -86,7 +86,7 @@ for i = 1:length(konVect)
     % SolResponse = solution{8}(:, 2); 
     % Normalización de la respuesta
     SolResponse = solution{8}(:, 2);
-    newSol = (SolResponse.*konVect(i))./solution{8}(:, 1);
+    newSol = (SolResponse.*koffVect(i))./solution{8}(:, 1);
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
