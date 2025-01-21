@@ -7,75 +7,75 @@ clear
     d = 1.0e-16; 
     tspan = 0.0:0.05:200;
     % kon koff
-    p = complex([5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5, exp(-0.5*2), exp(-0.5*1), exp(0)], 0);
+    p = complex([5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5], 0);
     solution = sensitivity(x0, p, d, tspan); 
 
     % --------------- UNBINDING RATE -----------------------------
 % Vector de valores de koff
-koffVect = 0.001:0.001:1;
+% koffVect = 0.001:0.001:1;
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
+% for i = 1:length(koffVect)
+% 
+%     p = complex([5e-5, koffVect(i), 1, 4.4e-4, 0.04, 1, 2e-4, 6e5], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{8}(:, 3); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* koffVect(i)) ./ solution{8}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% results_matrix1 = abs(log10(results_matrix));
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix1, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% results_matrix2 = log10(abs(results_matrix));
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
-for i = 1:length(koffVect)
-
-    p = complex([5e-5, koffVect(i), 1, 4.4e-4, 0.04, 1, 2e-4, 6e5], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{10}(:, 3); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* koffVect(i)) ./ solution{10}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-results_matrix1 = abs(log10(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix1, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-results_matrix2 = log10(abs(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, koffVect, results_matrix1);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, koffVect, results_matrix1);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 
 %     % --------------- BINDING RATE -----------------------------
@@ -92,9 +92,9 @@ hold on
 %     solution = sensitivity(x0, p, d, tspan);
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{10}(:, 2); 
+%     SolResponse = solution{8}(:, 2); 
 %     % Normalización de la respuesta
-%     newSol = (SolResponse .* konVect(i)) ./ solution{10}(:, 1); 
+%     newSol = (SolResponse .* konVect(i)) ./ solution{8}(:, 1); 
 % 
 %     % En la fila que define un valor de koff
 %     results_matrix(i, :) = newSol;
@@ -108,7 +108,7 @@ hold on
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
 % 
@@ -126,37 +126,37 @@ hold on
 % 
 %     % --------------- FORWARD RATE -----------------------------
 %Vector de valores de koff
-% kpVect = linspace(0.001, 10, 2000); 
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
-% for i = 1:length(kpVect)
-% 
-%     p = complex([5e-5, 0.01, kpVect(i), 4.4e-4, 0.04, 1, 2e-4, 6e5], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{10}(:, 4); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* kpVect(i)) ./ solution{10}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% results_matrix1 = log10(abs(results_matrix));
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-NF2', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
+kpVect = linspace(0.001, 10, 2000); 
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
+for i = 1:length(kpVect)
+
+    p = complex([5e-5, 0.01, kpVect(i), 4.4e-4, 0.04, 1, 2e-4, 6e5], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{8}(:, 4); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* kpVect(i)) ./ solution{8}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+results_matrix1 = log10(abs(results_matrix));
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
 % 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
@@ -196,7 +196,7 @@ hold on
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    ST = @(t,y)ODEKPRNegFeed2(t, y, p);
+    ST = @(t,y)ODEKPRNegFeed(t, y, p);
     options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
     [t,x] = ode45(ST, tspan, x0, options);
     
@@ -219,7 +219,7 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
-        ST = @(t,y)ODEKPRNegFeed2(t, y, p);
+        ST = @(t,y)ODEKPRNegFeed(t, y, p);
         [t,x] = ode45(ST, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
@@ -244,9 +244,9 @@ function solution = sensitivity(x0, p, d, tspan)
 
 end
 
-function dx = ODEKPRNegFeed2(t, x, p)
+function dx = ODEKPRNegFeed(t, x, p)
     % Inicializar el vector dx con ceros
-    dx = zeros(10, 1);
+    dx = zeros(9, 1);
     
     % Definir las ecuaciones diferenciales
     dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8));
@@ -258,7 +258,4 @@ function dx = ODEKPRNegFeed2(t, x, p)
     dx(7) = p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8);
     dx(8) = p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8);
     dx(9) = p(7) * x(4) * (p(8) - x(9)) - p(6) * x(9);
-    dx(10) = p(9)*(p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7)) + ...
-        p(10)*(p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8)) + ...
-        p(11)*(p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8));
 end
