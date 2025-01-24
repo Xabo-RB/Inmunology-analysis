@@ -24,7 +24,7 @@ for i = 1:length(koffVect)
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{7}(:, 2); 
+    SolResponse = solution{7}(:, 3); 
     % Normalización de la respuesta
     newSol = (SolResponse .* koffVect(i)) ./ solution{7}(:, 1); 
 
