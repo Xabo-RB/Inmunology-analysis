@@ -121,14 +121,14 @@ kpVect = linspace(0.001, 10, 2000);
 results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
 for i = 1:length(kpVect)
 
-    p = complex([5e-5, 0.01, kpVect(i), 4.4e-4, 0.04, 1, 2e-4, 6e5, exp(-1*2), exp(-1*1), exp(0)], 0);
+    p = complex([5e-5, 0.01, kpVect(i), 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
 
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{10}(:, 4); 
+    SolResponse = solution{7}(:, 4); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* kpVect(i)) ./ solution{10}(:, 1); 
+    newSol = (SolResponse .* kpVect(i)) ./ solution{7}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
@@ -148,7 +148,7 @@ hold on
 
 inferno = csvread('inferno_colormap.csv');
 figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, kpVect, results_matrix);
+imagesc(tspan, kpVect, results_matrix1);
 colormap(inferno);
 cb = colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
