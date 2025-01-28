@@ -137,7 +137,7 @@ end
 results_matrix1 = log10(abs(results_matrix));
 
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
@@ -185,7 +185,7 @@ hold on
 function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODELimIFF(t, y, p);
-    options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
+    options = odeset('RelTol',1e-7,'AbsTol',1e-7, 'Refine', 1);
     [t,x] = ode15s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
@@ -206,7 +206,7 @@ function solution = sensitivity(x0, p, d, tspan)
         % para calcular la derivada parcial de la solución con respecto a ese parámetro.
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
-        options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
+        options = odeset('RelTol',1e-7,'AbsTol',1e-7, 'Refine', 1);
         ST = @(t,y)ODELimIFF(t, y, p);
         [t,x] = ode15s(ST, tspan, x0, options);
         
