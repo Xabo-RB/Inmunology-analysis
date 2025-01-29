@@ -220,9 +220,9 @@ DERNUMERICA = D[(-193846690701*(-35000 - PT + Sqrt[1225000000 - 50000*PT + PT^2]
 
 
      2]^5)/5436377698752,PT];
-In[13]:= soluciones=NSolve[DERNUMERICA==0,PT]
+In[12]:= soluciones=Solve[DERNUMERICA==0,PT]
 
-Out[13]= {{PT->9208.},{PT->-366.769},{PT->-252.123-217.14 I},{PT->-252.123+217.14 I},{PT->259.087}}
+Out[10]= {}
 
 
 
