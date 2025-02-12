@@ -3,13 +3,27 @@ clear
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
     %% Serial Triggering
     % initial values
-    x0 = complex([0, 0, 0, 0], 0); 
+    x0 = complex([0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
     tspan = 0.0:0.05:50;
     % p(1) = lambda, p(2) = phi, p(3) = s, p(4) = keff, p(5) = h, p(6) = L, p(7) = ki
-    p = complex([0.61, 0.0055, 0.0011, 0.001, 5, 1, 0.094], 0);
+    %p = complex([0.61, 0.0055, 0.0011, 0.001, 5, 1, 0.094], 0);
+
+    % p(1) = varphi, p(2) = lambda, p(3) = sigma, p(4) = k_eff, p(5) = h, p(6) = k_i, p(7) = L
+    p = complex([0.0055, 0.61,  0.0011, 0.001, 5, 0.094, 100], 0);
+
     solution = sensitivity(x0, p, d, tspan); 
+
+        % solution{estado}(:, nºparametro)
+    NewSolR = solution{3}(:, 1);
+    figure
+    % Crear el gráfico
+    plot(tspan, NewSolR);
+    xlabel('t');
+    legend;
+    title('Response');
+    hold on
 
     % --------------- EFFECTIVE RATE -----------------------------
 % Vector de valores de koff
@@ -17,17 +31,17 @@ keffVect = 0.0001:0.0005:0.5;
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
-results_matrix = zeros(length(keffVect), length(solution{4}(:, 1))); 
+results_matrix = zeros(length(keffVect), length(solution{3}(:, 1))); 
 for i = 1:length(keffVect)
 
-    p = complex([0.61, 0.0055, 0.0011, keffVect(i), 5, 1, 0.094], 0);
+    p = complex([0.0055, 0.61,  0.0011, keffVect(i), 5, 0.094, 100], 0);
 
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{4}(:, 5); 
+    SolResponse = solution{3}(:, 5); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* keffVect(i)) ./ solution{4}(:, 1); 
+    newSol = (SolResponse .* keffVect(i)) ./ solution{3}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
@@ -145,7 +159,7 @@ hold on
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
 
-    ST = @(t,y)ODESerialTrig(t, y, p);
+    ST = @(t,y)ODESTMod(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
     [t,x] = ode45(ST, tspan, x0, options);
     
@@ -168,7 +182,7 @@ function solution = sensitivity(x0, p, d, tspan)
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-9, 'Refine', 1);
-        ST = @(t,y)ODESerialTrig(t, y, p);
+        ST = @(t,y)ODESTMod(t, y, p);
         [t,x] = ode45(ST, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
@@ -200,3 +214,15 @@ function dx = ODESerialTrig(t, x, p)
     dx(3) = p(4) * (x(2)^p(5)) * (p(6)^p(5)) - p(7) * x(3);
     dx(4) = x(1) / (p(1) + 1) + ((x(2) + x(3)) * p(1) / (p(1) + 1));
 end
+
+function dx = ODESTMod(t, x, p)
+    dx = zeros(3, 1);
+
+    % Definir las ecuaciones diferenciales
+    % p(1) = varphi, p(2) = lambda, p(3) = sigma, p(4) = k_eff, p(5) = h, p(6) = k_i, p(7) = L
+    dx(1) = -p(1) * (x(1) - (1 / p(2)) * x(2)) + p(3) * (1 / (1 + p(2)) - x(1));  % Ecuación para dS/dt
+    dx(2) = p(1) * (x(1) - (1 / p(2)) * x(2)) + p(3) * (p(2) / (1 + p(2)) - x(2)) - p(4) * x(2)^p(5) * p(7)^p(5);  % Ecuación para dT/dt
+    dx(3) = p(4) * x(2)^p(5) * p(7)^p(5) - p(6) * x(3);  % Ecuación para dA/dt
+end
+
+
