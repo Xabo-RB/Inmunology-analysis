@@ -1,6 +1,6 @@
 %% KPC
 % initial values
-x0 = [100, 2, 0, 0, 0, 0, 0]; 
+x0 = [2, 100, 0, 0, 0, 0, 0]; 
 % step size and time interval in days
 tspan = 0.0:0.05:600;
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
