@@ -10,15 +10,13 @@ tspan = 0.0:0.05:600;
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
 p = [10, 1, 0.1, 1, 1, 10];
 
-% tic
-% KPC = @(t,y)ODEKPC(t, y, p);
-% options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
-% [t,x] = ode45(KPC, tspan, x0, options);
-% toc
-
+tic
 KPC = @(t,y)ODEKPC(t, y, p);
-options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
-[t,x] = ode23s(KPC, tspan, x0, options);
+options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
+[t,x] = ode45(KPC, tspan, x0, options);
+toc
+
+
 
 plot(tspan,x(:,7));
 
@@ -33,7 +31,7 @@ for i = 1:N
     
     % Resolver la ODE
     KPC = @(t,y)ODEKPC(t, y, p);
-    [t, x] = ode23s(KPC, tspan, x0, options);
+    [t, x] = ode45(KPC, tspan, x0, options);
     
     % Obtener el valor máximo de x(7)
     max_x7_values(i) = max(x(:,7));
@@ -42,9 +40,10 @@ end
 % Graficar los resultados
 figure;
 semilogx(x0_values, max_x7_values, '-o');
-xlabel('Total ligands');
-ylabel('Maximal response');
-
+xlabel('Valor inicial de x_0(2)');
+ylabel('Máximo de x(7)');
+title('Variación del máximo de x(7) con x_0(2)');
+grid on;
 
 function dx = ODEKPC(t, x, p)
     dx = zeros(7,1);
