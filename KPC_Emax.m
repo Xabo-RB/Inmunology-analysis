@@ -16,11 +16,11 @@ p = [10, 1, 0.1, 1, 1, 10];
 % [t,x] = ode45(KPC, tspan, x0, options);
 % toc
 
-KPC = @(t,y)ODEKPC(t, y, p);
-options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
-[t,x] = ode23s(KPC, tspan, x0, options);
-
-plot(tspan,x(:,7));
+% KPC = @(t,y)ODEKPC(t, y, p);
+% options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
+% [t,x] = ode23s(KPC, tspan, x0, options);
+% 
+% plot(tspan,x(:,7));
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
@@ -45,6 +45,23 @@ semilogx(x0_values, max_x7_values, '-o');
 xlabel('Total ligands');
 ylabel('Maximal response');
 
+kon = p(1);
+k_3 = p(2);
+k_menos1 = p(3);
+w = p(4);
+k_2 = p(5);
+k_menos2 = p(6);
+koff = k_menos1;
+
+T_T = x(1);
+
+psi = w / (w + koff);
+resultado = (w * ((psi^N - psi^(N+1)) / (1 - psi^(N+1)))) / (2 * ((k_menos2 * k_2) / (k_menos2 + k_3) - k_2)) + ...
+            (T_T / (2 * (1 + (k_2 * k_3) / (kon * (k_menos2 + k_3)))));
+
+disp(['El Emax es: ', num2str(resultado)]);
+
+toc
 
 function dx = ODEKPC(t, x, p)
     dx = zeros(7,1);
@@ -58,5 +75,5 @@ function dx = ODEKPC(t, x, p)
     dx(7) = -p(3) * x(7) - p(4) * x(7) + p(4) * x(6);
 end
 
-toc
+
 
