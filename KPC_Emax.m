@@ -1,4 +1,6 @@
 %% KPC
+clear
+clc
 tic
 
 N = 50; 
@@ -20,7 +22,7 @@ p = [10, 1, 0.1, 1, 1, 10];
 
 KPC = @(t,y)ODEKPC(t, y, p);
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
-[t,x] = ode23s(KPC, tspan, x0, options);
+[t,x] = ode23s(KPC, tspan, x0_original, options);
 
 plot(tspan,x(:,6));
 
