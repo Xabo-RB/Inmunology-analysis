@@ -26,6 +26,7 @@ plot(tspan,x(:,6));
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
+max_Tp_valuesSteadyState = zeros(size(x0_values));
 max_Tp_values = zeros(size(x0_values));
 
 % Bucle sobre cada valor de x0(2)
@@ -38,6 +39,7 @@ for i = 1:N
     [t, x] = ode23s(KPC, tspan, x0, options);
     
     max_Tp_values(i) = max(x(:,6));
+    max_Tp_valuesSteadyState(i) = x(end,6);
     %max_x7_values(i) = x(end,7);
 end
 
@@ -46,6 +48,12 @@ figure;
 semilogx(x0_values, max_Tp_values, '-o');
 xlabel('Total ligands');
 ylabel('Maximal response');
+hold on
+
+figure;
+semilogx(x0_values, max_Tp_valuesSteadyState, '-o');
+xlabel('Total ligands');
+ylabel('Maximal response SS');
 
 kon = p(1);
 k_3 = p(2);
