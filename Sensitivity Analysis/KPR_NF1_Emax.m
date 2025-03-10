@@ -1,7 +1,7 @@
 clear
 clc
 
-x0 = [3e4, 5e4, 0, 0, 0, 0, 0, 0, 0]; 
+x0 = [10^3, 5e4, 0, 0, 0, 0, 0, 0, 0]; 
 % step size and time interval in days
 d = 1.0e-16; 
 tspan = 0.0:0.05:200;
@@ -10,14 +10,16 @@ kon = 1 / 1e5;
 koff = 0.05;
 kp = 0.04;
 b = 0.04;
-gamma = 1 / 1e6;
+gama = 1 / 1e6;
 ST = 6e5;
 alpha = 1 / (5 * 1e2);
 beta = 1;
 
 
-% kon koff
-p = [5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5];
+% kon koff kp gama b beta alpha ST
+p = [kon koff kp gama b beta alpha ST];
+
+%p = [5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5];
 
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 Neg1 = @(t,y)ODEKPRNegFeed(t, y, p);
