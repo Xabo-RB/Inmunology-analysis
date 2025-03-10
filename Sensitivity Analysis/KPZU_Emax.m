@@ -32,12 +32,7 @@ options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 % step size and time interval in days
 tspan = 0.0:0.05:600;
 
-
-% k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
-% p(6)
-p = complex([10, 1, 0.1, 1, 1, 10], 0);
-
-p = [10, 1, 0.1, 1, 1, 10];
+p = [1e-5, 4e-2, 5e-2, 9e-2,  1e-1, 5e-2];
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
@@ -52,7 +47,7 @@ for i = 1:N
     KPC = @(t,y)ODEKPZU(t, y, p);
     [t, x] = ode23s(KPC, tspan, x0, options);
     
-    max_x8_values(i) = max(x(:,8));
+    max_x8_values(i) = max(x(:,3));
     %max_x7_values(i) = x(end,7);
 end
 
@@ -62,6 +57,8 @@ semilogx(x0_values, max_x8_values, '-o');
 xlabel('Total ligands');
 ylabel('Maximal response');
 
+Emaxmitad =  max_x8_values(end)/2;
+EC50 = interp1(max_x8_values, x0_values, Emaxmitad, 'linear');
 
 
 
