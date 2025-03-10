@@ -35,8 +35,8 @@ for i = 1:N
     KPC = @(t,y)ODEKPC(t, y, p);
     [t, x] = ode23s(KPC, tspan, x0, options);
     
-    % Obtener el valor máximo de x(7)
     max_x7_values(i) = max(x(:,7));
+    %max_x7_values(i) = x(end,7);
 end
 
 % Graficar los resultados
@@ -53,10 +53,12 @@ k_2 = p(5);
 k_menos2 = p(6);
 koff = k_menos1;
 
+NN = 2;
+
 T_T = x(1);
 
 psi = w / (w + koff);
-resultado = (w * ((psi^N - psi^(N+1)) / (1 - psi^(N+1)))) / (2 * ((k_menos2 * k_2) / (k_menos2 + k_3) - k_2)) + ...
+resultado = (w * ((psi^NN - psi^(NN+1)) / (1 - psi^(NN+1)))) / (2 * ((k_menos2 * k_2) / (k_menos2 + k_3) - k_2)) + ...
             (T_T / (2 * (1 + (k_2 * k_3) / (kon * (k_menos2 + k_3)))));
 
 disp(['El Emax es: ', num2str(resultado)]);
