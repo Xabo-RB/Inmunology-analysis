@@ -1,4 +1,6 @@
 %% KPC
+clear
+clc
 tic
 
 N = 50; 
@@ -7,8 +9,10 @@ x0_original = [3e4, 5e4, 0, 0, 0, 0, 0];
 
 % step size and time interval in days
 tspan = 0.0:0.05:600;
+
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
 p = [10, 1, 0.1, 1, 1, 10];
+%p = [1e-5, 4e-2, 5e-2, 9e-2, 1e-1, 5e-2];
 
 % tic
 % KPC = @(t,y)ODEKPC(t, y, p);
@@ -18,13 +22,14 @@ p = [10, 1, 0.1, 1, 1, 10];
 
 KPC = @(t,y)ODEKPC(t, y, p);
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
-[t,x] = ode23s(KPC, tspan, x0, options);
+[t,x] = ode23s(KPC, tspan, x0_original, options);
 
-plot(tspan,x(:,7));
+plot(tspan,x(:,6));
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
-max_x7_values = zeros(size(x0_values));
+max_Tp_valuesSteadyState = zeros(size(x0_values));
+max_Tp_values = zeros(size(x0_values));
 
 % Bucle sobre cada valor de x0(2)
 for i = 1:N
@@ -35,16 +40,42 @@ for i = 1:N
     KPC = @(t,y)ODEKPC(t, y, p);
     [t, x] = ode23s(KPC, tspan, x0, options);
     
-    % Obtener el valor máximo de x(7)
-    max_x7_values(i) = max(x(:,7));
+    max_Tp_values(i) = max(x(:,6));
+    max_Tp_valuesSteadyState(i) = x(end,6);
+    %max_x7_values(i) = x(end,7);
 end
 
 % Graficar los resultados
 figure;
-semilogx(x0_values, max_x7_values, '-o');
+semilogx(x0_values, max_Tp_values, '-o');
 xlabel('Total ligands');
 ylabel('Maximal response');
+hold on
 
+figure;
+semilogx(x0_values, max_Tp_valuesSteadyState, '-o');
+xlabel('Total ligands');
+ylabel('Maximal response SS');
+
+kon = p(1);
+k_3 = p(2);
+k_menos1 = p(3);
+w = p(4);
+k_2 = p(5);
+k_menos2 = p(6);
+koff = k_menos1;
+
+NN = 2;
+
+T_T = x(1);
+
+psi = w / (w + koff);
+resultado = (w * ((psi^NN - psi^(NN+1)) / (1 - psi^(NN+1)))) / (2 * ((k_menos2 * k_2) / (k_menos2 + k_3) - k_2)) + ...
+            (T_T / (2 * (1 + (k_2 * k_3) / (kon * (k_menos2 + k_3)))));
+
+disp(['El Emax es: ', num2str(resultado)]);
+
+toc
 
 function dx = ODEKPC(t, x, p)
     dx = zeros(7,1);
@@ -58,5 +89,5 @@ function dx = ODEKPC(t, x, p)
     dx(7) = -p(3) * x(7) - p(4) * x(7) + p(4) * x(6);
 end
 
-toc
+
 
