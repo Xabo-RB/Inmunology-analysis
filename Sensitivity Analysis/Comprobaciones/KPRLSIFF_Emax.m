@@ -12,7 +12,8 @@ options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 % step size and time interval in days
 tspan = 0.0:0.05:100;
 
-%kon = p[1], koff = p[2], kp = p[3],  phi = p[4],   gamma = p[5],   lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]
+%kon = p[1], koff = p[2], kp = p[3],  phi = p[4],   gammaPos = p[5],
+%lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]; gammaNeg = p[5]
 p = [5e-5, 0.01, 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500];
 
 % Vector logarítmico de valores de x0(2)
@@ -45,8 +46,8 @@ kon = 5e-5;
 koff = 0.01;
 kp = 1;
 phi = 0.09;
-gama = 1;
-gammaNeg = gama; gammaPos = gama;
+gama = 500;
+gammaNeg = 500; gammaPos = 1;
 lambda = 0.5;
 delta = 50;
 YT = 100;
@@ -56,10 +57,10 @@ mu = 2.5;
 psi = kp/(kp+koff);
 nu = (1 - psi^2)*koff/(koff+phi);
 
-EmaxXabo = P_T * (2 + gama + ((lambda*TT/gama) + (delta*YT/gama) * (lambda*TT/gama)) * nu) / ...
-         ((lambda*TT/gama) * (mu*TT/gama) * nu^2 + ((lambda*TT/gama) + (lambda*TT/gama) * gama + (mu*TT/gama) + ...
-         gama * (mu*TT/gama) + (delta*YT/gama) * (lambda*TT/gama)) * nu + gama^2 + ...
-         2 * gama + (delta*YT/gama) + 1);
+EmaxXabo = PT * (2 + gama + ((lambda*TT/gammaPos) + (delta*YT/gammaPos) * (lambda*TT/gammaPos)) * nu) / ...
+         ((lambda*TT/gammaPos) * (mu*TT/gammaPos) * nu^2 + ((lambda*TT/gammaPos) + (lambda*TT/gammaPos) * gama + (mu*TT/gammaPos) + ...
+         gama * (mu*TT/gammaPos) + (delta*YT/gammaPos) * (lambda*TT/gammaPos)) * nu + gama^2 + ...
+         2 * gama + (delta*YT/gammaPos) + 1);
 
 
 
