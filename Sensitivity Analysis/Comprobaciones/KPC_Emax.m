@@ -8,6 +8,8 @@ N = 50;
 TT = 3e4; XT = 200;
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
+tolerancia = 1e-4;
+
 % step size and time interval in days
 tspan = 0.0:0.05:300;
 
@@ -51,19 +53,43 @@ CTss = CT(end);
 
 Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
 
+
+
+%% Coincide Tp teórico con el simulado?
+
+TpTeorico1 = TT - x(:,4) - CT - (k3.*x(:,4) + koff.*CT) ./ (kon.*(XT - CT - x(:,4)));
+
+if (TpTeorico1(end) - x(end,3)) < tolerancia
+    disp('Tp teórico eqn 1 coincide')
+end
+
 psi = w / (w + koff);
 f1 = (w/k3) *( (psi^NN - psi^(NN+1)) / (1 - psi^(NN+1)) );
-Num = kon*XT*TT - kon*TT*(1+f1).*CT - kon*XT.*CT*(1+f1) + (1+f1)^2.*CT.^2 - (k3*f1 + koff).*CT;
-Den = kon*(XT - (1+f1).*CT);
+
+TpTeorico2 = TT - f1.*CT - CT - (k3.*f1.*CT + koff.*CT) ./ (kon.*(XT - CT - f1.*CT));
+
+if (TpTeorico2(end) - x(end,3)) < tolerancia
+    disp('Tp teórico eqn 2 coincide')
+end
+
+
+Num = kon*XT*TT - kon*TT*(1+f1).*CT - (1+f1)*kon*XT.*CT + kon*((1+f1)^2).*CT.^2 - (k3*f1 + koff).*CT;
+Den = kon.*(XT - (1+f1).*CT);
 TpTeorico = Num./Den;
 
-figure
-plot(tspan, x(:,3), 'DisplayName', 'Tp');
-hold on
-plot(tspan, TpTeorico, 'DisplayName', 'Tp_teorico');
-hold off
-legend show
-grid on
+if (TpTeorico(end) - x(end,3)) < tolerancia
+    disp('Tp teórico eqn 3 coincide')
+end
+
+% figure
+% plot(tspan, x(:,3), 'DisplayName', 'Tp');
+% hold on
+% plot(tspan, TpTeorico, 'DisplayName', 'Tp_teorico');
+% hold off
+% legend show
+% grid on
+
+
 
 %% SE CUMPLE QUE D = w/k3 CN y D = ... CT
 figure
@@ -80,7 +106,7 @@ grid on
 
 XTsimulado = x(:,2)+x(:,4)+CT;
 TTsimulado = x(:,1) + x(:,3) + x(:,4) + CT;
-tolerancia = 1e-8;
+
 if all(abs(XTsimulado - XT) < tolerancia) && all(abs(TTsimulado - TT) < tolerancia)
     disp('Correcto XT y TT en todos los elementos')
 else
