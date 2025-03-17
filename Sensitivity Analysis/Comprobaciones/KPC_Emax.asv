@@ -5,7 +5,7 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4;
+TT = 5e4;
 x0_original = [TT, 5e4, 0, 0, 0, 0, 0];
 
 % step size and time interval in days
@@ -27,11 +27,11 @@ KPC = @(t,y)ODEKPC(t, y, p);
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 [t,x] = ode23s(KPC, tspan, x0_original, options);
 
-figure
-plot(tspan,x(:,4));
-title('D')
-hold on
-
+% figure
+% plot(tspan,x(:,3));
+% title('Tp')
+% hold on
+% 
 % CT = x(:,5)+x(:,6)+x(:,7);
 % figure
 % plot(tspan, CT);
@@ -109,8 +109,8 @@ semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'Line
 
 % Segundo eje (derecha) - segunda variable
 yyaxis right
-semilogx(x0_values, max_D_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0.5 0]);
-ylabel('$\hat{D}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+semilogx(x0_values, max_D_values, '-s', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0.5 0]);
+ylabel('','FontSize',12,'FontName','Helvetica');
 
 % Colorear ambos ejes en negro (sin colores)
 ax = gca;
