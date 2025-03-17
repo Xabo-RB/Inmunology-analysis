@@ -5,8 +5,8 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4;
-x0_original = [TT, 5e4, 0, 0, 0, 0, 0];
+TT = 3e4; XT = 200;
+x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 % step size and time interval in days
 tspan = 0.0:0.05:300;
@@ -15,6 +15,15 @@ tspan = 0.0:0.05:300;
 %p = [10, 1, 0.1, 1, 1, 10];
 %p = [1e-5, 4e-2, 5e-2, 9e-2, 1e-1, 5e-2];
 p = [0.00001, 0.04, 0.05, 0.09, 0.1, 0.05];
+
+kon = p(1);
+k_3 = p(2); k3 = p(2);
+k_menos1 = p(3);
+w = p(4);
+k_2 = p(5);
+k_menos2 = p(6);
+koff = k_menos1;
+NN = 2;
 
 
 % tic
@@ -38,6 +47,46 @@ plot(tspan, CT);
 title('CT')
 hold on
 yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
+CTss = CT(end);
+
+Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
+
+psi = w / (w + koff);
+f1 = (w/k3) *( (psi^NN - psi^(NN+1)) / (1 - psi^(NN+1)) );
+Num = kon*XT*TT - kon*TT*(1+f1).*CT - kon*XT.*CT*(1+f1) + (1+f1)^2.*CT.^2 - (k3*f1 + koff).*CT;
+Den = kon*(XT - (1+f1).*CT);
+TpTeorico = Num./Den;
+
+figure
+plot(tspan, x(:,3), 'DisplayName', 'Tp');
+hold on
+plot(tspan, TpTeorico, 'DisplayName', 'Tp_teorico');
+hold off
+legend show
+grid on
+
+%% SE CUMPLE QUE D = w/k3 CN y D = ... CT
+figure
+plot(tspan, x(:,4), 'DisplayName', 'D');
+hold on
+plot(tspan, x(:,7), 'DisplayName', 'Cn');
+plot(tspan, x(:,7)*(w/k3), 'DisplayName', 'DconCN');
+plot(tspan, CT*f1, 'DisplayName', 'DconCT');
+hold off
+legend show
+grid on
+
+%%
+
+XTsimulado = x(:,2)+x(:,4)+CT;
+TTsimulado = x(:,1) + x(:,3) + x(:,4) + CT;
+tolerancia = 1e-8;
+if all(abs(XTsimulado - XT) < tolerancia) && all(abs(TTsimulado - TT) < tolerancia)
+    disp('Correcto XT y TT en todos los elementos')
+else
+    disp('No es correcto XT y TT en al menos un elemento')
+end
+
 
 
 %%

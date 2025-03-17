@@ -5,8 +5,8 @@ tic
 
 N = 50; 
 % initial values
-TT = 5e4;
-x0_original = [TT, 5e4, 0, 0, 0, 0, 0];
+TT = 3e4; XT = 200;
+x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 % step size and time interval in days
 tspan = 0.0:0.05:300;
@@ -15,6 +15,15 @@ tspan = 0.0:0.05:300;
 %p = [10, 1, 0.1, 1, 1, 10];
 %p = [1e-5, 4e-2, 5e-2, 9e-2, 1e-1, 5e-2];
 p = [0.00001, 0.04, 0.05, 0.09, 0.1, 0.05];
+
+kon = p(1);
+k_3 = p(2); k3 = p(2);
+k_menos1 = p(3);
+w = p(4);
+k_2 = p(5);
+k_menos2 = p(6);
+koff = k_menos1;
+NN = 2;
 
 
 % tic
@@ -27,17 +36,56 @@ KPC = @(t,y)ODEKPC(t, y, p);
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 [t,x] = ode23s(KPC, tspan, x0_original, options);
 
-% figure
-% plot(tspan,x(:,3));
-% title('Tp')
-% hold on
-% 
-% CT = x(:,5)+x(:,6)+x(:,7);
-% figure
-% plot(tspan, CT);
-% title('CT')
-% hold on
-% yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
+figure
+plot(tspan,x(:,4));
+title('D')
+hold on
+
+CT = x(:,5)+x(:,6)+x(:,7);
+figure
+plot(tspan, CT);
+title('CT')
+hold on
+yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
+CTss = CT(end);
+
+Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
+
+psi = w / (w + koff);
+f1 = (w/k3) *( (psi^NN - psi^(NN+1)) / (1 - psi^(NN+1)) );
+Tpp = ((k3*f1 + koff)*CTss - kon*TT*XT + kon*TT*(1+f1)*CTss + kon*(1+f1)^2*CTss^2)/(kon*(1+f1)*CTss - kon*XT);
+
+disp('El valor de Tp es:');
+disp(Tp);
+
+disp('El valor de Tpp es:');
+disp(Tpp);
+
+%% SE CUMPLE QUE D = w/k3 CN
+figure
+plot(tspan, x(:,4), 'DisplayName', 'D');
+hold on
+plot(tspan, x(:,7), 'DisplayName', 'Cn');
+plot(tspan, x(:,7)*(w/k3), 'DisplayName', 'DconCN');
+plot(tspan, CT*f1, 'DisplayName', 'DconCT');
+hold off
+legend show
+grid on
+
+%%
+
+XTsimulado = x(:,2)+x(:,4)+CT;
+TTsimulado = x(:,1) + x(:,3) + x(:,4) + CT;
+tolerancia = 1e-8;
+if all(abs(XTsimulado - XT) < tolerancia) && all(abs(TTsimulado - TT) < tolerancia)
+    disp('Correcto XT y TT en todos los elementos')
+else
+    disp('No es correcto XT y TT en al menos un elemento')
+end
+
+
+
+%%
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
@@ -64,6 +112,8 @@ for i = 1:N
     max_D_values(i) = x(end,4);
 
 end
+
+%%
 
 % Graficar los resultados
 figure;
@@ -109,8 +159,8 @@ semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'Line
 
 % Segundo eje (derecha) - segunda variable
 yyaxis right
-semilogx(x0_values, max_D_values, '-s', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0.5 0]);
-ylabel('','FontSize',12,'FontName','Helvetica');
+semilogx(x0_values, max_D_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0.5 0]);
+ylabel('$\widehat{D}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 
 % Colorear ambos ejes en negro (sin colores)
 ax = gca;
@@ -140,6 +190,9 @@ hold on
 % semilogx(x0_values, max_Tp_valuesSteadyState, '-o');
 % xlabel('Total ligands');
 % ylabel('Maximal response SS');
+
+%%
+
 
 kon = p(1);
 k_3 = p(2);
