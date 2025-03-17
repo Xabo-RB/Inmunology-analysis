@@ -32,12 +32,15 @@ plot(tspan,x(:,4));
 title('D')
 hold on
 
-% CT = x(:,5)+x(:,6)+x(:,7);
-% figure
-% plot(tspan, CT);
-% title('CT')
-% hold on
-% yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
+CT = x(:,5)+x(:,6)+x(:,7);
+figure
+plot(tspan, CT);
+title('CT')
+hold on
+yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
+
+
+%%
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
@@ -64,6 +67,8 @@ for i = 1:N
     max_D_values(i) = x(end,4);
 
 end
+
+%%
 
 % Graficar los resultados
 figure;
@@ -110,7 +115,7 @@ semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'Line
 % Segundo eje (derecha) - segunda variable
 yyaxis right
 semilogx(x0_values, max_D_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0.5 0]);
-ylabel('$\hat{D}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+ylabel('$\widehat{D}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 
 % Colorear ambos ejes en negro (sin colores)
 ax = gca;
@@ -140,6 +145,9 @@ hold on
 % semilogx(x0_values, max_Tp_valuesSteadyState, '-o');
 % xlabel('Total ligands');
 % ylabel('Maximal response SS');
+
+%%
+
 
 kon = p(1);
 k_3 = p(2);
