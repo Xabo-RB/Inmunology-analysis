@@ -5,7 +5,7 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4; XT = 200;
+TT = 3e4; XT = 5e4;
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 tolerancia = 1e-4;
@@ -41,6 +41,11 @@ options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 figure
 plot(tspan,x(:,4));
 title('D')
+hold on
+
+figure
+plot(tspan,x(:,2));
+title('x')
 hold on
 
 CT = x(:,5)+x(:,6)+x(:,7);
