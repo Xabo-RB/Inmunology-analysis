@@ -143,23 +143,23 @@ for i = 1:N
 
 end
 
-%%
+%% Tp con punto rojo en el máximo
 
 % Graficar los resultados
-figure;
-semilogx(x0_values, max_Tp_values, '-o');
-xlabel('Total ligands');
-ylabel('Maximal response');
-%title(['Emax para k2 = ', num2str(p(5))]);
-hold on
+% figure;
+% semilogx(x0_values, max_Tp_values, '-o');
+% xlabel('Total ligands');
+% ylabel('Maximal response');
+% %title(['Emax para k2 = ', num2str(p(5))]);
+% hold on
 
-figure;
-semilogx(x0_values, max_Tp_values, '-o', 'LineWidth',1.5, 'MarkerSize',6, 'Color',[0 0 0.6]);
-xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
-ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
-grid on;
-set(gca, 'FontSize',12, 'FontName','Helvetica');
-box off; % estética más limpia sin marco
+% figure;
+% semilogx(x0_values, max_Tp_values, '-o', 'LineWidth',1.5, 'MarkerSize',6, 'Color',[0 0 0.6]);
+% xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
+% ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
+% grid on;
+% set(gca, 'FontSize',12, 'FontName','Helvetica');
+% box off; % estética más limpia sin marco
 
 figure;
 semilogx(x0_values, max_Tp_values, '-o', 'LineWidth',1.5, 'MarkerSize',6, 'Color',[0 0 0.6]);
@@ -174,6 +174,7 @@ semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'Line
 hold off;
 
 %% Doble gráfica
+
 figure;
 % Primer eje (izquierda) - primera variable
 yyaxis left
@@ -205,9 +206,26 @@ box off;
 figure;
 semilogx(x0_values, max_CT_values, '-o');
 xlabel('Total ligands');
-ylabel('CT');
-title(['Valor k2 = ', num2str(p(5))]);
+ylabel('$\widehat{C_T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+%title('$\widehat{C_T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 hold on
+
+figure;
+semilogx(x0_values, max_CT_values, '-o', 'LineWidth',1.5,'MarkerSize',6,'Color',[0 0 0.6]);
+xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
+ylabel('$\widehat{C_T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+set(gca,'FontSize',12,'FontName','Helvetica');
+grid on;
+box off;
+% Destacar máximo claramente:
+hold on;
+[~, idx_max] = max(max_CT_values);
+semilogx(x0_values(idx_max), max_CT_values(idx_max), 'ro','MarkerSize',9,'LineWidth',1.5);
+yline(3e4, '--', '$T_T$', 'Interpreter','latex', 'FontSize',13, ...
+    'LineWidth', 1.5, 'LabelVerticalAlignment','bottom','Color',[0 0.5 0]);
+ylim([min(max_CT_values)*0.9, 3.3e4]);
+hold off;
+
 
 figure;
 semilogx(x0_values, max_D_values, '-o');
