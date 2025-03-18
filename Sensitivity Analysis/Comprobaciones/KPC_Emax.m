@@ -178,6 +178,9 @@ hold on;
 semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'LineWidth',1.5);
 hold off;
 
+CTparaTpmax = max_CT_values(idx_max);
+disp(['El valor de CT cuando Tp es max:', CTparaTpmax])
+
 %% Doble gráfica
 
 figure;
