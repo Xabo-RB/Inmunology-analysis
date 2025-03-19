@@ -5,13 +5,13 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4; XT = 5e4;
+TT = 3e4; XT = 0.1;
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 tolerancia = 1e-4;
 
 % step size and time interval in days
-tspan = 0.0:0.05:300;
+tspan = 0.0:0.05:3000;
 
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
 %p = [10, 1, 0.1, 1, 1, 10];
@@ -46,6 +46,11 @@ hold on
 figure
 plot(tspan,x(:,2));
 title('x')
+hold on
+
+figure
+plot(tspan,x(:,3));
+title('Tp')
 hold on
 
 CT = x(:,5)+x(:,6)+x(:,7);
