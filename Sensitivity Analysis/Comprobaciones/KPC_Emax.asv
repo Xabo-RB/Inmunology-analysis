@@ -96,6 +96,7 @@ CTSS = CT(end);
 Num1 = - kon * TT * (1 + f1) * CTSS + kon * ((1 + f1)^2) * (CTSS^2) - (k3 * f1 + koff) * CTSS;
 Den1 = - kon * ((1 + f1) * CTSS);
 TpTeoricoXT0 = Num1/Den1;
+maxTPteorico = max(TpTeoricoXT0);
 maxTP = max(x(:,3));
 
 tolerancia1 = 0.5;
