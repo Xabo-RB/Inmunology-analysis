@@ -6,6 +6,7 @@ tic
 N = 50; 
 % initial values
 TT = 3e4; XT = 1;
+
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 tolerancia = 1e-4;
@@ -90,6 +91,18 @@ TpTeorico = Num./Den;
 if (TpTeorico(end) - x(end,3)) < tolerancia
     disp('Tp teórico eqn 3 coincide')
 end
+
+Num1 = - kon*TT*(1+f1).*CT + kon*((1+f1)^2).*CT.^2 - (k3*f1 + koff).*CT;
+Den1 = - kon.*((1+f1).*CT);
+TpTeoricoXT0 = Num1./Den1;
+maxTPteorico = max(TpTeoricoXT0);
+maxTP = max(x(:,3));
+
+tolerancia1 = 0.5;
+if (maxTPteorico - maxTP) < tolerancia1
+    disp('Tp teórico cuando XT=0 coincide con el máximo')
+end
+
 
 % figure
 % plot(tspan, x(:,3), 'DisplayName', 'Tp');
