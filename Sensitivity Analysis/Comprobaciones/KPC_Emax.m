@@ -62,6 +62,12 @@ hold on
 yline(TT, '--r', ['TT = ', num2str(TT)]); % Línea horizontal en TT con etiqueta
 CTss = CT(end);
 
+CT = x(:,5)+x(:,6)+x(:,7);
+figure
+plot(tspan, CT);
+title('CT')
+hold on
+
 Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
 
 
@@ -92,26 +98,69 @@ if (TpTeorico(end) - x(end,3)) < tolerancia
     disp('Tp teórico eqn 3 coincide')
 end
 
+%% Ecuación haciendo el límite cuando XT tiende a infinito sobre Tp
+
+if x0_original(1) == XT
+    TTcopia = TT; 
+    TT = XT;
+end
+
+% NO FUNCIONA PORQUE ES EL CTss que corresponde al XTi, hay que hallar el
+% valor de CT que da el máximo y que dependa de los parámetros. 
+
 CTSS = CT(end);
-Num1 = - kon * TT * (1 + f1) * CTSS + kon * ((1 + f1)^2) * (CTSS^2) - (k3 * f1 + koff) * CTSS;
-Den1 = - kon * ((1 + f1) * CTSS);
+Num1 = kon * TT * (1 + f1) * CTSS - kon * ((1 + f1)^2) * (CTSS^2) - (k3 * f1 + koff) * CTSS;
+Den1 = kon * ((1 + f1) * CTSS);
 TpTeoricoXT0 = Num1/Den1;
 maxTP = max(x(:,3));
 
 tolerancia1 = 0.5;
-if (maxTPteorico - maxTP) < tolerancia1
+if abs((TpTeoricoXT0 - maxTP)) < tolerancia1
     disp('Tp teórico cuando XT=0 coincide con el máximo')
 end
 
+Num2 = kon*TT - kon*TT*(1+f1)*CTSS - (1+f1)*kon*CTSS + kon*((1+f1)^2)*CTSS^2 - (k3*f1 + koff)*CTSS;
+Den2 = kon*(1 - (1+f1)*CTSS);
+TpTeoricoXT1 = Num2/Den2;
 
-% figure
-% plot(tspan, x(:,3), 'DisplayName', 'Tp');
-% hold on
-% plot(tspan, TpTeorico, 'DisplayName', 'Tp_teorico');
-% hold off
-% legend show
-% grid on
+if abs((TpTeoricoXT1 - maxTP)) < tolerancia1
+    disp('Tp teórico cuando XT=1 coincide con el máximo')
+end
 
+figure
+plot(tspan, x(:,3), 'DisplayName', 'Tp');
+hold on
+plot(tspan, TpTeorico, 'DisplayName', 'Tp_teorico');
+hold off
+legend show
+grid on
+
+if x0_original(1) == XT
+    TT = TTcopia;
+end
+
+%% Usando la ecuación de Faro para Tp
+
+TpFaro = ((k_menos2+k_3)*w*psi^NN)/(-k_2*( w*psi^NN + ((1-psi^(NN+1))/(1-psi)) ));
+
+TpFaro1 = -((psi-1) * psi * w * (k_3 + k_menos2)) / (k_2 * (k_3 * (psi^(NN+1) - 1) + (psi-1) * psi * w));
+
+TpFaro2 = -(sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+    (psi - 1) * psi * w * (k_3 + k_menos2))^2) - ...
+    k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+    (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
+    (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Primera solución (da TT)
+
+TpFaro2 = (sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+    (psi - 1) * psi * w * (k_3 + k_menos2))^2) + ...
+    k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) - ...
+    (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
+    (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Segunda solución
+
+disp(['El Tp de Faro: ', num2str(TpFaro)]);
+disp(['El Tp de Faro: ', num2str(TpFaro1)]);
+disp(['El Tp de Faro: ', num2str(TpFaro2)]);
+disp(['El Tp es: ', num2str(maxTP)]);
 
 
 %% SE CUMPLE QUE D = w/k3 CN y D = ... CT
