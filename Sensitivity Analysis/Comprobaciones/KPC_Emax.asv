@@ -317,18 +317,18 @@ hold on
 %% Tiempo y Xt
 
 % step size and time interval in days
-tfinal = 50:50:3000;
+tfinal_values = 300:100:3000;
 
 % Vector logarítmico de valores de x0(2)
 x0_values = logspace(0, 7, N);
-XtMax = zeros(size(tfinal));
+XtMax = zeros(size(x0_values));
 max_Tp_values = zeros(size(x0_values));
 
 tspan = 0.0:0.05:300;
 
-for j = 1:length(tfinal)
+for j = 1:length(tfinal_values)
     
-    tspan = 0.0:0.05:tfinal(j);
+    tspan = 0.0:0.05:tfinal;
     % Bucle sobre cada valor de x0(2)
     for i = 1:N
         x0 = x0_original;
@@ -338,19 +338,13 @@ for j = 1:length(tfinal)
         KPC = @(t,y)ODEKPC(t, y, p);
         [t, x] = ode23s(KPC, tspan, x0, options);
         
-        max_Tp_values(i) = max(x(:,3));
-        %XtMax(i) = x(indiceMax,2);
+        [max_Tp_values(i), indiceMax] = max(x(:,3));
+        XtMax(i) = x(indiceMax,2);
     
     end
-    
-    [a , indiceMax] = max(max_Tp_values);
-    XtMax(j) = x0_values(indiceMax);
 end
 
-figure
-plot(tfinal, XtMax, 'DisplayName', 'Xt vs Time');
-grid on
-hold on
+
 
 %%
 
