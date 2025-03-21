@@ -352,6 +352,8 @@ plot(tfinal, XtMax, 'DisplayName', 'Xt vs Time');
 grid on
 hold on
 
+% Guardar los resultados
+save('resultadosXt.mat', 'XtMax', 'tfinal');
 %%
 
 
