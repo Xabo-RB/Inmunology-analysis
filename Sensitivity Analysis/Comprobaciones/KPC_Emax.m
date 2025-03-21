@@ -348,9 +348,28 @@ for j = 1:length(tfinal)
 end
 
 figure
-plot(tfinal, XtMax, 'DisplayName', 'Xt vs Time');
+plot(tfinal, XtMax,'-o');
 grid on
 hold on
+
+figure;
+plot(tfinal, XtMax, '-o', 'LineWidth',1.5,'MarkerSize',5,'Color',[0.1 0.3 0.6]);
+xlabel('Time','FontSize',12,'FontName','Helvetica');
+ylabel('$X_{T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+set(gca,'FontSize',12,'FontName','Helvetica');
+grid on;
+box off;
+hold on;
+
+%yline(0,'--','LineWidth',1.2,'Color',[0.8 0 0]);
+% % Ajustar límite inferior claramente por debajo de cero
+% ylim([-1, max(XtMax)*1.05]);
+
+% Leyenda ajustada (sin steady-state)
+% legend({'Response'},...
+%     'FontSize',12,'FontName','Helvetica','Location','northeast','box','off');
+% hold off;
+
 
 % Guardar los resultados
 save('resultadosXt.mat', 'XtMax', 'tfinal');
