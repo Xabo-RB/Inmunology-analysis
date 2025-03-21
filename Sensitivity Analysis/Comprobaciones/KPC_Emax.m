@@ -235,7 +235,7 @@ end
 
 figure;
 semilogx(x0_values, max_Tp_values, '-o', 'LineWidth',1.5, 'MarkerSize',6, 'Color',[0 0 0.6]);
-xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
+xlabel('$X_{T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
 grid on;
 set(gca, 'FontSize',12, 'FontName','Helvetica');
@@ -254,7 +254,7 @@ figure;
 % Primer eje (izquierda) - primera variable
 yyaxis left
 semilogx(x0_values, max_Tp_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 6, 'Color', [0 0 0.6]);
-xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
+xlabel('$X_{T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
 set(gca, 'FontSize',12, 'FontName','Helvetica');
 box off;
@@ -287,7 +287,7 @@ hold on
 
 figure;
 semilogx(x0_values, max_CT_values, '-o', 'LineWidth',1.5,'MarkerSize',6,'Color',[0 0 0.6]);
-xlabel('Total ligands','FontSize',12,'FontName','Helvetica');
+xlabel('$X_{T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 ylabel('$\widehat{C_T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 set(gca,'FontSize',12,'FontName','Helvetica');
 grid on;
@@ -353,7 +353,7 @@ grid on
 hold on
 
 figure;
-plot(tfinal, XtMax, '-o', 'LineWidth',1.5,'MarkerSize',5,'Color',[0.1 0.3 0.6]);
+plot(tfinal, XtMax, '-o', 'LineWidth',1.5,'MarkerSize',5,'Color',[0 0 0.6]);
 xlabel('Time','FontSize',12,'FontName','Helvetica');
 ylabel('$X_{T}$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 set(gca,'FontSize',12,'FontName','Helvetica');
