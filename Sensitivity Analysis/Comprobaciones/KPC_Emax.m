@@ -5,7 +5,7 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4; XT = 1;
+TT = 3e4; XT = 0.1;
 
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
@@ -14,10 +14,12 @@ tolerancia = 1e-4;
 % step size and time interval in days
 tspan = 0.0:0.05:2000;
 
+kon = 0.00001;  koff = 0.05;    w = 0.09;   k3 = 0.01;  k2 = 0.1;   kmenos2 = 0.05; 
+
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
 %p = [10, 1, 0.1, 1, 1, 10];
 %p = [1e-5, 4e-2, 5e-2, 9e-2, 1e-1, 5e-2];
-p = [0.00001, 0.04, 0.05, 0.09, 0.1, 0.05];
+p = [kon, k3, koff, w, k2, kmenos2];
 
 kon = p(1);
 k_3 = p(2); k3 = p(2);
@@ -89,7 +91,6 @@ if (TpTeorico2(end) - x(end,3)) < tolerancia
     disp('Tp teórico eqn 2 coincide')
 end
 
-
 Num = kon*XT*TT - kon*TT*(1+f1).*CT - (1+f1)*kon*XT.*CT + kon*((1+f1)^2).*CT.^2 - (k3*f1 + koff).*CT;
 Den = kon.*(XT - (1+f1).*CT);
 TpTeorico = Num./Den;
@@ -97,6 +98,28 @@ TpTeorico = Num./Den;
 if (TpTeorico(end) - x(end,3)) < tolerancia
     disp('Tp teórico eqn 3 coincide')
 end
+
+
+numerador = f1*(k_3 + k_menos2)*(f1*(k_3 + k_menos2) + k_2*(f1*k_3 + k_menos1) - ...
+    (1 + f1) * k_2 * TT + sqrt( (k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2 ));
+
+denominador = 2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1);
+
+TpTeoricoMathematica1 = - (f1 * (k_3 + k_menos2) * ...
+       (f1 * (k_3 + k_menos2) + k_2 * (f1 * k_3 + k_menos1) - (1 + f1) * k_2 * TT + ...
+        sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
+     / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
+
+TpTeoricoMathematica2 = (f1 * (k_3 + k_menos2) * ...
+      (-f1 * (k_3 + k_menos2) - k_2 * (f1 * k_3 + k_menos1) + ...
+       (1 + f1) * k_2 * TT + ...
+       sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
+     / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
+
+
+TpTeoricoMathematica = numerador / denominador;
+
+
 
 %% Ecuación haciendo el límite cuando XT tiende a infinito sobre Tp
 
