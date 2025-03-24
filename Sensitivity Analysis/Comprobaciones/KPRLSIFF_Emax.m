@@ -5,16 +5,35 @@ clc
 
 TT = 3e4;
 % initial values
-x0_original = [TT, 5e4, 0, 0, 0, 0, 0];
+x0_original = [TT, 5e4, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
+options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
 
 % step size and time interval in days
-tspan = 0.0:0.05:100;
+tspan = 0.0:0.05:400;
 
 %kon = p[1], koff = p[2], kp = p[3],  phi = p[4],   gammaPos = p[5],
-%lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]; gammaNeg = p[5]
-p = [5e-5, 0.01, 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500];
+%lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]; gammaNeg = p[11]
+p = [1e-5, 0.05, 0.04, 0.04, 1, 100, 100, 100, 2.5, 500, 500];
+
+KPC = @(t,y)ODELimIFF1(t, y, p);
+[t,x] = ode23s(KPC, tspan, x0_original, options);
+
+
+figure
+plot(t, x(:,7), 'LineWidth', 2, 'Color', [0 0 0.6])
+hold on
+[ymax, idx_max] = max(x(:,7));
+t_max = t(idx_max);
+h_max = plot(t_max, ymax, 'ro', 'MarkerSize', 5, 'MarkerFaceColor', 'r');
+grid on
+box on
+xlabel('Time (s)', 'FontSize', 12)
+ylabel('P(t)', 'FontSize', 12)
+set(gca, 'FontSize', 11)
+set(gcf, 'Color', 'w')
+legend(h_max, 'Max. response', 'Location', 'best')
+% plot(t,x(:,6))
 
 % Vector logarítmico de valores de x0(2)
 NN = 50; 
@@ -72,8 +91,25 @@ function dx = ODELimIFF(t, x, p)
     dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5));  % L
     dx(2) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5));  % T
     dx(3) = p(1) * x(1) * x(2) - (p(2) + p(3)) * x(3);  % C0
-    dx(4) = p(3) * x(3) - (p(2) + p(4) * p(3)) * x(4);  % C1
-    dx(5) = p(4) * p(3) * x(4) - p(2) * x(5);   % C2
+    dx(4) = p(3) * x(3) - (p(2) + p(4)) * x(4);  % C1
+    dx(5) = p(4) * x(4) - p(2) * x(5);   % C2
     dx(6) = p(5) * (p(8) - x(6)) - p(11) * x(6) + p(6) * x(4) * (p(8) - x(6));  % Y
     dx(7) = p(5) * (p(9) - x(7)) - p(11) * x(7) + p(7) * x(6) * (p(9) - x(7)) - p(10) * x(4) * x(7);    % P
+end
+
+function dx = ODELimIFF1(t, x, p)
+    % Inicializar el vector dx con ceros
+    dx = zeros(7, 1);
+
+    dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8) + x(9));  % L
+    dx(2) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8) + x(9));  % T
+    dx(3) = p(1) * x(1) * x(2) - (p(2) + p(3)) * x(3);  % C0
+    dx(4) = p(3) * x(3) - (p(2) + p(3)) * x(4);  % C1
+    dx(5) = p(3) * x(4) - (p(2) + p(3)) * x(5);  % C2
+    dx(6) = p(3) * x(5) - (p(2) + p(3)) * x(6);  % C3
+    dx(7) = p(3) * x(6) - (p(2) + p(3)) * x(7);  % C4
+    dx(8) = p(3) * x(7) - (p(2) + p(4)) * x(8);  % C5
+    dx(9) = p(4) * x(8) - p(2) * x(9);   % C6
+    dx(10) = p(5) * (p(8) - x(10)) - p(11) * x(10) + p(6) * x(8) * (p(8) - x(10));  % Y
+    dx(11) = p(5) * (p(9) - x(11)) - p(11) * x(11) + p(7) * x(10) * (p(9) - x(11)) - p(10) * x(8) * x(11);    % P
 end
