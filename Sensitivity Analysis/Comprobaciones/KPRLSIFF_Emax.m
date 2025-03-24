@@ -7,10 +7,10 @@ TT = 3e4;
 % initial values
 x0_original = [TT, 5e4, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
+options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
 
 % step size and time interval in days
-tspan = 0.0:0.05:400;
+tspan = 0.0:0.01:80;
 
 %kon = p[1], koff = p[2], kp = p[3],  phi = p[4],   gammaPos = p[5],
 %lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]; gammaNeg = p[11]
@@ -21,9 +21,9 @@ KPC = @(t,y)ODELimIFF1(t, y, p);
 
 
 figure
-plot(t, x(:,7), 'LineWidth', 2, 'Color', [0 0 0.6])
+plot(t, x(:,11), 'LineWidth', 2, 'Color', [0 0 0.6])
 hold on
-[ymax, idx_max] = max(x(:,7));
+[ymax, idx_max] = max(x(:,11));
 t_max = t(idx_max);
 h_max = plot(t_max, ymax, 'ro', 'MarkerSize', 5, 'MarkerFaceColor', 'r');
 grid on
