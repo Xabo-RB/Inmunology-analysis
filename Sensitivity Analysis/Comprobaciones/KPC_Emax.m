@@ -12,7 +12,7 @@ x0_original = [TT, XT, 0, 0, 0, 0, 0];
 tolerancia = 1e-4;
 
 % step size and time interval in days
-tspan = 0.0:0.05:300;
+tspan = 0.0:0.5:2000;
 
 kon = 0.00001;  koff = 0.05;    w = 0.09;   k3 = 0.04;  k2 = 0.1;   kmenos2 = 0.05; 
 
