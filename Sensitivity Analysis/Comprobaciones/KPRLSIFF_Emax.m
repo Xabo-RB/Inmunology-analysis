@@ -17,7 +17,7 @@ tspan = 0.0:0.01:80;
 p = [1e-5, 0.05, 0.04, 0.04, 1, 100, 100, 100, 2.5, 500, 500];
 
 KPC = @(t,y)ODELimIFF1(t, y, p);
-[t,x] = ode23s(KPC, tspan, x0_original, options);
+[t,x] = ode45(KPC, tspan, x0_original, options);
 
 
 figure
