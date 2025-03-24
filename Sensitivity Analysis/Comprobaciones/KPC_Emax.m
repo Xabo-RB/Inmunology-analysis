@@ -5,16 +5,16 @@ tic
 
 N = 50; 
 % initial values
-TT = 3e4; XT = 0.1;
+TT = 3e4; XT = 5e4;
 
 x0_original = [TT, XT, 0, 0, 0, 0, 0];
 
 tolerancia = 1e-4;
 
 % step size and time interval in days
-tspan = 0.0:0.05:2000;
+tspan = 0.0:0.05:300;
 
-kon = 0.00001;  koff = 0.05;    w = 0.09;   k3 = 0.01;  k2 = 0.1;   kmenos2 = 0.05; 
+kon = 0.00001;  koff = 0.05;    w = 0.09;   k3 = 0.04;  k2 = 0.1;   kmenos2 = 0.05; 
 
 % k1 = p[1] = kon,  k3 = p[2], kmenos1 = p[3], w = p[4], k2 = p[5], kmenos2 = p[6]
 %p = [10, 1, 0.1, 1, 1, 10];
