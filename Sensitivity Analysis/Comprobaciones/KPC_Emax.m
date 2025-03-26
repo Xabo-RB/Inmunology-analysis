@@ -268,6 +268,37 @@ hold on;
 semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'LineWidth',1.5);
 hold off;
 
+figure;
+%semilogx(x0_values, max_Tp_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 4, 'Color',[0 0 0.6]);
+%semilogx(x0_values, max_Tp_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 4);
+semilogx(x0_values, max_Tp_values, 'LineWidth', 1.5, 'Color',[0 0 0.6]);
+xlabel('$X_T$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
+ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
+%grid on;
+set(gca, 'FontSize',12, 'FontName','Helvetica');
+box off;
+hold on;
+[~, idx_max] = max(max_Tp_values);
+half_val = max_Tp_values(idx_max)/2;
+hLineH = yline(max_Tp_values(idx_max), ...
+    'Color', 'r', ...
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$E_{max}$');
+
+x_half = interp1(max_Tp_values, x0_values, half_val, 'spline');
+hLineV = xline(x_half, ...
+    'Color', [1 0.65 0], ...  % naranja
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$EC_{50}$');
+maxVal = max_Tp_values(idx_max);
+ylim([0 1.05 * maxVal]);  % Por ejemplo, un 10% extra por encima
+legend([hLineH, hLineV], 'Interpreter', 'latex', 'Location', 'best');
+hold off;
+
+
+
 CTparaTpmax = max_CT_values(idx_max);
 disp(['El valor de CT cuando Tp es max:', CTparaTpmax])
 
