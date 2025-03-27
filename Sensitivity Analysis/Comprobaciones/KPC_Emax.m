@@ -70,7 +70,7 @@ plot(tspan, CT);
 title('CT')
 hold on
 
-Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
+%Tp = (koff*CTss - kon*CTss^2 + kon*TT*CTss + kon*CTss*XT - kon*TT*XT) / ((k_2*k_3/(k_menos2 + k_3) + kon)*(CTss - XT));
 
 
 
@@ -91,6 +91,8 @@ if (TpTeorico2(end) - x(end,3)) < tolerancia
     disp('Tp teórico eqn 2 coincide')
 end
 
+% EQN 79 de Tp del overleaf
+
 Num = kon*XT*TT - kon*TT*(1+f1).*CT - (1+f1)*kon*XT.*CT + kon*((1+f1)^2).*CT.^2 - (k3*f1 + koff).*CT;
 Den = kon.*(XT - (1+f1).*CT);
 TpTeorico = Num./Den;
@@ -100,24 +102,24 @@ if (TpTeorico(end) - x(end,3)) < tolerancia
 end
 
 
-numerador = f1*(k_3 + k_menos2)*(f1*(k_3 + k_menos2) + k_2*(f1*k_3 + k_menos1) - ...
-    (1 + f1) * k_2 * TT + sqrt( (k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2 ));
-
-denominador = 2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1);
-
-TpTeoricoMathematica1 = - (f1 * (k_3 + k_menos2) * ...
-       (f1 * (k_3 + k_menos2) + k_2 * (f1 * k_3 + k_menos1) - (1 + f1) * k_2 * TT + ...
-        sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
-     / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
-
-TpTeoricoMathematica2 = (f1 * (k_3 + k_menos2) * ...
-      (-f1 * (k_3 + k_menos2) - k_2 * (f1 * k_3 + k_menos1) + ...
-       (1 + f1) * k_2 * TT + ...
-       sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
-     / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
-
-
-TpTeoricoMathematica = numerador / denominador;
+% numerador = f1*(k_3 + k_menos2)*(f1*(k_3 + k_menos2) + k_2*(f1*k_3 + k_menos1) - ...
+%     (1 + f1) * k_2 * TT + sqrt( (k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2 ));
+% 
+% denominador = 2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1);
+% 
+% TpTeoricoMathematica1 = - (f1 * (k_3 + k_menos2) * ...
+%        (f1 * (k_3 + k_menos2) + k_2 * (f1 * k_3 + k_menos1) - (1 + f1) * k_2 * TT + ...
+%         sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
+%      / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
+% 
+% TpTeoricoMathematica2 = (f1 * (k_3 + k_menos2) * ...
+%       (-f1 * (k_3 + k_menos2) - k_2 * (f1 * k_3 + k_menos1) + ...
+%        (1 + f1) * k_2 * TT + ...
+%        sqrt((k_2 * (k_menos1 + TT) + f1 * (k_3 + k_2 * k_3 + k_menos2 + k_2 * TT))^2))) ...
+%      / (2 * (1 + f1) * k_2 * (f1 * (k_3 + k_2 * k_3 + k_menos2) + k_2 * k_menos1));
+% 
+% 
+% TpTeoricoMathematica = numerador / denominador;
 
 
 
@@ -164,26 +166,26 @@ end
 
 %% Usando la ecuación de Faro para Tp
 
-TpFaro = ((k_menos2+k_3)*w*psi^NN)/(-k_2*( w*psi^NN + ((1-psi^(NN+1))/(1-psi)) ));
-
-TpFaro1 = -((psi-1) * psi * w * (k_3 + k_menos2)) / (k_2 * (k_3 * (psi^(NN+1) - 1) + (psi-1) * psi * w));
-
-TpFaro2 = -(sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
-    (psi - 1) * psi * w * (k_3 + k_menos2))^2) - ...
-    k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
-    (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
-    (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Primera solución (da TT)
-
-TpFaro2 = (sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
-    (psi - 1) * psi * w * (k_3 + k_menos2))^2) + ...
-    k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) - ...
-    (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
-    (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Segunda solución
-
-disp(['El Tp de Faro: ', num2str(TpFaro)]);
-disp(['El Tp de Faro: ', num2str(TpFaro1)]);
-disp(['El Tp de Faro: ', num2str(TpFaro2)]);
-disp(['El Tp es: ', num2str(maxTP)]);
+% TpFaro = ((k_menos2+k_3)*w*psi^NN)/(-k_2*( w*psi^NN + ((1-psi^(NN+1))/(1-psi)) ));
+% 
+% TpFaro1 = -((psi-1) * psi * w * (k_3 + k_menos2)) / (k_2 * (k_3 * (psi^(NN+1) - 1) + (psi-1) * psi * w));
+% 
+% TpFaro2 = -(sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+%     (psi - 1) * psi * w * (k_3 + k_menos2))^2) - ...
+%     k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+%     (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
+%     (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Primera solución (da TT)
+% 
+% TpFaro2 = (sqrt((k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) + ...
+%     (psi - 1) * psi * w * (k_3 + k_menos2))^2) + ...
+%     k_2 * TT * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w) - ...
+%     (psi - 1) * psi * w * (k_3 + k_menos2)) / ...
+%     (2 * k_2 * (k_3 * (psi^(NN+1) - 1) + (psi - 1) * psi * w)); %Segunda solución
+% 
+% disp(['El Tp de Faro: ', num2str(TpFaro)]);
+% disp(['El Tp de Faro: ', num2str(TpFaro1)]);
+% disp(['El Tp de Faro: ', num2str(TpFaro2)]);
+% disp(['El Tp es: ', num2str(maxTP)]);
 
 
 %% SE CUMPLE QUE D = w/k3 CN y D = ... CT
@@ -218,21 +220,28 @@ max_Tp_valuesSteadyState = zeros(size(x0_values));
 max_Tp_values = zeros(size(x0_values));
 max_CT_values = zeros(size(x0_values));
 max_D_values = zeros(size(x0_values));
+TpTeoricoXT = zeros(size(x0_values));
 
 % Bucle sobre cada valor de x0(2)
 for i = 1:N
     x0 = x0_original;
     x0(2) = x0_values(i); % Modificamos el segundo valor de x0
-    
+
     % Resolver la ODE
     KPC = @(t,y)ODEKPC(t, y, p);
     [t, x] = ode23s(KPC, tspan, x0, options);
     
-    max_Tp_values(i) = max(x(:,3));
-    max_Tp_valuesSteadyState(i) = x(end,3);
-    
+    [max_Tp_values(i), indMax] = max(x(:,3));
+
     CT = x(:,5)+x(:,6)+x(:,7);
-    max_CT_values(i) = max(CT);
+    CTss = CT(indMax);
+    CTss = CT(end);
+
+    Num = kon*x0_values(i)*TT - kon*TT*(1+f1)*CTss - (1+f1)*kon*x0_values(i)*CTss + kon*((1+f1)^2)*CTss^2 - (k3*f1 + koff)*CTss;
+    Den = kon.*(x0_values(i) - (1+f1)*CTss);
+    TpTeoricoXT(i) = Num/Den;
+    
+    max_Tp_valuesSteadyState(i) = x(end,3);
 
     max_D_values(i) = x(end,4);
 
@@ -268,16 +277,18 @@ hold on;
 semilogx(x0_values(idx_max), max_Tp_values(idx_max), 'ro', 'MarkerSize',9, 'LineWidth',1.5);
 hold off;
 
+
 figure;
-%semilogx(x0_values, max_Tp_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 4, 'Color',[0 0 0.6]);
+semilogx(x0_values, max_Tp_values, 'o', 'MarkerSize', 4, 'Color',[0 0 0.6]);
 %semilogx(x0_values, max_Tp_values, '-o', 'LineWidth', 1.5, 'MarkerSize', 4);
-semilogx(x0_values, max_Tp_values, 'LineWidth', 1.5, 'Color',[0 0 0.6]);
+%semilogx(x0_values, max_Tp_values, 'LineWidth', 1.5, 'Color',[0 0 0.6]);
 xlabel('$X_T$','Interpreter','latex','FontSize',14,'FontName','Helvetica');
 ylabel('Maximal response','FontSize',12,'FontName','Helvetica');
 %grid on;
 set(gca, 'FontSize',12, 'FontName','Helvetica');
 box off;
 hold on;
+semilogx(x0_values, TpTeoricoXT, '-', 'LineWidth', 1.5);
 [~, idx_max] = max(max_Tp_values);
 half_val = max_Tp_values(idx_max)/2;
 hLineH = yline(max_Tp_values(idx_max), ...
@@ -296,6 +307,18 @@ maxVal = max_Tp_values(idx_max);
 ylim([0 1.05 * maxVal]);  % Por ejemplo, un 10% extra por encima
 legend([hLineH, hLineV], 'Interpreter', 'latex', 'Location', 'best');
 hold off;
+
+figure;
+semilogx(x0_values, TpTeoricoXT, '-', 'LineWidth', 1.5);
+set(gca, 'FontSize',12, 'FontName','Helvetica');
+hold on;
+
+figure;
+semilogx(x0_values, max_Tp_valuesSteadyState, '-', 'LineWidth', 1.5);
+set(gca, 'FontSize',12, 'FontName','Helvetica');
+hold on;
+semilogx(x0_values, max_Tp_values, '-', 'LineWidth', 1.5);
+
 
 
 
