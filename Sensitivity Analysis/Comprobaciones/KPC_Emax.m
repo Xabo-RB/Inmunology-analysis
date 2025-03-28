@@ -315,18 +315,52 @@ legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
 hold off;
 
 figure;
-semilogx(x0_values, TpTeoricoXT, '-', 'LineWidth', 1.5);
-set(gca, 'FontSize',12, 'FontName','Helvetica');
+semilogx(x0_values, max_Tp_values, 'o', ...
+    'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
+    'MarkerEdgeColor', 'k');
 hold on;
+semilogx(x0_values, max_Tp_values, '-', ...
+    'LineWidth', 1, ...
+    'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
+xlabel('$X_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
+set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
+box off;
+% --- Líneas horizontales E_max y E_max/2 ---
+[~, idx_max] = max(max_Tp_values);
+maxVal = max_Tp_values(idx_max);
+half_val = maxVal/2;
+hLineH = yline(maxVal, ...
+    'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$E_{max}$');
+hLineH1 = yline(half_val, ...
+    'Color', [0.4660 0.6740 0.1880], ... % verde
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$E_{max}$/2');
+x_half = interp1(max_Tp_values, x0_values, half_val, 'spline');
+hLineV = xline(x_half, ...
+    'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$EC_{50}$');
 
-figure;
-semilogx(x0_values, max_Tp_valuesSteadyState, '-', 'LineWidth', 1.5);
-set(gca, 'FontSize',12, 'FontName','Helvetica');
-hold on;
-semilogx(x0_values, max_Tp_values, '-', 'LineWidth', 1.5);
+ylim([0 1.05 * maxVal]); 
+legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
+hold off;
 
-
-
+% figure;
+% semilogx(x0_values, TpTeoricoXT, '-', 'LineWidth', 1.5);
+% set(gca, 'FontSize',12, 'FontName','Helvetica');
+% hold on;
+% 
+% figure;
+% semilogx(x0_values, max_Tp_valuesSteadyState, '-', 'LineWidth', 1.5);
+% set(gca, 'FontSize',12, 'FontName','Helvetica');
+% hold on;
+% semilogx(x0_values, max_Tp_values, '-', 'LineWidth', 1.5);
 
 CTparaTpmax = max_CT_values(idx_max);
 disp(['El valor de CT cuando Tp es max:', CTparaTpmax])
