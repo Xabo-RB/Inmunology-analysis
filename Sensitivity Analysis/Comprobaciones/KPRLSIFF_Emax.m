@@ -4,15 +4,15 @@ clc
 %% Simulación
 
 TT = 3e4;
-LT = 5e4;
+LT = 100;
 N = 5;
 % initial values
-x0_original = [TT, 5e4, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+x0_original = [TT, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
+options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
 
 % step size and time interval in days
-tspan = 0.0:0.01:80;
+tspan = 0.0:0.01:2000;
 
 %kon = p[1], koff = p[2], kp = p[3],  phi = p[4],   gammaPos = p[5],
 %lambda = p[6],  delta = p[7],   YT = p[8],  PT = p[9],  mu = p[10]; gammaNeg = p[11]
