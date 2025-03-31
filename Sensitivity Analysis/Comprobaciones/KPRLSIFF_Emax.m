@@ -92,8 +92,8 @@ ylabel('Maximal response')
 hold on
 
 save('resultadosCN_IFF.mat', 'XT_values', 'CN_SS');
-save('resultadosCN_IFF.mat', 'XT_values', 'max_CN_values');
-save('resultadosCN_IFF.mat', 'XT_values', 'resultadoCNteorico');
+save('resultadosCN_IFF1.mat', 'XT_values', 'max_CN_values');
+save('resultadosCN_IFF2.mat', 'XT_values', 'resultadoCNteorico');
 
 %%
 eMAX_TEORICO = zeros(size(XT_values));
