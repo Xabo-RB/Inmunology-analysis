@@ -91,6 +91,26 @@ xlabel('Total ligands')
 ylabel('Maximal response')
 hold on
 
+figure;
+% Primera curva (at Steady-state)
+h1 = semilogx(XT_values, CN_SS, '-.', ...
+    'LineWidth', 1.2, ...
+    'Color', [0.4660 0.6740 0.1880], ...
+    'MarkerSize', 1, ...
+    'DisplayName', 'at Steady-state');
+hold on;
+% Segunda curva (Maximum)
+h2 = semilogx(XT_values, max_CN_values, '-', ...
+    'LineWidth', 1.2, ...
+    'Color', [0.8500 0.3250 0.0980], ...
+    'DisplayName', 'Maximum');
+xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+ylabel('$\widehat R\ \mathrm{(response)}$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
+box off;
+legend([h1, h2], 'Interpreter', 'none', 'Location', 'best');
+
+
 save('resultadosCN_IFF.mat', 'XT_values', 'CN_SS');
 save('resultadosCN_IFF1.mat', 'XT_values', 'max_CN_values');
 save('resultadosCN_IFF2.mat', 'XT_values', 'resultadoCNteorico');
