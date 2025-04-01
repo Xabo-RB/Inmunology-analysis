@@ -44,6 +44,7 @@ x0_original = x0;
 max_CN_values = zeros(size(x0_values));
 max_CN_SS = zeros(size(x0_values));
 P_SS = zeros(size(x0_values));
+respuestaNF2 = zeros(size(x0_values));
 
 % Bucle sobre cada valor de x0(2)
 for i = 1:NN
@@ -54,9 +55,19 @@ for i = 1:NN
     KPC = @(t,y)ODEKPRNegFeed_N_2(t, y, p);
     [t, x] = ode45(KPC, tspan, x0, options);
     
+    %   N = 5
+    % max_CN_values(i) = max(x(:,8));
+    % max_CN_SS(i) = x(end,8);
+    % P_SS(i) = x(end,9);
+    % 
+    % respuestaNF2(i) = max(x(:,8)) + max(x(:,7))*exp(-2) + max(x(:,6))*exp(-4);
+
+    %   N = 2
     max_CN_values(i) = max(x(:,5));
     max_CN_SS(i) = x(end,5);
-    P_SS(i) = x(end,9);
+    P_SS(i) = x(end,6);
+
+    respuestaNF2(i) = max(x(:,5)) + max(x(:,4))*exp(-2) + max(x(:,3))*exp(-4);
 end
 
 % figure;
@@ -73,21 +84,71 @@ end
 % 
 % EmaxReal = max_CN_SS(end);
 
+%%      N = 5
+% [~, idx_max] = max(respuestaNF2);
+% maxVal = respuestaNF2(idx_max);
+% half_val = maxVal/2;
+% 
+% mitadInf = respuestaNF2(1:idx_max);
+% mitadSup = respuestaNF2(idx_max:end);
+% 
+% mitadInfLT = x0_values(1:idx_max);
+% mitadSupLT = x0_values(idx_max:end);
+% 
+% x_half1 = interp1(mitadInf, mitadInfLT, half_val, 'spline');
+% x_half2 = interp1(mitadSup, mitadSupLT, half_val, 'pchip');
+
+% figure;
+% semilogx(x0_values, respuestaNF2, 'o', ...
+%     'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
+%     'MarkerEdgeColor', 'k');
+% hold on;
+% semilogx(x0_values, respuestaNF2, '-', ...
+%     'LineWidth', 1, ...
+%     'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
+% xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+% ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
+% set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
+% box off;
+% hLineH = yline(maxVal, ...
+%     'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$E_{max}$');
+% hLineH1 = yline(half_val, ...
+%     'Color', [0.4660 0.6740 0.1880], ... % verde
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$E_{max}$/2');
+% hLineV = xline(x_half1, ...
+%     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$EC_{50}$');
+% hLineV1 = xline(x_half2, ...
+%     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$EC_{50}$');
+% ylim([0 1.05 * maxVal]); 
+% legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
+% hold off;
+
+%% N = 2
 figure;
-semilogx(x0_values, max_CN_values, 'o', ...
+semilogx(x0_values, respuestaNF2, 'o', ...
     'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
     'MarkerEdgeColor', 'k');
 hold on;
-semilogx(x0_values, max_CN_SS, '-', ...
+semilogx(x0_values, respuestaNF2, '-', ...
     'LineWidth', 1, ...
     'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
 xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
 ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
 set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
 box off;
-% --- Líneas horizontales E_max y E_max/2 ---
-[~, idx_max] = max(max_CN_SS);
-maxVal = max_CN_SS(idx_max);
+[~, idx_max] = max(respuestaNF2);
+maxVal = respuestaNF2(idx_max);
 half_val = maxVal/2;
 hLineH = yline(maxVal, ...
     'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
@@ -99,7 +160,7 @@ hLineH1 = yline(half_val, ...
     'LineStyle', '-', ...
     'LineWidth', 1.5, ...
     'DisplayName', '$E_{max}$/2');
-x_half = interp1(max_CN_SS, x0_values, half_val, 'spline');
+x_half = interp1(respuestaNF2, x0_values, half_val, 'spline');
 hLineV = xline(x_half, ...
     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
     'LineStyle', '-', ...
@@ -115,8 +176,8 @@ E_maxXabo = (kp * (koff^2 + koff * kp + kp^2 + b * (koff + kp))) / ...
         (kp * (koff + kp)^2 + b^2 * (koff + 2 * kp) + b * (koff^2 + 4 * koff * kp + 2 * kp^2)) ...
         * TT;
 
-P_hat = 6e5;
-P_hat = P_SS(end);
+P_hat = 10;
+%P_hat = P_SS(end);
 k1 = koff + b + gama * P_hat;
 psi = kp / (kp + k1);
 
