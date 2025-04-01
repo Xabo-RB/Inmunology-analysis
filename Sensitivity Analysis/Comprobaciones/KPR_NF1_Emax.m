@@ -2,8 +2,10 @@ clear
 clc
 
 TT = 3e4;
+ST = 10000;
+x0 = [TT, 5e4, 0, 0, 0, 0, 0, 0, ST]; 
+x0 = [TT, 5e4, 0, 0, 0, ST]; 
 
-x0 = [TT, 5e4, 0, 0, 0, 0, 0, 0, 0]; 
 % step size and time interval in days
 d = 1.0e-16; 
 tspan = 0.0:0.05:200;
@@ -13,7 +15,6 @@ koff = 0.05;
 kp = 0.09;
 b = 0.04;
 gama = 1 / 1e6;
-ST = 6e5;
 alpha = 1 / (5 * 1e2);
 beta = 1;
 
@@ -35,6 +36,14 @@ Neg1 = @(t,y)ODEKPRNegFeed_N_2(t, y, p);
 % plot(tspan,x(:,6))
 % hold on
 
+figure
+plot(tspan,x(:,5))
+hold on
+P_hat = x(end,6);
+k1 = koff + b + gama * P_hat;
+psi = kp / (kp + k1);
+CN = x(:,4)*kp/k1;
+plot(tspan,CN)
 
 %% Simulación
 NN = 50; 
@@ -82,7 +91,7 @@ end
 % xlabel('Total ligands');
 % ylabel('Maximal response');
 % 
-% EmaxReal = max_CN_SS(end);
+EmaxReal = max_CN_SS(end);
 
 %%      N = 5
 % [~, idx_max] = max(respuestaNF2);
@@ -177,9 +186,7 @@ E_maxXabo = (kp * (koff^2 + koff * kp + kp^2 + b * (koff + kp))) / ...
         * TT;
 
 P_hat = 10;
-%P_hat = P_SS(end);
-k1 = koff + b + gama * P_hat;
-psi = kp / (kp + k1);
+P_hat = P_SS(end);
 
 E_maxXabo1 = (kp * (kp - koff * (psi - 1))) / (kp * (koff + kp) + (b + gama * P_hat) * (koff - kp * (psi - 2))) ...
         * TT;
@@ -188,7 +195,7 @@ E_maxXabo1 = (kp * (kp - koff * (psi - 1))) / (kp * (koff + kp) + (b + gama * P_
 
 function dx = ODEKPRNegFeed_N_2(t, x, p)
     % Inicializar el vector dx con ceros
-    dx = zeros(9, 1);
+    dx = zeros(6, 1);
     
     % Definir las ecuaciones diferenciales
     dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5)); % L
@@ -208,10 +215,10 @@ function dx = ODEKPRNegFeed(t, x, p)
     dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8));
     dx(2) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8));
     dx(3) = p(1) * x(1) * x(2) - (p(2) + p(3)) * x(3) + (p(5) + p(4) * x(9)) * x(4);
-    dx(4) = p(3) * x(3) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(4) + (p(5) + p(4) * x(9)) * x(5);
-    dx(5) = p(3) * x(4) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(5) + (p(5) + p(4) * x(9)) * x(6);
-    dx(6) = p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7);
-    dx(7) = p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8);
-    dx(8) = p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8);
+    dx(4) = p(3) * x(3) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(4) + (p(5) + p(4) * x(9)) * x(5); % C1
+    dx(5) = p(3) * x(4) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(5) + (p(5) + p(4) * x(9)) * x(6); % C2
+    dx(6) = p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7); % C3
+    dx(7) = p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8); % C4
+    dx(8) = p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8); % C5
     dx(9) = p(7) * x(4) * (p(8) - x(9)) - p(6) * x(9);
 end
