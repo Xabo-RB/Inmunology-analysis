@@ -92,18 +92,18 @@ ylabel('Maximal response')
 hold on
 
 figure;
-% Primera curva (at Steady-state)
+% Primera curva (at Steady-state) - Azul oscuro
 h1 = semilogx(XT_values, CN_SS, '-.', ...
     'LineWidth', 1.2, ...
-    'Color', [0.4660 0.6740 0.1880], ...
+    'Color', [0 0 0.55], ...  % Azul oscuro
     'MarkerSize', 1, ...
     'DisplayName', 'at Steady-state');
 hold on;
-% Segunda curva (Maximum)
+% Segunda curva (Maximum) - Rojo
 h2 = semilogx(XT_values, max_CN_values, '-', ...
     'LineWidth', 1.2, ...
-    'Color', [0.8500 0.3250 0.0980], ...
-    'DisplayName', 'Maximum');
+    'Color', [1 0 0], ...  % Rojo
+    'DisplayName', 'Peak');
 xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
 ylabel('$\widehat R\ \mathrm{(response)}$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
 set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
