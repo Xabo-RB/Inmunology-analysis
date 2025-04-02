@@ -63,7 +63,7 @@ hold on;
 semilogx(x0_values, RespuestaSS, '-', ...
     'LineWidth', 1, ...
     'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
-xlabel('$X_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
 ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
 set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
 box off;

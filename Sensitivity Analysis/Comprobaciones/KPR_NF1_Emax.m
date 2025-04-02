@@ -2,9 +2,9 @@ clear
 clc
 
 TT = 3e4;
-ST = 10000;
+ST = 6e5;
 x0 = [TT, 5e4, 0, 0, 0, 0, 0, 0, ST]; 
-x0 = [TT, 5e4, 0, 0, 0, ST]; 
+%x0 = [TT, 5e4, 0, 0, 0, ST]; 
 
 % step size and time interval in days
 d = 1.0e-16; 
@@ -25,7 +25,7 @@ p = [kon koff kp gama b beta alpha ST];
 %p = [5e-5, 0.01, 1, 4.4e-4, 0.04, 1, 2e-4, 6e5];
 
 options = odeset('RelTol',1e-10,'AbsTol',1e-10, 'Refine', 1);
-Neg1 = @(t,y)ODEKPRNegFeed_N_2(t, y, p);
+Neg1 = @(t,y)ODEKPRNegFeed(t, y, p);
 [t,x] = ode45(Neg1, tspan, x0, options);
 
 % figure
@@ -61,89 +61,53 @@ for i = 1:NN
     x0(2) = x0_values(i);
     
     % Resolver la ODE
-    KPC = @(t,y)ODEKPRNegFeed_N_2(t, y, p);
+    KPC = @(t,y)ODEKPRNegFeed(t, y, p);
     [t, x] = ode45(KPC, tspan, x0, options);
     
     %   N = 5
-    % max_CN_values(i) = max(x(:,8));
-    % max_CN_SS(i) = x(end,8);
-    % P_SS(i) = x(end,9);
-    % 
-    % respuestaNF2(i) = max(x(:,8)) + max(x(:,7))*exp(-2) + max(x(:,6))*exp(-4);
+    max_CN_values(i) = max(x(:,8));
+    max_CN_SS(i) = x(end,8);
+    P_SS(i) = x(end,9);
+
+    respuestaNF2(i) = max(x(:,8)) + max(x(:,7))*exp(-2) + max(x(:,6))*exp(-4);
 
     %   N = 2
-    max_CN_values(i) = max(x(:,5));
-    max_CN_SS(i) = x(end,5);
-    P_SS(i) = x(end,6);
-
-    respuestaNF2(i) = max(x(:,5)) + max(x(:,4))*exp(-2) + max(x(:,3))*exp(-4);
+    % max_CN_values(i) = max(x(:,5));
+    % max_CN_SS(i) = x(end,5);
+    % P_SS(i) = x(end,6);
+    % 
+    % respuestaNF2(i) = max(x(:,5)) + max(x(:,4))*exp(-2) + max(x(:,3))*exp(-4);
 end
 
-% figure;
-% semilogx(x0_values, max_CN_values, '-o');
-% xlabel('Total ligands');
-% ylabel('Maximal response');
-% hold on
-% semilogx(x0_values, max_CN_SS, '-o');
+figure;
+semilogx(x0_values, max_CN_values, '-o');
+xlabel('Total ligands');
+ylabel('Maximal response');
+hold on
+semilogx(x0_values, max_CN_SS, '-o');
 % 
-% figure;
-% semilogx(x0_values, P_SS, '-o');
-% xlabel('Total ligands');
-% ylabel('Maximal response');
+figure;
+semilogx(x0_values, respuestaNF2, '-o');
+xlabel('Total ligands');
+ylabel('Maximal response');
 % 
 EmaxReal = max_CN_SS(end);
 
 %%      N = 5
-% [~, idx_max] = max(respuestaNF2);
-% maxVal = respuestaNF2(idx_max);
-% half_val = maxVal/2;
-% 
-% mitadInf = respuestaNF2(1:idx_max);
-% mitadSup = respuestaNF2(idx_max:end);
-% 
-% mitadInfLT = x0_values(1:idx_max);
-% mitadSupLT = x0_values(idx_max:end);
-% 
-% x_half1 = interp1(mitadInf, mitadInfLT, half_val, 'spline');
-% x_half2 = interp1(mitadSup, mitadSupLT, half_val, 'pchip');
+[~, idx_max] = max(respuestaNF2);
+maxVal = respuestaNF2(idx_max);
+half_val = maxVal/2;
 
-% figure;
-% semilogx(x0_values, respuestaNF2, 'o', ...
-%     'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
-%     'MarkerEdgeColor', 'k');
-% hold on;
-% semilogx(x0_values, respuestaNF2, '-', ...
-%     'LineWidth', 1, ...
-%     'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
-% xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
-% ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
-% set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
-% box off;
-% hLineH = yline(maxVal, ...
-%     'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
-%     'LineStyle', '-', ...
-%     'LineWidth', 1.5, ...
-%     'DisplayName', '$E_{max}$');
-% hLineH1 = yline(half_val, ...
-%     'Color', [0.4660 0.6740 0.1880], ... % verde
-%     'LineStyle', '-', ...
-%     'LineWidth', 1.5, ...
-%     'DisplayName', '$E_{max}$/2');
-% hLineV = xline(x_half1, ...
-%     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
-%     'LineStyle', '-', ...
-%     'LineWidth', 1.5, ...
-%     'DisplayName', '$EC_{50}$');
-% hLineV1 = xline(x_half2, ...
-%     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
-%     'LineStyle', '-', ...
-%     'LineWidth', 1.5, ...
-%     'DisplayName', '$EC_{50}$');
-% ylim([0 1.05 * maxVal]); 
-% legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
-% hold off;
+mitadInf = respuestaNF2(1:idx_max);
+mitadSup = respuestaNF2(24:30);
 
-%% N = 2
+mitadInfLT = x0_values(1:idx_max);
+mitadSupLT = x0_values(24:30);
+
+x_half1 = interp1(mitadInf, mitadInfLT, half_val, 'spline');
+x_half2 = interp1(mitadSup, mitadSupLT, half_val, 'spline');
+x_half2 = x0_values(27);
+
 figure;
 semilogx(x0_values, respuestaNF2, 'o', ...
     'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
@@ -156,9 +120,6 @@ xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica')
 ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
 set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
 box off;
-[~, idx_max] = max(respuestaNF2);
-maxVal = respuestaNF2(idx_max);
-half_val = maxVal/2;
 hLineH = yline(maxVal, ...
     'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
     'LineStyle', '-', ...
@@ -169,8 +130,12 @@ hLineH1 = yline(half_val, ...
     'LineStyle', '-', ...
     'LineWidth', 1.5, ...
     'DisplayName', '$E_{max}$/2');
-x_half = interp1(respuestaNF2, x0_values, half_val, 'spline');
-hLineV = xline(x_half, ...
+hLineV = xline(x_half1, ...
+    'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$EC_{50}$');
+hLineV1 = xline(x_half2, ...
     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
     'LineStyle', '-', ...
     'LineWidth', 1.5, ...
@@ -178,6 +143,42 @@ hLineV = xline(x_half, ...
 ylim([0 1.05 * maxVal]); 
 legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
 hold off;
+
+%% N = 2
+% figure;
+% semilogx(x0_values, respuestaNF2, 'o', ...
+%     'MarkerSize', 4, ...                % Tamaño de marcadores un poco mayor
+%     'MarkerEdgeColor', 'k');
+% hold on;
+% semilogx(x0_values, respuestaNF2, '-', ...
+%     'LineWidth', 1, ...
+%     'Color', [0 0.4470 0.7410]);        % Mismo color azul para la línea
+% xlabel('$L_T$', 'Interpreter', 'latex', 'FontSize', 14, 'FontName', 'Helvetica');
+% ylabel('$\widehat R$ (response at steady-state)', 'Interpreter', 'latex', 'FontSize', 12, 'FontName', 'Helvetica');
+% set(gca, 'FontSize', 12, 'FontName', 'Helvetica');
+% box off;
+% [~, idx_max] = max(respuestaNF2);
+% maxVal = respuestaNF2(idx_max);
+% half_val = maxVal/2;
+% hLineH = yline(maxVal, ...
+%     'Color', [0.8500 0.3250 0.0980], ... % naranja rojizo
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$E_{max}$');
+% hLineH1 = yline(half_val, ...
+%     'Color', [0.4660 0.6740 0.1880], ... % verde
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$E_{max}$/2');
+% x_half = interp1(respuestaNF2, x0_values, half_val, 'spline');
+% hLineV = xline(x_half, ...
+%     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+%     'LineStyle', '-', ...
+%     'LineWidth', 1.5, ...
+%     'DisplayName', '$EC_{50}$');
+% ylim([0 1.05 * maxVal]); 
+% legend([hLineH, hLineV, hLineH1], 'Interpreter', 'latex', 'Location', 'best');
+% hold off;
 
 %% Mis resultados
 
