@@ -39,11 +39,21 @@ Neg1 = @(t,y)ODEKPRNegFeed(t, y, p);
 figure
 plot(tspan,x(:,5))
 hold on
-P_hat = x(end,6);
-k1 = koff + b + gama * P_hat;
+
+
+%P_hat = x(end,6);
+P = x(:,6); 
+C2 = x(:,5);
+k1 = koff + b + gama.*P;
+psi = kp ./ (kp + k1);
+CT = ( (1./psi.^2)- (b + gama.*P)./kp).*C2;
+
+P = x(end,6); 
+C2 = x(end,5);
+k1 = koff + b + gama*P;
 psi = kp / (kp + k1);
-CN = x(:,4)*kp/k1;
-plot(tspan,CN)
+CThat = ( (1./psi^2)- (b + gama*P)./kp)*C2;
+CThat_real=x(end,4)+x(end,3)+x(end,5);
 
 %% Simulación
 NN = 50; 
