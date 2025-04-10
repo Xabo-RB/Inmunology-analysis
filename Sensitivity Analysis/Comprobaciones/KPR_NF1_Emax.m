@@ -11,8 +11,8 @@ d = 1.0e-16;
 tspan = 0.0:0.05:200;
 
 kon = 1 / 1e5;
-koff = 0.05;
-kp = 0.09;
+koff = 0.03;
+kp = 0.13;
 b = 0.04;
 gama = 1 / 1e6;
 alpha = 1 / (5 * 1e2);
@@ -109,14 +109,18 @@ maxVal = respuestaNF2(idx_max);
 half_val = maxVal/2;
 
 mitadInf = respuestaNF2(1:idx_max);
-mitadSup = respuestaNF2(24:30);
-
 mitadInfLT = x0_values(1:idx_max);
-mitadSupLT = x0_values(24:30);
+
+mitadSup = respuestaNF2(21:25);
+mitadSupLT = x0_values(21:25);
+
+mitadSup1 = respuestaNF2(27:32);
+mitadSupLT1 = x0_values(27:32);
 
 x_half1 = interp1(mitadInf, mitadInfLT, half_val, 'spline');
 x_half2 = interp1(mitadSup, mitadSupLT, half_val, 'spline');
-x_half2 = x0_values(27);
+x_half3 = interp1(mitadSup1, mitadSupLT1, half_val, 'spline');
+%x_half2 = x0_values(27);
 
 figure;
 semilogx(x0_values, respuestaNF2, 'o', ...
@@ -146,6 +150,11 @@ hLineV = xline(x_half1, ...
     'LineWidth', 1.5, ...
     'DisplayName', '$EC_{50}$');
 hLineV1 = xline(x_half2, ...
+    'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
+    'LineStyle', '-', ...
+    'LineWidth', 1.5, ...
+    'DisplayName', '$EC_{50}$');
+hLineV1 = xline(x_half3, ...
     'Color', [0.9290 0.6940 0.1250], ...  % naranja claro
     'LineStyle', '-', ...
     'LineWidth', 1.5, ...
