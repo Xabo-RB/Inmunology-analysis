@@ -1,7 +1,9 @@
 # Inmunology analysis
 
-Paper: Response metrics of T-cell activation models
+Files for:
 
-Paper: Leveraging mathematical models to predict and control T-cell activation
+-  Response metrics of T-cell activation models. Xabier Rey Barreiro, Alejandro F. Villaverde, and Jose Faro.
+
+-  Leveraging mathematical models to predict and control T-cell activation. Xabier Rey Barreiro, Alejandro F. Villaverde, and Jose Faro.
 
 julia_version = "1.9.3"
