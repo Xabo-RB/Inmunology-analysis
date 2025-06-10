@@ -16,7 +16,12 @@ p =[lambda; phi; ki; keff; L; sigma];
 syms S T Tp
 x = [S T Tp].';
 
-h = [sigma * ( sigma*lambda + phi*(1 + lambda) )/( ki * (1 + lambda) * (sigma + phi) )];
+%% --------------------------------------------- Emax ---------------------------------------------
+h = [sigma * ( sigma*lambda + phi*(1 + lambda) )/( ki * (1 + lambda) * (sigma + phi) ); S + T + Tp];
+
+%% --------------------------------------------- Normal ---------------------------------------------
+h = [T];
+
 
 f = [ 
 	-phi*(S - T/lambda) + sigma*(1/(1 + lambda) - S);
