@@ -16,11 +16,14 @@ syms L R C0 C1 C2 C3 C4 C5 Y P
 x = [L; R; C0; C1; C2; Y; P];
 
 f = [
-    -kon * L * R + koff * C0 + koff * C1 + koff * C2;                 % L'(t)
-    -kon * L * R + koff * C0 + koff * C1 + koff * C2;                 % R'(t)
+    -kon * L * R + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4 + koff * C5 + koff * C6;% L'(t)
+    -kon * L * R + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4 + koff * C5 + koff * C6;                 % R'(t)
     kon * L * R - (koff + kp) * C0;                                  % C0'(t)
-    kp * C0 - (koff + phi * kp) * C1;                                % C1'(t)
-    phi * kp * C1 - koff * C2;                                       % C2'(t)
+    kp * C0 - (koff + kp) * C1;                                % C1'(t)
+    kp * C1 - (koff + kp) * C2; 
+    kp * C2 - (koff + kp) * C3; 
+    kp * C3 - (koff + kp) * C4; 
+    phi * C1 - koff * C2;                                       % C2'(t)
     gyp * (YT - Y) - gym * Y + lambda * C1 * (YT - Y);     % Y'(t)
     gpp * (PT - P) - gpm * P + Delta * Y * (PT - P) - mu * C1 * P % P'(t)
 ];
@@ -296,3 +299,13 @@ h = [(PT*(YT* Delta *(gyp + (((koff / (koff + phi)) * (kp/(koff+kp))^5)* lambda 
                      lambda ) + gpp*(gym + gyp + ((koff / (koff + phi)) * (kp/(koff+kp))^5)*(R+C0+C1+C2+C3+C4+C5)* lambda )^2* mu  + ...
                   YT* Delta *(gym*gyp + (gyp + ((koff / (koff + phi)) * (kp/(koff+kp))^5)*(R+C0+C1+C2+C3+C4+C5)* lambda )^2)* mu )))^...
               2)))/2))];
+
+%% initial conditions:
+ics  = [];   
+
+% which initial conditions are known:
+known_ics = [0,0,0,0,0,0,0]; 
+
+u = [];
+w = [];
+save('KPRLimIFF_Emax','x','p','u','w','h','f','ics','known_ics');
