@@ -12,8 +12,8 @@ clear all;
 syms kon koff kp phi gyp gym gpp gpm lambda Delta mu YT PT
 p = [kon; koff; kp; phi; gyp; gym; gpp; gpm; lambda; Delta; mu; YT; PT];
 
-syms L R C0 C1 C2 C3 C4 C5 Y P
-x = [L; R; C0; C1; C2; Y; P];
+syms L R C0 C1 C2 C3 C4 C5 C6 Y P
+x = [L; R; C0; C1; C2; C3; C4; C5; C6; Y; P];
 
 f = [
     -kon * L * R + koff * C0 + koff * C1 + koff * C2 + koff * C3 + koff * C4 + koff * C5 + koff * C6; % L'(t)
