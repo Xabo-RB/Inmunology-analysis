@@ -23,7 +23,7 @@ f = [
     kp * C1 - (koff + kp) * C2;                                 % C2'(t)
     kp * C2 - (koff + kp) * C3;                                 % C3'(t)
     kp * C3 - (koff + kp) * C4;                                 % C4'(t)
-    kp * C1 - (koff + phi) * C2;                                % C5'(t)
+    kp * C4 - (koff + phi) * C5;                                % C5'(t)
     phi * C5 - koff*C6;                                         % C6'(t) 
     gyp * (YT - Y) - gym * Y + lambda * C5 * (YT - Y);     % Y'(t)
     gpp * (PT - P) - gpm * P + Delta * Y * (PT - P) - mu * C5 * P % P'(t)
@@ -299,7 +299,7 @@ h = [(PT*(YT* Delta *(gyp + (((koff / (koff + phi)) * (kp/(koff+kp))^5)* lambda 
                   YT* Delta )* lambda ^2* mu *(-(gpm*gym*YT* Delta *...
                      lambda ) + gpp*(gym + gyp + ((koff / (koff + phi)) * (kp/(koff+kp))^5)*(R+C0+C1+C2+C3+C4+C5+C6)* lambda )^2* mu  + ...
                   YT* Delta *(gym*gyp + (gyp + ((koff / (koff + phi)) * (kp/(koff+kp))^5)*(R+C0+C1+C2+C3+C4+C5+C6)* lambda )^2)* mu )))^...
-              2)))/2))];
+              2)))/2)); R];
 
 %% initial conditions:
 ics  = [];   
@@ -309,4 +309,4 @@ known_ics = [0,0,0,0,0,0,0];
 
 u = [];
 w = [];
-save('KPRLimIFF_Emax','x','p','u','w','h','f','ics','known_ics');
+save('KPR_LS_IFF_Emax','x','p','u','w','h','f','ics','known_ics');
