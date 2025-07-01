@@ -1,0 +1,51 @@
+Algebraic Rules!
+
+ODEs (define the individual ODE equations - 1 per line)!
+dL/dt = C0*koff + C1*koff + C2*koff + C3*koff + C4*koff + C5*koff + C6*koff - L*R*kon;
+dR/dt = C0*koff + C1*koff + C2*koff + C3*koff + C4*koff + C5*koff + C6*koff - L*R*kon;
+dC0/dt = L*R*kon - C0*(koff + kp);
+dC1/dt = C0*kp - C1*(koff + kp);
+dC2/dt = C1*kp - C2*(koff + kp);
+dC3/dt = C2*kp - C3*(koff + kp);
+dC4/dt = C3*kp - C4*(koff + kp);
+dC5/dt = C4*kp - C5*(koff + phi);
+dC6/dt = C5*phi - C6*koff;
+dY/dt = - Y*gym - gyp*(Y - YT) - C5*lambda*(Y - YT);
+dP/dt = - P*gpm - gpp*(P - PT) - Delta*Y*(P - PT) - C5*P*mu;
+
+Input variables!
+
+Measured Outputs (define the measured sensors - 1 per line)!
+y1 = -((koff + kp)^10*(koff + phi)^2*((((PT*koff*kp^5*(gpp*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + Delta*YT*(gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi)))))/((koff + kp)^5*(koff + phi)) - (koff*kp^5*omega*(gpm*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + gpp*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + Delta*YT*(gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + (koff*kp^5*mu*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon))/((koff + kp)^5*(koff + phi)))*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))))/((koff + kp)^5*(koff + phi)))^2*(omega^2*(lambda^2*(gpm + gpp + Delta*YT)^2 + mu^2*(gym + gyp)^2 - lambda*mu*(2*(gpm + gpp)*(gym + gyp) - 2*Delta*YT*(gym - gyp))) + PT^2*lambda^2*(gpp + Delta*YT)^2 + 2*PT*lambda*omega*(mu*(gpp*(gym + gyp) - Delta*YT*(gym - gyp)) - lambda*(gpp + Delta*YT)*(gpm + gpp + Delta*YT))))^(1/2)/2 + (koff^2*kp^10*(omega^2*(lambda^2*(gpm + gpp + Delta*YT)^2*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) + mu^2*(gym + gyp)^2*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) + lambda*mu*(2*Delta*YT*(gym*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) + gyp*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon)) + 2*(gpm + gpp)*(gym + gyp)*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon))) + PT^2*lambda^2*(gpp + Delta*YT)^2*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) - 2*PT*lambda*omega*(lambda*(gpp + Delta*YT)*(gpm + gpp + Delta*YT)*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) + gpp*mu*(gym + gyp)*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon) + Delta*YT*mu*(gym*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R) + gyp*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon)))))/(2*(koff + kp)^10*(koff + phi)^2) - (koff*kp^5*(omega*(lambda*(gpm + gpp + Delta*YT) + mu*(gym + gyp)) - PT*lambda*(gpp + Delta*YT))*(PT*gpp*(gym + gyp) - omega*((gpm + gpp)*(gym + gyp) + Delta*YT*gyp) + Delta*PT*YT*gyp))/(2*(koff + kp)^5*(koff + phi)) + (koff^3*kp^15*lambda*mu*omega*(lambda*omega*(gpm + gpp + Delta*YT) + mu*omega*(gym + gyp) - PT*lambda*(gpp + Delta*YT))*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R)*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R + koff/kon))/(2*(koff + kp)^15*(koff + phi)^3)))/(koff^2*kp^10*lambda*mu*omega*(omega*(gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi)))*(gpm + Delta*YT) - gpp*(PT - omega)*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + gpm*gym*omega - Delta*PT*YT*(gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))) + (koff*kp^5*mu*omega*(gym + gyp + (koff*kp^5*lambda*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi)))*(C0 + C1 + C2 + C3 + C4 + C5 + C6 + R))/((koff + kp)^5*(koff + phi))))
+y2 = R
+
+Parameter names and values (define all the system parameters - 1 per line, OPTIONAL - define known paramter values)!
+kon = 
+koff = 
+kp = 
+phi = 
+gyp = 
+gym = 
+gpp = 
+gpm = 
+lambda = 
+Delta = 
+mu = 
+YT = 
+PT = 
+omega = 
+
+State names and initial values (define all the model state names - 1 per line, OPTIONAL - define known initial values)!
+L = 
+R = 
+C0 = 
+C1 = 
+C2 = 
+C3 = 
+C4 = 
+C5 = 
+C6 = 
+Y = 
+P = 
+
+Analyse (list the unknown parameter and initial conditions which should be included into the structural identifiability analysis)!
