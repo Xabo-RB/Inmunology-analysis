@@ -1,0 +1,1 @@
+A = (kp * (kp / (koff + kp))^N * (1 - kp / (koff + kp)) / (1 + (kp / (koff + kp))^(N + 1)));
