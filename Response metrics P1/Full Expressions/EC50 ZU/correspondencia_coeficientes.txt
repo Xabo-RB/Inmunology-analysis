@@ -1,0 +1,3 @@
+{coeff1[[1]] -> c11, coeff1[[2]] -> c12, coeff1[[3]] -> c13, 
+ coeff1[[4]] -> c14, coeff1[[5]] -> c15, coeff2[[1]] -> c21, 
+ coeff2[[2]] -> c22, coeff2[[3]] -> c23, coeff2[[4]] -> c24}
