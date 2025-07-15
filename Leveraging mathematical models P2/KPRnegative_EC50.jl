@@ -17,7 +17,6 @@ ode = @ODEmodel(
     y1(t) = koff/kon + (T(t) + C0(t) + C1(t) + C2(t))/2
 )
 
-
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
 # __________ conociendo TODOS ________________________________________________________
