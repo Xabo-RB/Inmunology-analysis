@@ -24,7 +24,6 @@ f = [
 
 %% Emax
 
-final_solution_copia
 coeff1_1
 coeff1_2
 coeff1_3
@@ -45,7 +44,9 @@ c22 = coeff2_2var;
 c23 = coeff2_3var;
 c24 = coeff2_4var;
 
-h = [exprSinDs];
+final_poly_matlabCode
+
+h = [poly];
 
 
 
@@ -57,5 +58,5 @@ known_ics = [0,0,0,0,0,0];
 
 u = [];
 w = [];
-save('ZUEmax','x','p','u','w','h','f','ics','known_ics');
+save('ZUEC50','x','p','u','w','h','f','ics','known_ics');
 
