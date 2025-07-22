@@ -26,7 +26,7 @@ for i = 1:length(LTvect)
     % COJO LA RESPUESTA QUE ME INTERESA:
     SolResponse = solution{3}(:, 3); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* LTvect(i)) ./ solution{3}(:, 1); 
+    newSol = abs((SolResponse .* LTvect(i)) ./ solution{3}(:, 1)); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
@@ -34,6 +34,8 @@ end
 
 results_matrix1 = log10(abs(results_matrix));
 LTvect1 = log10(LTvect);
+
+save('KPC_LT.mat','tspan','LTvect','results_matrix');
 
 figure('Position',[100 100 600 400]);
 contourf(tspan, LTvect1, results_matrix, 10,'LineColor','k');
