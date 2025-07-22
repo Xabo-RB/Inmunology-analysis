@@ -65,7 +65,7 @@ clear
 
 %%    % --------------- KON -----------------------------
 % Vector de valores de koff
-konVect = linspace(4e-6, 2e-2, 1000);  % 2
+konVect = linspace(4e-6, 2e-2, 2000);  % 2
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
@@ -103,7 +103,7 @@ end
 % %          'LineWidth', 0.5);  
 % hold on
 
-save('KPC_kon.mat','tspan','konVect','results_matrix');
+save('KPC_kon2.mat','tspan','konVect','results_matrix');
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
