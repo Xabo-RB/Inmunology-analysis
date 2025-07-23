@@ -32,6 +32,10 @@ for i = 1:length(koffVect)
     results_matrix(i, :) = newSol;
 end
 
+save('nf2_KOFF.mat','tspan','koffVect','results_matrix');
+
+results_matrix1 = abs(results_matrix);
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
@@ -170,41 +174,43 @@ set(gca, 'YDir', 'normal');
 % hold on
 
 % 
-% %    --------------- b (dephosphorylation rate) SHP1 -----------------------------
+% %    --------------- b (dephosphorylation rate) TO r(T) -----------------------------
 % % Vector de valores de koff
-% bVect = 0.004:0.001:0.44;
-% bVect = linspace(0.004, 0.44, 1000); % 1000% por arriba y por abajo
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(bVect), length(solution{1}(:, 1))); 
-% for i = 1:length(bVect)
-% 
-%     p = complex([5e-5, 0.01, 1, 4.4e-4, bVect(i), 1, 2e-4, 6e5, exp(-1*2), exp(-1*1), exp(0)], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{9}(:, 6); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* bVect(i)) ./ solution{9}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% results_matrix1 = log10(abs(results_matrix));
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, bVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('Sensitivity to $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-% 
+bVect = 0.004:0.001:0.44;
+bVect = linspace(0.004, 0.44, 1000); % 1000% por arriba y por abajo
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(bVect), length(solution{1}(:, 1))); 
+for i = 1:length(bVect)
+
+    p = complex([5e-5, 0.01, 1, 4.4e-4, bVect(i), 1, 2e-4, 6e5, exp(-1*2), exp(-1*1), exp(0)], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{10}(:, 6); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* bVect(i)) ./ solution{10}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+results_matrix1 = log10(abs(results_matrix));
+
+save('NF2_Rto_b.mat','tspan','bVect','results_matrix');
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, bVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('Sensitivity of $R$ to parameter $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
 % imagesc(tspan, bVect, results_matrix);
@@ -212,20 +218,20 @@ set(gca, 'YDir', 'normal');
 % cb = colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('Sensitivity to $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% title('Sensitivity of $R$ to parameter $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, bVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('Sensitivity of [SHP-1] to $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-% 
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, bVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('Sensitivity of [SHP-1] to $b$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
 % imagesc(tspan, bVect, results_matrix);
@@ -486,15 +492,15 @@ function dx = ODEKPRNegFeed2(t, x, p)
     dx = zeros(10, 1);
     
     % Definir las ecuaciones diferenciales
-    dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8));
-    dx(2) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8));
-    dx(3) = p(1) * x(1) * x(2) - (p(2) + p(3)) * x(3) + (p(5) + p(4) * x(9)) * x(4);
-    dx(4) = p(3) * x(3) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(4) + (p(5) + p(4) * x(9)) * x(5);
-    dx(5) = p(3) * x(4) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(5) + (p(5) + p(4) * x(9)) * x(6);
-    dx(6) = p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7);
-    dx(7) = p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8);
-    dx(8) = p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8);
-    dx(9) = p(7) * x(4) * (p(8) - x(9)) - p(6) * x(9);
+    dx(1) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8)); % L
+    dx(2) = -p(1) * x(1) * x(2) + p(2) * (x(3) + x(4) + x(5) + x(6) + x(7) + x(8)); % P
+    dx(3) = p(1) * x(1) * x(2) - (p(2) + p(3)) * x(3) + (p(5) + p(4) * x(9)) * x(4); % C0
+    dx(4) = p(3) * x(3) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(4) + (p(5) + p(4) * x(9)) * x(5); % C1
+    dx(5) = p(3) * x(4) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(5) + (p(5) + p(4) * x(9)) * x(6); % C2
+    dx(6) = p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7); % C3
+    dx(7) = p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8); % C4
+    dx(8) = p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8); % C5
+    dx(9) = p(7) * x(4) * (p(8) - x(9)) - p(6) * x(9); % S
     dx(10) = p(9)*(p(3) * x(5) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(6) + (p(5) + p(4) * x(9)) * x(7)) + ...
         p(10)*(p(3) * x(6) - (p(2) + p(3) + p(5) + p(4) * x(9)) * x(7) + (p(5) + p(4) * x(9)) * x(8)) + ...
         p(11)*(p(3) * x(7) - (p(2) + p(5) + p(4) * x(9)) * x(8));
