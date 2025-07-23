@@ -1,6 +1,6 @@
 clear
 
-%% VALORES INICIALES INTEGRACI”N DEL MODELO
+%% VALORES INICIALES INTEGRACI√ìN DEL MODELO
     %% KPZU
     % initial values
     % x(1) -> T(t), x(2) -> P(t), x(3) -> Tp(t), x(4) -> Q(t)
@@ -18,7 +18,7 @@ clear
 % Vector de valores de koff
 koffVect = 0.001:0.001:1;
 
-% Resultados con el n˙mero de filas de koff y en cada columna el instante
+% Resultados con el n√∫mero de filas de koff y en cada columna el instante
 % temporal
 results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
 for i = 1:length(koffVect)
@@ -29,7 +29,7 @@ for i = 1:length(koffVect)
 
     % COJO LA RESPUESTA QUE ME INTERESA:
     SolResponse = solution{3}(:, 4); 
-    % NormalizaciÛn de la respuesta
+    % Normalizaci√≥n de la respuesta
     newSol = (SolResponse .* koffVect(i)) ./ solution{3}(:, 1); 
 
     % En la fila que define un valor de koff
@@ -56,6 +56,8 @@ end
 
 save('KPZU_koff.mat','tspan','koffVect','results_matrix');
 
+results_matrix1 = abs(results_matrix);
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
@@ -70,7 +72,7 @@ hold on
 % % Vector de valores de koff
 % konVect = linspace(4e-6, 2e-2, 2000);  % 2
 % 
-% % Resultados con el n˙mero de filas de koff y en cada columna el instante
+% % Resultados con el n√∫mero de filas de koff y en cada columna el instante
 % % temporal
 % results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
 % for i = 1:length(konVect)
@@ -81,7 +83,7 @@ hold on
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
 %     SolResponse = solution{3}(:, 2); 
-%     % NormalizaciÛn de la respuesta
+%     % Normalizaci√≥n de la respuesta
 %     newSol = (SolResponse .* konVect(i)) ./ solution{3}(:, 1); 
 % 
 %     % En la fila que define un valor de koff
@@ -113,7 +115,7 @@ hold on
 % Vector de valores de kon
 % kpVect = linspace(0.001, 10, 2000);    % 4
 % 
-% % Resultados con el n˙mero de filas de koff y en cada columna el instante
+% % Resultados con el n√∫mero de filas de koff y en cada columna el instante
 % % temporal
 % results_matrix = zeros(length(kpVect), length(solution{4}(:, 1))); 
 % for i = 1:length(kpVect)
@@ -124,7 +126,7 @@ hold on
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
 %     SolResponse = solution{3}(:, 5); 
-%     % NormalizaciÛn de la respuesta
+%     % Normalizaci√≥n de la respuesta
 %     newSol = (SolResponse .* kpVect(i)) ./ solution{3}(:, 1); 
 % 
 %     % En la fila que define un valor de koff
@@ -158,17 +160,17 @@ hold on
 
 solution = sensitivity(x0, p, d, tspan); 
 
-% solution{estado}(:, n∫parametro)
+% solution{estado}(:, n¬∫parametro)
 NewSolR = solution{3}(:, 1);
 
 figure
-% Crear el gr·fico
+% Crear el gr√°fico
 plot(tspan, NewSolR);
 xlabel('t');
 legend;
 title('Sensitivity');
 
-% COMPROBACI”N
+% COMPROBACI√ìN
 neg = @(t,y)ODEKPZU(t, y, p);
 options = odeset('RelTol',1e-6,'AbsTol',1e-9);
 [t,x] = ode45(neg, tspan, x0, options);
@@ -186,36 +188,36 @@ function solution = sensitivity(x0, p, d, tspan)
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
     solution = cell(1, lx);
-    % Para cada Ìndice i, se asigna una matriz de ceros de tamaÒo ls x (lp + 1) a la celda solution{i
+    % Para cada √≠ndice i, se asigna una matriz de ceros de tama√±o ls x (lp + 1) a la celda solution{i
     for i = 1:lx
         solution{i} = zeros(ls, lp + 1);
     end
-    % El bucle itera sobre cada especie j y almacena la soluciÛn correspondiente en la primera columna de la 
-    % matriz solution[j] dentro del diccionario solution. La primera columna se utiliza para almacenar la soluciÛn original (sin perturbaciones en los par·metros).
+    % El bucle itera sobre cada especie j y almacena la soluci√≥n correspondiente en la primera columna de la 
+    % matriz solution[j] dentro del diccionario solution. La primera columna se utiliza para almacenar la soluci√≥n original (sin perturbaciones en los par√°metros).
     for j = 1:lx
         solution{j}(:, 1) = x(:, j);
     end
 
     for j = 1:lp
-        % La tÈcnica de diferencias finitas complejas implica agregar una pequeÒa perturbaciÛn imaginaria a un par·metro 
-        % para calcular la derivada parcial de la soluciÛn con respecto a ese par·metro.
-        p(j) = p(j) + d * 1i; % Perturba el par·metro
+        % La t√©cnica de diferencias finitas complejas implica agregar una peque√±a perturbaci√≥n imaginaria a un par√°metro 
+        % para calcular la derivada parcial de la soluci√≥n con respecto a ese par√°metro.
+        p(j) = p(j) + d * 1i; % Perturba el par√°metro
         
         options = odeset('RelTol',1e-5,'AbsTol',1e-6, 'Refine', 1);
         KPZU = @(t,y)ODEKPZU(t, y, p);
         [t,x] = ode45(KPZU, tspan, x0, options);
         
-        % Est· destinada a restablecer el par·metro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbaciÛn.
+        % Est√° destinada a restablecer el par√°metro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbaci√≥n.
         p(j) = complex(real(p(j)), 0);
-        %  Toma la parte imaginaria de cada elemento en sol, donde sol es la matriz de soluciones del sistema ODE despuÈs de 
-        % perturbar el par·metro correspondiente con una pequeÒa cantidad imaginaria d * im.
-        % Divide la parte imaginaria de sol por d. Esto proporciona una aproximaciÛn de la derivada parcial de la soluciÛn 
-        % con respecto al par·metro perturbado, utilizando diferencias finitas complejas.
+        %  Toma la parte imaginaria de cada elemento en sol, donde sol es la matriz de soluciones del sistema ODE despu√©s de 
+        % perturbar el par√°metro correspondiente con una peque√±a cantidad imaginaria d * im.
+        % Divide la parte imaginaria de sol por d. Esto proporciona una aproximaci√≥n de la derivada parcial de la soluci√≥n 
+        % con respecto al par√°metro perturbado, utilizando diferencias finitas complejas.
         xSens = imag(x) ./ d;
         
         % Selecciona todas las filas y la columna j + 1 de la matriz solution[k]. 
-        % La columna j + 1 se utiliza para almacenar la sensibilidad respecto al par·metro p[j] (perturbado).
-        % Selecciona la fila k de la matriz sol (x), que contiene las sensibilidades calculadas para la especie k en todos los tiempos de evaluaciÛn.
+        % La columna j + 1 se utiliza para almacenar la sensibilidad respecto al par√°metro p[j] (perturbado).
+        % Selecciona la fila k de la matriz sol (x), que contiene las sensibilidades calculadas para la especie k en todos los tiempos de evaluaci√≥n.
         for k = 1:lx
             solution{k}(:, j + 1) = xSens(:, k);
         end
