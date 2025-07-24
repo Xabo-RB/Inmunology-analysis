@@ -136,7 +136,7 @@ for i = 1:length(kpVect)
     results_matrix(i, :) = newSol;
 end
 
-save('LSIFF_koff.mat','tspan','kpVect','results_matrix');
+save('LSIFF_kp.mat','tspan','kpVect','results_matrix');
 
 results_matrix1 = log10(abs(results_matrix));
 
