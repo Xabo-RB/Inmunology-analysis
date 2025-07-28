@@ -199,7 +199,7 @@ end
 
 results_matrix1 = log10(abs(results_matrix));
 
-save('NF2_Rto_b.mat','tspan','bVect','results_matrix');
+save('NF1_Rto_b.mat','tspan','bVect','results_matrix');
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, bVect, results_matrix1, 10, 'LineColor', 'k');
@@ -207,7 +207,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('Sensitivity of $R$ to parameter $b$ KPR-NF1', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('Sensitivity of $R$ to parameter $b$ (KPR-NF1)', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
