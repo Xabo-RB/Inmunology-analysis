@@ -207,7 +207,7 @@ clear
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % ylabel('Spontaneous dephospho. ($b$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('Sensitivity of $R$ to parameter $b$ (KPR-NF1)', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% title('Sensitivity of $R$ to parameter $b$ (1)', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
 
@@ -253,7 +253,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('Dephospho. rate by SHP-1 ($\gamma$)', 'Interpreter', 'latex', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('Sensitivity of $R$ to parameter $\gamma$ (KPR-NF1)', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+title('Sensitivity of $R$ to $\gamma$ (1)', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
