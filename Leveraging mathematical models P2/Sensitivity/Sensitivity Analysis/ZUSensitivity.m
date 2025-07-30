@@ -172,6 +172,8 @@ hold on
 %     results_matrix(i, :) = newSol;
 % end
 % 
+save('ZU_kp.mat','tspan','konVect','results_matrix');
+
 % %results_matrix = log10(abs(results_matrix));
 % 
 % % inferno = csvread('inferno_colormap.csv');
