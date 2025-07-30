@@ -1,18 +1,23 @@
 clear
 tic
 %% VALORES INICIALES INTEGRACIÓN DEL MODELO
-    %% ZU
-    % initial values
-    % x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
-    % x(5) -> Tp(t) x(6) -> Q(t)
-    x0 = complex([100, 2e4, 0, 0, 0, 1], 0); 
-    % step size and time interval in days
-    d = 1.0e-16; 
-    tspan = 0.0:0.05:100;
-    % k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
-    % p(6)
-    p = complex([10, 1, 0.1, 1, 1, 10], 0);
-    solution = sensitivity(x0, p, d, tspan); 
+%% ZU
+% initial values
+% x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
+% x(5) -> Tp(t) x(6) -> Q(t)
+%x0 = complex([3e4, 5e4, 0, 0, 0, 1000], 0);
+%x0 = complex([100, 5, 0, 0, 0, 1], 0); 
+x0 = complex([100, 2e4, 0, 0, 0, 1], 0); 
+
+% step size and time interval in days
+d = 1.0e-16; 
+tspan = 0.0:0.05:100;
+% k1 = p(1); k3 = p(2); kmenos1 = p(3); w = p(4); k2 = p(5); kmenos2 =
+% p(6)
+p = complex([10, 1, 0.1, 1, 1, 10], 0);
+%p = complex([1e-5, 4e-2, 5e-2, 9e-2, 1e-1, 5e-2], 0);
+
+solution = sensitivity(x0, p, d, tspan); 
 
 %%     % --------------- KOFF -----------------------------
 % Vector de valores de koff
@@ -95,6 +100,8 @@ results_matrix = zeros(length(konVect), length(solution{4}(:, 1)));
 for i = 1:length(konVect)
 
     p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
+    %p = complex([konVect(i), 4e-2, 5e-2, 9e-2, 1e-1, 5e-2],0);
+
 
     solution = sensitivity(x0, p, d, tspan);
 
@@ -216,8 +223,8 @@ toc
 function solution = sensitivity(x0, p, d, tspan)
 
     ZU = @(t,y)ODEZU(t, y, p);
-    options = odeset('RelTol',1e-9,'AbsTol',1e-9, 'Refine', 1);
-    [t,x] = ode23s(ZU, tspan, x0, options);
+    options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
+    [t,x] = ode45(ZU, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -237,9 +244,9 @@ function solution = sensitivity(x0, p, d, tspan)
         % para calcular la derivada parcial de la solución con respecto a ese parámetro.
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
-        options = odeset('RelTol',1e-9,'AbsTol',1e-9, 'Refine', 1);
+        options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
         ZU = @(t,y)ODEZU(t, y, p);
-        [t,x] = ode23s(ZU, tspan, x0, options);
+        [t,x] = ode45(ZU, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
