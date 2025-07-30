@@ -1,0 +1,34 @@
+Algebraic Rules!
+
+ODEs (define the individual ODE equations - 1 per line)!
+dP/dt = koff*(C0 + C1 + C2) - P*T*kon;
+dT/dt = koff*(C0 + C1 + C2) - P*T*kon;
+dC0/dt = C1*(b + S*gamma) - C0*(koff + kp) + P*T*kon;
+dC1/dt = C0*kp - C1*(b + koff + kp + S*gamma) + C2*(b + S*gamma);
+dC2/dt = C1*kp - C2*(b + koff + S*gamma);
+dS/dt = - S*beta - C1*alpha*(S - ST);
+
+Input variables!
+
+Measured Outputs (define the measured sensors - 1 per line)!
+y1 = (((b + koff + kp + P*gamma - ((b + koff + kp + P*gamma)^2 - 4*kp*(b + P*gamma))^(1/2))/(b + koff + kp + P*gamma + ((b + koff + kp + P*gamma)^2 - 4*kp*(b + P*gamma))^(1/2)) - 1)*(C0 + C1 + C2 + T)*(b + koff + kp + P*gamma - ((b + koff + kp + P*gamma)^2 - 4*kp*(b + P*gamma))^(1/2))^2)/(((b + koff + kp + P*gamma - ((b + koff + kp + P*gamma)^2 - 4*kp*(b + P*gamma))^(1/2))^3/(b + koff + kp + ((b + koff + kp + P*gamma)^2 - 4*kp*(b + P*gamma))^(1/2) + P*gamma)^3 - 1)*(2*b + 2*P*gamma)^2)
+
+Parameter names and values (define all the system parameters - 1 per line, OPTIONAL - define known paramter values)!
+kon = 
+koff = 
+kp = 
+b = 
+gamma = 
+alpha = 
+ST = 
+beta = 
+
+State names and initial values (define all the model state names - 1 per line, OPTIONAL - define known initial values)!
+P = 
+T = 
+C0 = 
+C1 = 
+C2 = 
+S = 
+
+Analyse (list the unknown parameter and initial conditions which should be included into the structural identifiability analysis)!
