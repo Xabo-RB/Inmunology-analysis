@@ -6,8 +6,8 @@ tic
 % x(1) -> T(t) x(2) -> L(t) x(3) -> C0(t) x(4) -> D(t)
 % x(5) -> Tp(t) x(6) -> Q(t)
 %x0 = complex([3e4, 5e4, 0, 0, 0, 1000], 0);
-%x0 = complex([100, 5, 0, 0, 0, 1], 0); 
-x0 = complex([100, 2e4, 0, 0, 0, 1], 0); 
+x0 = complex([100, 5, 0, 0, 0, 1], 0); 
+%x0 = complex([100, 2e4, 0, 0, 0, 1], 0); 
 
 % step size and time interval in days
 d = 1.0e-16; 
@@ -21,133 +21,147 @@ solution = sensitivity(x0, p, d, tspan);
 
 %%     % --------------- KOFF -----------------------------
 % Vector de valores de koff
-% koffVect = 0.001:0.001:1;
-% konVect = linspace(4e-6, 2e-2, 2000);  % 2
-% kpVect = linspace(0.001, 10, 2000);    % 4
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
-% for i = 1:length(koffVect)
-% 
-%     p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{5}(:, 4); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* koffVect(i)) ./ solution{5}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% % inferno = csvread('inferno_colormap.csv');
-% % %inferno = flipud(inferno);
-% % figure; 
-% % % imagesc(tspan, koffVect, results_matrix); 
-% % % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
-% % %results_matrix = log10(abs(results_matrix));
-% % imagesc(tspan, koffVect, results_matrix); 
-% % colormap(inferno);
-% % cb = colorbar;
-% % cb.Label.String = 'Sensitivity';
-% % xlabel('Time (s)');
-% % ylabel('Unbinding rate');
-% % title('ZU');
-% % set(gca, 'YDir', 'normal');
-% % hold on
-% 
-% 
-% % inferno = csvread('inferno_colormap.csv');
-% % figure('Position', [100, 100, 600, 400]);
-% % imagesc(tspan, koffVect, results_matrix);
-% % colormap(inferno);
-% % cb = colorbar;
-% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% % set(gca, 'YDir', 'normal');
-% % %xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
-% % %yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
-% % % set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
-% % % set(gca, 'YDir', 'normal');
-% % % set(gca, 'FontSize', 16, ...       
-% % %          'FontWeight', 'normal', ... 
-% % %          'LineWidth', 0.5);  
-% % hold on
-% 
-% save('ZU_koff.mat','tspan','koffVect','results_matrix');
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-
-%%     % --------------- KON -----------------------------
-% % Vector de valores de kon
-konVect = linspace(4e-6, 2e-2, 2000);  % 2
+koffVect = 0.001:0.001:1;
+%konVect = linspace(4e-6, 2e-2, 2000);  % 2
+%kpVect = linspace(0.001, 10, 2000);    % 4
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
-results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
-for i = 1:length(konVect)
+results_matrix = zeros(length(koffVect), length(solution{4}(:, 1))); 
+for i = 1:length(koffVect)
 
-    p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
-    %p = complex([konVect(i), 4e-2, 5e-2, 9e-2, 1e-1, 5e-2],0);
-
+    p = complex([10, 1, koffVect(i), 1, 1, 10], 0);
 
     solution = sensitivity(x0, p, d, tspan);
 
     % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{5}(:, 2); 
+    SolResponse = solution{5}(:, 4); 
     % Normalización de la respuesta
-    newSol = (SolResponse .* konVect(i)) ./ solution{5}(:, 1); 
+    newSol = (SolResponse .* koffVect(i)) ./ solution{5}(:, 1); 
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
 end
 
-save('ZU_kon.mat','tspan','konVect','results_matrix');
-
-results_matrix1 = log10(abs(results_matrix));
-
 % inferno = csvread('inferno_colormap.csv');
-% figure('Position', [100, 100, 600, 380]);
-% imagesc(tspan, konVect, results_matrix);
+% %inferno = flipud(inferno);
+% figure; 
+% % imagesc(tspan, koffVect, results_matrix); 
+% % results_matrix = log10(results_matrix); results_matrix = real(results_matrix); NO
+% %results_matrix = log10(abs(results_matrix));
+% imagesc(tspan, koffVect, results_matrix); 
 % colormap(inferno);
 % cb = colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% cb.Label.String = 'Sensitivity';
+% xlabel('Time (s)');
+% ylabel('Unbinding rate');
+% title('ZU');
 % set(gca, 'YDir', 'normal');
 % hold on
 
+
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 400]);
+% imagesc(tspan, koffVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% %xticks(linspace(min(tspan), max(tspan), 5)); % Ticks del eje X
+% %yticks(linspace(min(koffVect), max(koffVect), 6)); % Ticks del eje Y
+% % set(gca, 'YDir', 'normal', 'FontSize', 16, 'FontWeight', 'bold');
+% % set(gca, 'YDir', 'normal');
+% % set(gca, 'FontSize', 16, ...       
+% %          'FontWeight', 'normal', ... 
+% %          'LineWidth', 0.5);  
+% hold on
+
+save('ZU_koff.mat','tspan','koffVect','results_matrix');
+
+results_matrix = abs(results_matrix);
+
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
+contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
 title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
 
+results_matrix1 = log10(abs(results_matrix));
+
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+contourf(tspan, koffVect, results_matrix1, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
 title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal');
 hold on
+
+%%     % --------------- KON -----------------------------
+% % Vector de valores de kon
+% konVect = linspace(4e-6, 2e-2, 2000);  % 2
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
+% for i = 1:length(konVect)
+% 
+%     p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
+%     %p = complex([konVect(i), 4e-2, 5e-2, 9e-2, 1e-1, 5e-2],0);
+% 
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{5}(:, 2); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* konVect(i)) ./ solution{5}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% save('ZU_kon.mat','tspan','konVect','results_matrix');
+% 
+% results_matrix1 = log10(abs(results_matrix));
+% 
+% % inferno = csvread('inferno_colormap.csv');
+% % figure('Position', [100, 100, 600, 380]);
+% % imagesc(tspan, konVect, results_matrix);
+% % colormap(inferno);
+% % cb = colorbar;
+% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% % title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% % set(gca, 'YDir', 'normal');
+% % hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 
 %%     % --------------- KP -----------------------------
@@ -226,7 +240,7 @@ function solution = sensitivity(x0, p, d, tspan)
 
     ZU = @(t,y)ODEZU(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
-    [t,x] = ode45(ZU, tspan, x0, options);
+    [t,x] = ode23s(ZU, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -248,7 +262,7 @@ function solution = sensitivity(x0, p, d, tspan)
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
         ZU = @(t,y)ODEZU(t, y, p);
-        [t,x] = ode45(ZU, tspan, x0, options);
+        [t,x] = ode23s(ZU, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
