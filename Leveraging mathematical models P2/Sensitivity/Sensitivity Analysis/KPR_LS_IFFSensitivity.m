@@ -12,60 +12,71 @@ clear
 
     % --------------- UNBINDING RATE -----------------------------
 % Vector de valores de koff
-% koffVect = 0.001:0.001:1;
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
-% for i = 1:length(koffVect)
-% 
-%     p = complex([5e-5, koffVect(i), 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{7}(:, 3); 
-%     % Normalización de la respuesta
-%     newSol = abs((SolResponse .* koffVect(i)) ./ solution{7}(:, 1)); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% save('LSIFF_koff.mat','tspan','koffVect','results_matrix');
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
+koffVect = 0.001:0.001:1;
 
-% results_matrix2 = log10(abs(results_matrix));
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
-% 
-% inferno = csvread('inferno_colormap.csv');
-% figure('Position', [100, 100, 600, 400]);
-% imagesc(tspan, koffVect, results_matrix);
-% colormap(inferno);
-% cb = colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
+for i = 1:length(koffVect)
+
+    p = complex([5e-5, koffVect(i), 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{7}(:, 3); 
+    % Normalización de la respuesta
+    newSol = abs((SolResponse .* koffVect(i)) ./ solution{7}(:, 1)); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+save('LSIFF_koff.mat','tspan','koffVect','results_matrix');
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+results_matrix2 = log10(abs(results_matrix));
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, koffVect, results_matrix);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
 
 
 %     % --------------- BINDING RATE -----------------------------
@@ -116,49 +127,49 @@ clear
 % 
 %     % --------------- FORWARD RATE -----------------------------
 %Vector de valores de koff
-kpVect = linspace(0.001, 10, 2000); 
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
-for i = 1:length(kpVect)
-
-    p = complex([5e-5, 0.01, kpVect(i), 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{7}(:, 4); 
-    % Normalización de la respuesta
-    newSol = (SolResponse .* kpVect(i)) ./ solution{7}(:, 1); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-save('LSIFF_kp.mat','tspan','kpVect','results_matrix');
-
-results_matrix1 = log10(abs(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
+% kpVect = linspace(0.001, 10, 2000); 
+% 
+% % Resultados con el número de filas de koff y en cada columna el instante
+% % temporal
+% results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
+% for i = 1:length(kpVect)
+% 
+%     p = complex([5e-5, 0.01, kpVect(i), 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
+% 
+%     solution = sensitivity(x0, p, d, tspan);
+% 
+%     % COJO LA RESPUESTA QUE ME INTERESA:
+%     SolResponse = solution{7}(:, 4); 
+%     % Normalización de la respuesta
+%     newSol = (SolResponse .* kpVect(i)) ./ solution{7}(:, 1); 
+% 
+%     % En la fila que define un valor de koff
+%     results_matrix(i, :) = newSol;
+% end
+% 
+% save('LSIFF_kp.mat','tspan','kpVect','results_matrix');
+% 
+% results_matrix1 = log10(abs(results_matrix));
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
