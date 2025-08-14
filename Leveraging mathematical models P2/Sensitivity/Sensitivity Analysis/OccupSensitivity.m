@@ -39,9 +39,10 @@ contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('Occ', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 14, 'YScale', 'log');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
 
 save('Occ_koff.mat','tspan','koffVect','results_matrix');
