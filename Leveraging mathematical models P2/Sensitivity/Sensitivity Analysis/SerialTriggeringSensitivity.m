@@ -105,7 +105,7 @@ set(gca, 'YDir', 'normal');
 hold on
 
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
