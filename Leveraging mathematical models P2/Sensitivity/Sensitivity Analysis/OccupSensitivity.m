@@ -82,6 +82,7 @@ save('Occ_kon.mat','tspan','konVect','results_matrix');
 % set(gca, 'YDir', 'normal');
 % hold on
 
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
@@ -91,7 +92,31 @@ xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
 title('Occ', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+%set(gca, 'YDir', 'normal', 'FontSize', 16);
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('Occ', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+%set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 set(gca, 'YDir', 'normal', 'FontSize', 16);
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('Occ', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+%set(gca, 'YDir', 'normal', 'FontSize', 16);
 hold on
 
     % --------------- FORWARD RATE -----------------------------
