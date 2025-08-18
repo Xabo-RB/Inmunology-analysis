@@ -41,11 +41,11 @@ contourf(tspan, LTvect1, results_matrix, 10,'LineColor','k');
 colormap(gray); colorbar
 xlabel('Time (s)', 'FontSize',18);
 ylabel('Total ligand (L_T)', 'FontSize',18);
-title ('Occ.', 'FontSize',18,'FontWeight','bold');
-
+title ('Occ', 'FontSize',18,'FontWeight','bold');
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
 
 %% FUNCIONES

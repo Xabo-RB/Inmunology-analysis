@@ -148,12 +148,9 @@ xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-ylim([min(konVect) max(konVect)]);
-yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
-set(gca, 'YTick', yticks);
-set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
-% yticks([4e-6, 1e-4, 1e-2]);
-% yticklabels({'10^{-6}', '10^{-4}', '10^{-2}'});
+
+yticks([4e-6, 1e-4, 1e-2]);
+yticklabels({'10^{-6}', '10^{-4}', '10^{-2}'});
 hold on
 
 %%    % --------------- KP -----------------------------

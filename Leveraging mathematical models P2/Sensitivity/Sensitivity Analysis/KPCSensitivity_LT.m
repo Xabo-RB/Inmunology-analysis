@@ -46,6 +46,7 @@ title ('KPC', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
 
 %% SOLUCION
