@@ -143,7 +143,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 %ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPR-LS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
@@ -154,7 +154,7 @@ colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 %ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPR-LS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16);
 hold on
