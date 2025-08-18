@@ -82,6 +82,9 @@ save('ZU_koff.mat','tspan','koffVect','results_matrix');
 
 results_matrix = abs(results_matrix);
 
+tspan_new = tspan(1:601);
+results_matrix2 = results_matrix(:, 1:601);
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);
@@ -94,6 +97,17 @@ hold on
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan_new, koffVect, results_matrix2, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
