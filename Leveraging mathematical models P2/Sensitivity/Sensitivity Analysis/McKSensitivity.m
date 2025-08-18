@@ -99,7 +99,7 @@ xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPR-1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 %set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-set(gca, 'YDir', 'normal');
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 hold on
 
 figure('Position', [100, 100, 600, 400]);

@@ -117,62 +117,74 @@ hold on
 
 %%     % --------------- KON -----------------------------
 % % Vector de valores de kon
-% konVect = linspace(4e-6, 2e-2, 2000);  % 2
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
-% for i = 1:length(konVect)
-% 
-%     p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
-%     %p = complex([konVect(i), 4e-2, 5e-2, 9e-2, 1e-1, 5e-2],0);
-% 
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{5}(:, 2); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* konVect(i)) ./ solution{5}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% save('ZU_kon.mat','tspan','konVect','results_matrix');
-% 
-% results_matrix1 = log10(abs(results_matrix));
-% 
-% % inferno = csvread('inferno_colormap.csv');
-% % figure('Position', [100, 100, 600, 380]);
-% % imagesc(tspan, konVect, results_matrix);
-% % colormap(inferno);
-% % cb = colorbar;
-% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% % set(gca, 'YDir', 'normal');
-% % hold on
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
+konVect = linspace(4e-6, 2e-2, 2000);  % 2
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(konVect), length(solution{4}(:, 1))); 
+for i = 1:length(konVect)
+
+    p = complex([konVect(i), 1, 0.1, 1, 1, 10], 0);
+    %p = complex([konVect(i), 4e-2, 5e-2, 9e-2, 1e-1, 5e-2],0);
+
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{5}(:, 2); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* konVect(i)) ./ solution{5}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+save('ZU_kon.mat','tspan','konVect','results_matrix');
+
+results_matrix1 = log10(abs(results_matrix));
+
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 380]);
+% imagesc(tspan, konVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-% title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+set(gca, 'YDir', 'normal', 'FontSize', 16);
+hold on
 
 
 %%     % --------------- KP -----------------------------
