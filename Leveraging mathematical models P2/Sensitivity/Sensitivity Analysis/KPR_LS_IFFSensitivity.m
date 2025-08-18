@@ -12,117 +12,129 @@ clear
 
     % --------------- UNBINDING RATE -----------------------------
 % Vector de valores de koff
-koffVect = 0.001:0.001:1;
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
-for i = 1:length(koffVect)
-
-    p = complex([5e-5, koffVect(i), 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    SolResponse = solution{7}(:, 3); 
-    % Normalización de la respuesta
-    newSol = abs((SolResponse .* koffVect(i)) ./ solution{7}(:, 1)); 
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-end
-
-save('LSIFF_koff.mat','tspan','koffVect','results_matrix');
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-hold on
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-results_matrix2 = log10(abs(results_matrix));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, koffVect, results_matrix);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-
-%     % --------------- BINDING RATE -----------------------------
-%Vector de valores de koff
-% konVect = 4e-6:1e-6:2e-2;
+% koffVect = 0.001:0.001:1;
 % 
 % % Resultados con el número de filas de koff y en cada columna el instante
 % % temporal
-% results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
-% for i = 1:length(konVect)
+% results_matrix = zeros(length(koffVect), length(solution{1}(:, 1))); 
+% for i = 1:length(koffVect)
 % 
-%     p = complex([konVect(i), 0.01, 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
+%     p = complex([5e-5, koffVect(i), 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
 % 
 %     solution = sensitivity(x0, p, d, tspan);
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{7}(:, 2); 
+%     SolResponse = solution{7}(:, 3); 
 %     % Normalización de la respuesta
-%     newSol = (SolResponse .* konVect(i)) ./ solution{7}(:, 1); 
+%     newSol = abs((SolResponse .* koffVect(i)) ./ solution{7}(:, 1)); 
 % 
 %     % En la fila que define un valor de koff
 %     results_matrix(i, :) = newSol;
 % end
 % 
-% results_matrix1 = log10(abs(results_matrix));
+% save('LSIFF_koff.mat','tspan','koffVect','results_matrix');
 % 
 % figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 % colormap(gray);
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% %ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+% hold on
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal');
+% hold on
+% 
+% results_matrix2 = log10(abs(results_matrix));
+% 
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
 % 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
-% imagesc(tspan, konVect, results_matrix1);
+% imagesc(tspan, koffVect, results_matrix);
 % colormap(inferno);
 % cb = colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('Unbinding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
+
+
+%     % --------------- BINDING RATE -----------------------------
+%Vector de valores de koff
+konVect = 4e-6:1e-6:2e-2;
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
+for i = 1:length(konVect)
+
+    p = complex([konVect(i), 0.01, 1, 0.09, 1, 0.5, 50, 100, 100, 2.5, 500], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{7}(:, 2); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* konVect(i)) ./ solution{7}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+save('LSIFF_kon.mat','tspan','konVect','results_matrix');
+
+results_matrix1 = log10(abs(results_matrix));
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, konVect, results_matrix1);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Binding rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+hold on
 
 % 
 %     % --------------- FORWARD RATE -----------------------------
