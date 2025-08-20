@@ -154,61 +154,72 @@ hold on
 
 %%     % --------------- KP -----------------------------
 % Vector de valores de kon
-% kpVect = linspace(0.001, 10, 2000);    % 4
-% 
-% % Resultados con el número de filas de koff y en cada columna el instante
-% % temporal
-% results_matrix = zeros(length(kpVect), length(solution{4}(:, 1))); 
-% for i = 1:length(kpVect)
-% 
-%     p = complex([10, 1, 0.1, kpVect(i), 1, 10], 0);
-% 
-%     solution = sensitivity(x0, p, d, tspan);
-% 
-%     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{3}(:, 5); 
-%     % Normalización de la respuesta
-%     newSol = (SolResponse .* kpVect(i)) ./ solution{3}(:, 1); 
-% 
-%     % En la fila que define un valor de koff
-%     results_matrix(i, :) = newSol;
-% end
-% 
-% save('KPZU_kp.mat','tspan','kpVect','results_matrix');
-% 
-% 
-% results_matrix1 = log10(abs(results_matrix));
-% 
-% % inferno = csvread('inferno_colormap.csv');
-% % figure('Position', [100, 100, 600, 380]);
-% % imagesc(tspan, kpVect, results_matrix);
-% % colormap(inferno);
-% % cb = colorbar;
-% % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% % title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% % set(gca, 'YDir', 'normal');
-% % hold on
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
+kpVect = linspace(0.001, 10, 2000);    % 4
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(kpVect), length(solution{4}(:, 1))); 
+for i = 1:length(kpVect)
+
+    p = complex([10, 1, 0.1, kpVect(i), 1, 10], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{3}(:, 5); 
+    % Normalización de la respuesta
+    newSol = (SolResponse .* kpVect(i)) ./ solution{3}(:, 1); 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+end
+
+save('KPZU_kp.mat','tspan','kpVect','results_matrix');
+
+
+results_matrix1 = log10(abs(results_matrix));
+
+% inferno = csvread('inferno_colormap.csv');
+% figure('Position', [100, 100, 600, 380]);
+% imagesc(tspan, kpVect, results_matrix);
+% colormap(inferno);
+% cb = colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 % title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
-% 
-% figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
-% colormap(gray);
-% colorbar;
-% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-% title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
-% hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('$k_{p}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+ylabel('k_{p}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('KPZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+hold on
 
 %% SOLUCION
 

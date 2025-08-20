@@ -32,7 +32,7 @@ clear
 %     results_matrix(i, :) = newSol;
 % end
 % 
-% 
+save('Occ_koff.mat','tspan','koffVect','results_matrix');
 % 
 % figure('Position', [100, 100, 600, 400]);
 % contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
@@ -44,8 +44,11 @@ clear
 % title('Occ', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 % hold on
-% 
-% save('Occ_koff.mat','tspan','koffVect','results_matrix');
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
     % --------------- BINDING RATE -----------------------------
 % Vector de valores de koff
