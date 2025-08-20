@@ -5,7 +5,7 @@ tic
     x0 = complex([100, 2e4, 0, 0, 0, 0, 0, 0, 0], 0); 
     % step size and time interval in days
     d = 1.0e-16; 
-    tspan = 0.0:1:5000;
+    tspan = 0.0:1:200;
     % kon koff
     p = complex([5e-5, 0.01, 1, 0.001], 0);
     solution = sensitivity(x0, p, d, tspan); 
@@ -56,6 +56,11 @@ ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpr
 title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 380]);

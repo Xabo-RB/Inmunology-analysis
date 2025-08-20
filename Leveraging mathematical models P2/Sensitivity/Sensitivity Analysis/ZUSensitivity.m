@@ -82,6 +82,11 @@ save('ZU_koff.mat','tspan','koffVect','results_matrix');
 
 results_matrix = abs(results_matrix);
 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 tspan_new = tspan(1:601);
 results_matrix2 = results_matrix(:, 1:601);
 

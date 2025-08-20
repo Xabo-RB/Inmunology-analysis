@@ -79,6 +79,11 @@ tic
 % set(gca, 'YDir', 'normal');
 % hold on
 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 
 %     % --------------- BINDING RATE -----------------------------
 % Vector de valores de koff

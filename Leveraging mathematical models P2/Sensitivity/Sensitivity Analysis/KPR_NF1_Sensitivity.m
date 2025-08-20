@@ -45,6 +45,13 @@ title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
 
+results_matrix2 = log10(abs(results_matrix));
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix2, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);

@@ -94,6 +94,15 @@ end
 % set(gca, 'YDir', 'normal');
 % hold on
 
+save('ST_koff.mat','tspan','keffVect','results_matrix');
+
+results_matrix = abs(results_matrix);
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, keffVect, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
 colormap(gray);

@@ -50,6 +50,13 @@ fig = figure('Visible','off');
 levels = h.LevelList;
 fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
+num_levels = 10;  % igual que en tu contourf
+min_val = min(results_matrix(:));
+max_val = max(results_matrix(:));
+levels = linspace(min_val, max_val, num_levels);
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
+
     % --------------- BINDING RATE -----------------------------
 % Vector de valores de koff
 konVect = 4e-6:1e-6:2e-2;
