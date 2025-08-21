@@ -18,22 +18,27 @@ LTvect = logspace(0, log10(2e4), 2000);
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
 results_matrix = zeros(length(LTvect), length(solution{1}(:, 1))); 
+
+h = waitbar(0,'Calculando...');
+
 for i = 1:length(LTvect)
-
+    % --- tu código ---
     x0 = complex([100, LTvect(i), 0, 0, 0, 0, 0, 0, 0], 0); 
-
     solution = sensitivity(x0, p, d, tspan);
 
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    % SolResponse = solution{8}(:, 2); 
-    % Normalización de la respuesta
     SolResponse = solution{8}(:, 3) + solution{9}(:, 3);
     SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
     newSol = SolResponse.*LTvect(i)./SolResponseEst;
 
-    % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    
+    % Actualizar barra
+    waitbar(i/length(LTvect), h);
 end
+
+close(h);
+
+save('SS_LT.mat','tspan','LTvect','results_matrix');
 
 results_matrix1 = log10(results_matrix);
 LTvect1 = log10(LTvect);
@@ -47,6 +52,7 @@ title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
 toc
 
@@ -77,7 +83,7 @@ function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODEKPRSustSig(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
-    [t,x] = ode15s(ST, tspan, x0, options);
+    [t,x] = ode23s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -99,7 +105,7 @@ function solution = sensitivity(x0, p, d, tspan)
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-6, 'Refine', 1);
         ST = @(t,y)ODEKPRSustSig(t, y, p);
-        [t,x] = ode15s(ST, tspan, x0, options);
+        [t,x] = ode23s(ST, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         x0(j) = complex(real(x0(j)), 0);
