@@ -15,7 +15,7 @@ clear
 % Vector de valores de koff
 LTvect = logspace(0, log10(2e4), 2000);
 
-
+h = waitbar(0,'Calculando...');
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
 results_matrix = zeros(length(LTvect), length(solution{1}(:, 1))); 
@@ -32,7 +32,12 @@ for i = 1:length(LTvect)
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    waitbar(i/length(LTvect), h);
 end
+
+close(h);
+
+save('KPR1_LT.mat','tspan','LTvect','results_matrix');
 
 results_matrix1 = log10(results_matrix);
 LTvect1 = log10(LTvect);
@@ -43,11 +48,10 @@ colormap(gray); colorbar
 xlabel('Time (s)', 'FontSize',18);
 ylabel('Total ligand (L_T)', 'FontSize',18);
 title ('KPR-1', 'FontSize',18,'FontWeight','bold');
-
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
-
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
@@ -90,7 +94,7 @@ function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODEKPRmcK(t, y, p);
     options = odeset('RelTol',1e-6,'AbsTol',1e-8, 'Refine', 1);
-    [t,x] = ode45(ST, tspan, x0, options);
+    [t,x] = ode23s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -112,7 +116,7 @@ function solution = sensitivity(x0, p, d, tspan)
         
         options = odeset('RelTol',1e-6,'AbsTol',1e-8, 'Refine', 1);
         ST = @(t,y)ODEKPRmcK(t, y, p);
-        [t,x] = ode45(ST, tspan, x0, options);
+        [t,x] = ode23s(ST, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         x0(j) = complex(real(x0(j)), 0);

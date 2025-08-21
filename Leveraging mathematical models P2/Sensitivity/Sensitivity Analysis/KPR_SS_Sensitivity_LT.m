@@ -22,7 +22,6 @@ results_matrix = zeros(length(LTvect), length(solution{1}(:, 1)));
 h = waitbar(0,'Calculando...');
 
 for i = 1:length(LTvect)
-    % --- tu código ---
     x0 = complex([100, LTvect(i), 0, 0, 0, 0, 0, 0, 0], 0); 
     solution = sensitivity(x0, p, d, tspan);
 
