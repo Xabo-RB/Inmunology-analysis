@@ -20,6 +20,7 @@ LTvect = logspace(0, log10(2e4), 1000);
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
+h = waitbar(0,'Calculando...');
 results_matrix = zeros(length(LTvect), length(solution{4}(:, 1))); 
 for i = 1:length(LTvect)
 
@@ -34,7 +35,12 @@ for i = 1:length(LTvect)
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    waitbar(i/length(LTvect), h);
 end
+
+close(h);
+
+save('ZU_LT.mat','tspan','LTvect','results_matrix');
 
 results_matrix1 = log10(abs(results_matrix));
 LTvect1 = log10(LTvect);
@@ -48,7 +54,7 @@ title ('ZU', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
-
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
 
 %% FUNCIONES
