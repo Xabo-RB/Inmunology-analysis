@@ -48,6 +48,11 @@ set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
 set(gca, 'YDir', 'normal', 'FontSize', 16);
 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, LTvect1, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 
 %% SOLUCION
 

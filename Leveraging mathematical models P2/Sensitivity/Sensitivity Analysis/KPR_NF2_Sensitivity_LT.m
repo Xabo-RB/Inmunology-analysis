@@ -39,6 +39,7 @@ close(h);
 
 results_matrix1 = log10(abs(results_matrix));
 LTvect1 = log10(LTvect);
+results_matrix = abs(results_matrix);
 
 save('NegII_LT.mat','tspan','LTvect','results_matrix');
 
@@ -52,6 +53,11 @@ ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
 set(gca, 'YDir', 'normal', 'FontSize', 16);
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, LTvect1, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 
 %% FUNCIONES

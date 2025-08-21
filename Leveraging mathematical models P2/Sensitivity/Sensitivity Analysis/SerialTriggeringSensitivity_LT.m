@@ -21,6 +21,7 @@ LTvect = logspace(0, log10(2e4), 1000);
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
 results_matrix = zeros(length(LTvect), length(solution{3}(:, 1))); 
+h = waitbar(0,'Calculando...');
 for i = 1:length(LTvect)
 
     p = complex([0.0055, 0.61,  0.0011, 0.001, 5, 0.094, LTvect(i)], 0);
@@ -34,8 +35,11 @@ for i = 1:length(LTvect)
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    waitbar(i/length(LTvect), h);
 end
 
+close(h);
+save('KPR_LSIFF_LT.mat','tspan','LTvect','results_matrix');
 
 results_matrix1 = log10(abs(results_matrix));
 LTvect1 = log10(LTvect);
@@ -49,7 +53,12 @@ title ('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 ticks_real = [1, 10, 100, 1e3, 1e4];
 set(gca, 'YTick', log10(ticks_real));
 set(gca, 'YTickLabel', {'1', '10', '100', '10^{3}', '10^{4}'});
+set(gca, 'YDir', 'normal', 'FontSize', 16);
 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, LTvect1, results_matrix, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 %% FUNCIONES
 function solution = sensitivity(x0, p, d, tspan)
