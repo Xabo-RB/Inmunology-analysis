@@ -130,11 +130,11 @@ fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 % ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 % title('KPR-1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-% ylim([min(konVect) max(konVect)]);
-% yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
-% set(gca, 'YTick', yticks);
-% set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
-% hold on
+ylim([min(konVect) max(konVect)]);
+yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
+set(gca, 'YTick', yticks);
+set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
+hold on
 
 % 
 %     % --------------- FORWARD RATE -----------------------------
