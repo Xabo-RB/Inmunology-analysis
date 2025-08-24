@@ -140,7 +140,8 @@ colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPR-NF1', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+set(gca, 'YDir', 'normal');
+%set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
 
 inferno = csvread('inferno_colormap.csv');
@@ -314,7 +315,7 @@ function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODEKPRNegFeed(t, y, p);
     options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
-    [t,x] = ode23s(ST, tspan, x0, options);
+    [t,x] = ode15s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
     % Crea un array de celdas de 1 fila y lx columnas. Cada celda puede contener datos de cualquier tipo, en este caso, matrices de ceros.
@@ -336,7 +337,7 @@ function solution = sensitivity(x0, p, d, tspan)
         
         options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
         ST = @(t,y)ODEKPRNegFeed(t, y, p);
-        [t,x] = ode23s(ST, tspan, x0, options);
+        [t,x] = ode15s(ST, tspan, x0, options);
         
         % Está destinada a restablecer el parámetro p[j] a su valor original, eliminando cualquier componente imaginaria que se haya agregado durante el proceso de perturbación.
         p(j) = complex(real(p(j)), 0);
