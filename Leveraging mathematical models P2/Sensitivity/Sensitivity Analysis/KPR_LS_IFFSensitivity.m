@@ -34,16 +34,16 @@ clear
 % 
 % save('LSIFF_koff.mat','tspan','koffVect','results_matrix');
 % 
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-%ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
-title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-hold on
+% figure('Position', [100, 100, 600, 400]);
+% contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
+% colormap(gray);
+% colorbar;
+% xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% %ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
+% ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+% title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+% hold on
 % 
 % figure('Position', [100, 100, 600, 400]);
 % contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
@@ -78,10 +78,10 @@ hold on
 % set(gca, 'YDir', 'normal');
 % hold on
 
-fig = figure('Visible','off');
-[C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
-levels = h.LevelList;
-fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+% fig = figure('Visible','off');
+% [C,h] = contourf(tspan, koffVect, results_matrix, 10,'LineColor','k');
+% levels = h.LevelList;
+% fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 
 %     % --------------- BINDING RATE -----------------------------
@@ -90,6 +90,7 @@ konVect = 4e-6:1e-6:2e-2;
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
+h = waitbar(0,'Calculando...');
 results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
 for i = 1:length(konVect)
 
@@ -104,11 +105,19 @@ for i = 1:length(konVect)
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    waitbar(i/length(konVect), h);
 end
+
+close(h);
 
 save('LSIFF_kon.mat','tspan','konVect','results_matrix');
 
 results_matrix1 = log10(abs(results_matrix));
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, konVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
@@ -139,7 +148,12 @@ xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('KPR-LS-IFF', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+ylim([min(konVect) max(konVect)]);
+yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
+set(gca, 'YTick', yticks);
+set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
 hold on
+
 
 % 
 %     % --------------- FORWARD RATE -----------------------------
@@ -227,7 +241,7 @@ hold on
 function solution = sensitivity(x0, p, d, tspan)
 
     ST = @(t,y)ODELimIFF(t, y, p);
-    options = odeset('RelTol',1e-9,'AbsTol',1e-9, 'Refine', 1);
+    options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
     [t,x] = ode23s(ST, tspan, x0, options);
     
     lp = length(p); ls = size(x, 1); lx = length(x0);
@@ -248,7 +262,7 @@ function solution = sensitivity(x0, p, d, tspan)
         % para calcular la derivada parcial de la solución con respecto a ese parámetro.
         p(j) = p(j) + d * 1i; % Perturba el parámetro
         
-        options = odeset('RelTol',1e-9,'AbsTol',1e-9, 'Refine', 1);
+        options = odeset('RelTol',1e-5,'AbsTol',1e-5, 'Refine', 1);
         ST = @(t,y)ODELimIFF(t, y, p);
         [t,x] = ode23s(ST, tspan, x0, options);
         
