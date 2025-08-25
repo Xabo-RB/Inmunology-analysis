@@ -136,6 +136,12 @@ set(gca, 'YTick', yticks);
 set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
 hold on
 
+results_matrix1 = log10(abs(results_matrix));
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, konVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 % 
 %     % --------------- FORWARD RATE -----------------------------
 % Vector de valores de koff
