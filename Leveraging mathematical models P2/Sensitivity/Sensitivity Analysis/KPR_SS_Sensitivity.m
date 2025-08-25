@@ -88,133 +88,143 @@ tic
 
 %     % --------------- BINDING RATE -----------------------------
 % Vector de valores de koff
-konVect = 4e-6:1e-6:2e-2;
-
-% Resultados con el número de filas de koff y en cada columna el instante
-% temporal
-h = waitbar(0,'Calculando...');
-results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
-for i = 1:length(konVect)
-
-    p = complex([konVect(i), 0.01, 1, 0.001], 0);
-
-    solution = sensitivity(x0, p, d, tspan);
-
-    % COJO LA RESPUESTA QUE ME INTERESA:
-    % SolResponse = solution{8}(:, 2); 
-    % Normalización de la respuesta
-    SolResponse = solution{8}(:, 2) + solution{9}(:, 2);
-    SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
-    newSol = SolResponse.*konVect(i)./SolResponseEst;
-
-    % En la fila que define un valor de koff
-    results_matrix(i, :) = newSol;
-    waitbar(i/length(konVect), h);
-end
-
-close(h);
-
-save('SS_Kon.mat','tspan','konVect','results_matrix');
-
-results_matrix1 = log10(abs(results_matrix));
-
-fig = figure('Visible','off');
-[C,h] = contourf(tspan, konVect, results_matrix1, 10,'LineColor','k');
-levels = h.LevelList;
-fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-ylim([min(konVect) max(konVect)]);
-yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
-set(gca, 'YTick', yticks);
-set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
-hold on
-
-inferno = csvread('inferno_colormap.csv');
-figure('Position', [100, 100, 600, 400]);
-imagesc(tspan, konVect, results_matrix1);
-colormap(inferno);
-cb = colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal');
-hold on
-
-% 
-%     % --------------- FORWARD RATE -----------------------------
-%Vector de valores de koff
-% kpVect = linspace(0.001, 10, 2000); 
+% konVect = 4e-6:1e-6:2e-2;
 % 
 % % Resultados con el número de filas de koff y en cada columna el instante
 % % temporal
-% results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
-% for i = 1:length(kpVect)
+% h = waitbar(0,'Calculando...');
+% results_matrix = zeros(length(konVect), length(solution{1}(:, 1))); 
+% for i = 1:length(konVect)
 % 
-%     p = complex([5e-5, 0.01, kpVect(i), 0.001], 0);
+%     p = complex([konVect(i), 0.01, 1, 0.001], 0);
 % 
 %     solution = sensitivity(x0, p, d, tspan);
 % 
 %     % COJO LA RESPUESTA QUE ME INTERESA:
-%     SolResponse = solution{8}(:, 4) + solution{9}(:, 4);
-%     SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
+%     % SolResponse = solution{8}(:, 2); 
 %     % Normalización de la respuesta
-%     newSol = (SolResponse .* kpVect(i)) ./ SolResponseEst; 
+%     SolResponse = solution{8}(:, 2) + solution{9}(:, 2);
+%     SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
+%     newSol = SolResponse.*konVect(i)./SolResponseEst;
 % 
 %     % En la fila que define un valor de koff
 %     results_matrix(i, :) = newSol;
+%     waitbar(i/length(konVect), h);
 % end
 % 
+% close(h);
+% 
+% save('SS_Kon.mat','tspan','konVect','results_matrix');
+% 
+% results_matrix1 = log10(abs(results_matrix));
+% 
+% fig = figure('Visible','off');
+% [C,h] = contourf(tspan, konVect, results_matrix1, 10,'LineColor','k');
+% levels = h.LevelList;
+% fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 % 
 % figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix, 10, 'LineColor', 'k');
+% contourf(tspan, konVect, results_matrix, 10, 'LineColor', 'k');
 % colormap(gray);
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
 % title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
 % 
-% results_matrix1 = log10(abs(results_matrix));
-% 
 % figure('Position', [100, 100, 600, 400]);
-% contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+% contourf(tspan, konVect, results_matrix1, 10, 'LineColor', 'k');
 % colormap(gray);
 % colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('k_{on}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 % title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-% set(gca, 'YDir', 'normal');
+% set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+% ylim([min(konVect) max(konVect)]);
+% yticks = 10.^(ceil(log10(min(konVect))):floor(log10(max(konVect))));
+% set(gca, 'YTick', yticks);
+% set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
 % hold on
 % 
 % inferno = csvread('inferno_colormap.csv');
 % figure('Position', [100, 100, 600, 400]);
-% imagesc(tspan, kpVect, results_matrix1);
+% imagesc(tspan, konVect, results_matrix1);
 % colormap(inferno);
 % cb = colorbar;
 % xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-% ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+% ylabel('$k_{on}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
 % title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 % set(gca, 'YDir', 'normal');
 % hold on
+
+% 
+%     % --------------- FORWARD RATE -----------------------------
+%Vector de valores de koff
+kpVect = linspace(0.001, 10, 2000); 
+
+% Resultados con el número de filas de koff y en cada columna el instante
+% temporal
+results_matrix = zeros(length(kpVect), length(solution{1}(:, 1))); 
+h = waitbar(0,'Calculando...');
+for i = 1:length(kpVect)
+
+    p = complex([5e-5, 0.01, kpVect(i), 0.001], 0);
+
+    solution = sensitivity(x0, p, d, tspan);
+
+    % COJO LA RESPUESTA QUE ME INTERESA:
+    SolResponse = solution{8}(:, 4) + solution{9}(:, 4);
+    SolResponseEst = solution{8}(:, 1) + solution{9}(:, 1);
+    % Normalización de la respuesta
+    newSol = (SolResponse .* kpVect(i)) ./ SolResponseEst; 
+
+    % En la fila que define un valor de koff
+    results_matrix(i, :) = newSol;
+    waitbar(i/length(kpVect), h);
+end
+
+save('SS_Kp.mat','tspan','kpVect','results_matrix');
+
+close(h);
+
+results_matrix1 = log10(abs(results_matrix));
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, kpVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('k_{p}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
+
+figure('Position', [100, 100, 600, 400]);
+contourf(tspan, kpVect, results_matrix1, 10, 'LineColor', 'k');
+colormap(gray);
+colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('k_{p}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+hold on
+
+inferno = csvread('inferno_colormap.csv');
+figure('Position', [100, 100, 600, 400]);
+imagesc(tspan, kpVect, results_matrix1);
+colormap(inferno);
+cb = colorbar;
+xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+ylabel('Phosphorylation rate', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
+title('KPR-SS', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+set(gca, 'YDir', 'normal');
+hold on
 
 toc
 

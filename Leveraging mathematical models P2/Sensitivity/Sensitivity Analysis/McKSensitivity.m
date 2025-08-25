@@ -169,6 +169,8 @@ end
 
 close(h);
 
+save('KPR1_kp.mat','tspan','kpVect','results_matrix');
+
 results_matrix1 = log10(abs(results_matrix));
 
 fig = figure('Visible','off');
