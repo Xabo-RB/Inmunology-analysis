@@ -49,6 +49,22 @@ ode = @ODEmodel(
 
 @time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
 
+# __________ kp ________________________________________________________
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    T'(t) = -k1(t) * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
+    L'(t) = -k1(t) * T(t) * L(t) + w(t) * C0(t) + kmenos1 * C0(t),
+    C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
+    D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w(t) * C0(t),
+    Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
+    w'(t) = 0,
+    y1(t) = Tp(t),
+    y2(t) = w(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+
 
 # __________ Tt y kon ________________________________________________________
 ode = @ODEmodel(
