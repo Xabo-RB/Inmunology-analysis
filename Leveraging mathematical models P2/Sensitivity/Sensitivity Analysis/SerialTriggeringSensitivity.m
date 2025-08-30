@@ -27,10 +27,12 @@ clear
 
     % --------------- EFFECTIVE RATE -----------------------------
 % Vector de valores de koff
-keffVect = 0.0001:0.0005:0.5;
+keffVect = linspace(4e-6, 2e-2, 2000);
 
 % Resultados con el número de filas de koff y en cada columna el instante
 % temporal
+h = waitbar(0,'Calculando...');
+
 results_matrix = zeros(length(keffVect), length(solution{3}(:, 1))); 
 for i = 1:length(keffVect)
 
@@ -45,7 +47,10 @@ for i = 1:length(keffVect)
 
     % En la fila que define un valor de koff
     results_matrix(i, :) = newSol;
+    waitbar(i/length(keffVect), h);
 end
+
+close(h);
 % 
 % inferno = csvread('inferno_colormap.csv');
 % %inferno = flipud(inferno);
@@ -94,12 +99,12 @@ end
 % set(gca, 'YDir', 'normal');
 % hold on
 
-save('ST_koff.mat','tspan','keffVect','results_matrix');
+save('ST_keff.mat','tspan','keffVect','results_matrix');
 
-results_matrix = abs(results_matrix);
+results_matrix1 = log10(abs(results_matrix));
 
 fig = figure('Visible','off');
-[C,h] = contourf(tspan, keffVect, results_matrix, 10,'LineColor','k');
+[C,h] = contourf(tspan, keffVect, results_matrix1, 10,'LineColor','k');
 levels = h.LevelList;
 fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
@@ -114,14 +119,18 @@ set(gca, 'YDir', 'normal');
 hold on
 
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, keffVect, results_matrix, 10, 'LineColor', 'k');
+contourf(tspan, keffVect, results_matrix1, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
 %ylabel('$k_{off}$', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'latex');
-ylabel('k_{off}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
+ylabel('k_{eff}', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal', 'Interpreter', 'tex');
 title('ST', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
+ylim([min(keffVect) max(keffVect)]);
+yticks = 10.^(ceil(log10(min(keffVect))):floor(log10(max(keffVect))));
+set(gca, 'YTick', yticks);
+set(gca, 'YTickLabel', compose('10^{%d}', log10(yticks)));
 hold on
 
 % figure('Position', [100, 100, 600, 400]);
