@@ -501,12 +501,13 @@ set(gca, 'YDir', 'normal');
 hold on
 
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, koffVect, results_matrix2, 10, 'LineColor', 'k');
+contourf(tspan, koffVect, results_matrix1, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('k_{off}', 'Interpreter','tex', 'FontSize',18, 'Color','k', 'FontWeight','normal');
-title('Sensitivity of SHP-1 to $k_{off}$', 'Interpreter', 'latex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
+ylabel({'Parameter k_{','Dephospho. by SHP-1'}, ...
+       'Interpreter','tex', 'FontSize',18, 'Color','k', 'FontWeight','normal');
+title('Sensitivity of R to \gamma', 'Interpreter', 'tex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
 set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
 hold on
 
