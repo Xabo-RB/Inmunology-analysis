@@ -356,6 +356,11 @@ close(h);
 
 results_matrix1 = log10(abs(results_matrix));
 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, bVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 save('NF2_SHPto_b.mat','tspan','bVect','results_matrix');
 
 
@@ -411,6 +416,11 @@ close(h);
 save('NF2_Rto_gamma.mat','tspan','gammaVect','results_matrix');
 
 results_matrix1 = log10(abs(results_matrix));
+
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, gammaVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
 
 figure('Position', [100, 100, 600, 400]);
 contourf(tspan, gammaVect, results_matrix, 10, 'LineColor', 'k');
@@ -552,6 +562,11 @@ hold on
 % 
 % save('NF2_kofftoS.mat','tspan','koffVect','results_matrix');
 % 
+fig = figure('Visible','off');
+[C,h] = contourf(tspan, koffVect, results_matrix1, 10,'LineColor','k');
+levels = h.LevelList;
+fprintf('levels = [%s]\n', num2str(levels, '%.4g, '));
+
 % figure('Position', [100, 100, 600, 400]);
 % contourf(tspan, koffVect, results_matrix, 10, 'LineColor', 'k');
 % colormap(gray);
