@@ -670,17 +670,7 @@ hold on
 
 
 figure('Position', [100, 100, 600, 400]);
-contourf(tspan, PTvect, results_matrix1, 10, 'LineColor', 'k');
-colormap(gray);
-colorbar;
-xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
-ylabel('P_T', 'Interpreter','tex', 'FontSize',18, 'Color','k', 'FontWeight','normal');
-title('Sensitivity of R to P_T', 'Interpreter', 'tex', 'FontSize', 18, 'FontWeight', 'bold', 'Color', 'k');
-set(gca, 'YDir', 'normal', 'FontSize', 16, 'YScale', 'log');
-hold on
-
-figure('Position', [100, 100, 600, 400]);
-contourf(tspan, PTvect, results_matrix, 10, 'LineColor', 'k');
+contourf(tspan, koffVect, results_matrix1, 10, 'LineColor', 'k');
 colormap(gray);
 colorbar;
 xlabel('Time (s)', 'FontSize', 18, 'Color', 'k', 'FontWeight', 'normal');
