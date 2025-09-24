@@ -11,12 +11,12 @@ ode = @ODEmodel(
     L'(t) = -k1 * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     y1(t) = Tp(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # __________ Tt ________________________________________________________
 ode = @ODEmodel(
@@ -25,13 +25,13 @@ ode = @ODEmodel(
     L'(t) = -k1 * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     y1(t) = Tp(t),
     y2(t) = T(t) + Tp(t) + C0(t) + D(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # __________ kon ________________________________________________________
 ode = @ODEmodel(
@@ -40,30 +40,30 @@ ode = @ODEmodel(
     L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     k1'(t) = 0,
     y1(t) = Tp(t),
     y2(t) = k1(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # __________ kp ________________________________________________________
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
-    T'(t) = -k1(t) * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
-    L'(t) = -k1(t) * T(t) * L(t) + w(t) * C0(t) + kmenos1 * C0(t),
-    C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
+    T'(t) = -k1 * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
+    L'(t) = -k1 * T(t) * L(t) + w(t) * C0(t) + kmenos1 * C0(t),
+    C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w(t) * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w(t) * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     w'(t) = 0,
     y1(t) = Tp(t),
     y2(t) = w(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 
 # __________ Tt y kon ________________________________________________________
@@ -73,7 +73,7 @@ ode = @ODEmodel(
     L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     k1'(t) = 0,
     y1(t) = Tp(t),
@@ -81,7 +81,7 @@ ode = @ODEmodel(
     y3(t) = T(t) + Tp(t) + C0(t) + D(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # ===================================================================
 #               y =  T 
@@ -94,12 +94,12 @@ ode = @ODEmodel(
     L'(t) = -k1 * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     y1(t) = T(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # __________ T(t) R ________________________________________________________
 ode = @ODEmodel(
@@ -108,13 +108,13 @@ ode = @ODEmodel(
     L'(t) = -k1 * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     y1(t) = T(t),
     y2(t) = Tp(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # __________ T y kon ________________________________________________________
 ode = @ODEmodel(
@@ -123,23 +123,23 @@ ode = @ODEmodel(
     L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     k1'(t) = 0,
     y1(t) = T(t),
     y2(t) = k1(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
-# __________ T y kon ________________________________________________________
+# __________ T y kon KP ________________________________________________________
 ode = @ODEmodel(
     #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
     T'(t) = -k1(t) * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
     L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     k1'(t) = 0,
     y1(t) = T(t),
@@ -147,7 +147,7 @@ ode = @ODEmodel(
     y3(t) = Tp(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 # ===================================================================
 #               y =  Tt 
@@ -160,12 +160,12 @@ ode = @ODEmodel(
     L'(t) = -k1 * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1 * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     y1(t) = T(t) + Tp(t) + C0(t) + D(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
 
 
 # __________ kon ________________________________________________________
@@ -175,11 +175,45 @@ ode = @ODEmodel(
     L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
     C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
     D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
-    Tp'(t) = -k2 * Tp(t) * Q(t) +kmenos2 * D(t) + w * C0(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
     Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
     k1'(t) = 0,
     y1(t) = T(t) + Tp(t) + C0(t) + D(t),
     y2(t) = k1(t)
 )
 
-@time println(identifiability_ode(ode, get_parameters(ode); p = 0.99, p_mod = 2^29 - 3))
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
+
+# __________ kp kon  ________________________________________________________
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    T'(t) = -k1(t) * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
+    L'(t) = -k1(t) * T(t) * L(t) + w(t) * C0(t) + kmenos1 * C0(t),
+    C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
+    D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w(t) * C0(t),
+    Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
+    w'(t) = 0,
+    k1'(t) = 0,
+    y1(t) = T(t),
+    y2(t) = w(t),
+    y3(t) = k1(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
+
+# __________ kon ________________________________________________________
+ode = @ODEmodel(
+    #dPdt (pMHC) / dTdt (TCR) / dC0/dt (1º pMHC-TCR)
+    T'(t) = -k1(t) * T(t) * L(t) + k3 * D(t) + kmenos1 * C0(t),
+    L'(t) = -k1(t) * T(t) * L(t) + w * C0(t) + kmenos1 * C0(t),
+    C0'(t) = k1(t) * T(t) * L(t) - (kmenos1 + w) * C0(t),
+    D'(t) = k2 * Tp(t) * Q(t) - (kmenos2 + k3) * D(t),
+    Tp'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + w * C0(t),
+    Q'(t) = -k2 * Tp(t) * Q(t) + kmenos2 * D(t) + k3 * D(t),
+    k1'(t) = 0,
+    y1(t) = Tp(t),
+    y2(t) = k1(t)
+)
+
+@time println(identifiability_ode(ode, get_parameters(ode); p=0.99, p_mod=2^29 - 3))
